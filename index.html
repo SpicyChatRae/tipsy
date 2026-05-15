@@ -39,7 +39,6 @@ body {
   min-height: 100vh;
 }
 
-/* HEADER */
 header {
   background: var(--ink);
   color: var(--paper);
@@ -65,14 +64,12 @@ header span {
   letter-spacing: .05em;
 }
 
-/* LAYOUT */
 .layout {
   display: grid;
   grid-template-columns: 280px 1fr;
   min-height: calc(100vh - 58px);
 }
 
-/* SIDEBAR */
 .sidebar {
   background: var(--paper-2);
   border-right: 1px solid var(--border);
@@ -121,7 +118,6 @@ header span {
 }
 .nav-item.active .nav-dot { background: var(--accent); }
 
-/* BADGE */
 .badge {
   font-size: 10px; font-family: var(--mono);
   padding: 1px 6px; border-radius: 3px;
@@ -134,20 +130,15 @@ header span {
 .hid { background: #d8e8f8; color: #1a3a6a; }
 .hyb { background: #f0e8d0; color: #6a4a10; }
 
-/* MAIN */
 main {
   padding: 2rem;
   max-width: 860px;
 }
 
-/* PANELS */
 .panel { display: none; }
 .panel.active { display: block; }
 
-/* FIELD SECTIONS */
-.field-block {
-  margin-bottom: 2rem;
-}
+.field-block { margin-bottom: 2rem; }
 .field-header {
   display: flex;
   align-items: center;
@@ -156,10 +147,7 @@ main {
   padding-bottom: .75rem;
   border-bottom: 1px solid var(--border);
 }
-.field-label {
-  font-family: var(--serif);
-  font-size: 1.15rem;
-}
+.field-label { font-family: var(--serif); font-size: 1.15rem; }
 .field-tag {
   font-size: 11px; font-family: var(--mono);
   padding: 2px 8px; border-radius: 3px;
@@ -177,10 +165,7 @@ main {
   font-style: italic;
 }
 
-/* INPUT COMPONENTS */
-.input-group {
-  margin-bottom: 1rem;
-}
+.input-group { margin-bottom: 1rem; }
 .input-label {
   font-size: 12px;
   font-weight: 500;
@@ -207,12 +192,9 @@ input[type="text"], textarea {
   transition: border-color .15s;
   resize: vertical;
 }
-input[type="text"]:focus, textarea:focus {
-  border-color: var(--accent);
-}
+input[type="text"]:focus, textarea:focus { border-color: var(--accent); }
 textarea { min-height: 80px; }
 
-/* TAG BUILDER */
 .tag-builder {
   background: white;
   border: 1px solid var(--border);
@@ -225,9 +207,7 @@ textarea { min-height: 80px; }
   gap: .5rem;
   margin-bottom: .75rem;
 }
-.tag-grid > div:last-child {
-  grid-column: 1 / -1;
-}
+.tag-grid > div:last-child { grid-column: 1 / -1; }
 .tag-group-label {
   font-size: 10px;
   letter-spacing: .08em;
@@ -236,11 +216,7 @@ textarea { min-height: 80px; }
   margin-bottom: .3rem;
   font-weight: 500;
 }
-.tag-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
+.tag-chips { display: flex; flex-wrap: wrap; gap: 4px; }
 .tag-chip {
   font-size: 11px;
   padding: 2px 8px;
@@ -266,7 +242,39 @@ textarea { min-height: 80px; }
   min-height: 32px;
 }
 
-/* CHECKBOXES */
+.delim-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: .75rem;
+}
+.delim-chip {
+  font-size: 14px;
+  padding: 3px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: var(--paper);
+  color: var(--ink-2);
+  transition: all .1s;
+  user-select: none;
+  min-width: 40px;
+  text-align: center;
+}
+.delim-chip:hover { border-color: var(--accent); color: var(--accent); }
+.delim-chip.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.always-on-notice {
+  background: var(--paper-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .75rem;
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.7;
+  font-family: var(--mono);
+}
+
 .check-group {
   display: flex;
   align-items: flex-start;
@@ -278,7 +286,6 @@ textarea { min-height: 80px; }
 .check-group .check-label { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
 .check-group .check-hint { font-size: 11px; color: var(--ink-3); display: block; margin-top: 1px; }
 
-/* CHAR BLOCK */
 .char-block {
   background: white;
   border: 1px solid var(--border);
@@ -330,7 +337,6 @@ textarea { min-height: 80px; }
 }
 .add-char-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-/* SECTION DIVIDER */
 .section-divider {
   font-size: 10px;
   font-weight: 500;
@@ -349,7 +355,6 @@ textarea { min-height: 80px; }
   background: var(--border);
 }
 
-/* TRACKER SECTION */
 .tracker-note {
   font-size: 12px;
   color: var(--ink-3);
@@ -360,17 +365,13 @@ textarea { min-height: 80px; }
   line-height: 1.6;
 }
 
-/* EXPORT PANEL */
 .export-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
-.export-field {
-  display: flex;
-  flex-direction: column;
-}
+.export-field { display: flex; flex-direction: column; }
 .export-field-label {
   display: flex;
   align-items: center;
@@ -393,17 +394,10 @@ textarea { min-height: 80px; }
   overflow-y: auto;
   max-height: 320px;
 }
-.export-instructions {
-  grid-column: 1 / -1;
-}
+.export-instructions { grid-column: 1 / -1; }
 .export-instructions .export-box { min-height: 200px; max-height: 500px; }
 
-.btn-row {
-  display: flex;
-  gap: .75rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
+.btn-row { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
 .btn {
   display: inline-flex;
   align-items: center;
@@ -417,23 +411,11 @@ textarea { min-height: 80px; }
   border: none;
   transition: all .15s;
 }
-.btn-primary {
-  background: var(--ink);
-  color: var(--paper);
-}
+.btn-primary { background: var(--ink); color: var(--paper); }
 .btn-primary:hover { background: var(--accent); }
-.btn-secondary {
-  background: white;
-  color: var(--ink);
-  border: 1px solid var(--border);
-}
+.btn-secondary { background: white; color: var(--ink); border: 1px solid var(--border); }
 .btn-secondary:hover { border-color: var(--ink); }
-.btn-export {
-  background: var(--accent);
-  color: white;
-  font-size: 14px;
-  padding: .6rem 1.5rem;
-}
+.btn-export { background: var(--accent); color: white; font-size: 14px; padding: .6rem 1.5rem; }
 .btn-export:hover { background: #9a4820; }
 
 .copy-btn-sm {
@@ -449,15 +431,12 @@ textarea { min-height: 80px; }
 }
 .copy-btn-sm:hover { background: var(--paper-3); }
 
-/* FLASH */
 .flash { color: var(--success) !important; }
 
-/* SCROLLBAR */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .layout { grid-template-columns: 1fr; }
   .sidebar { position: static; height: auto; }
@@ -469,22 +448,22 @@ textarea { min-height: 80px; }
 
 <header>
   <h1>Tipsy Prompt Builder</h1>
-  <span>v1.1 — exports four-field prompt as .txt</span>
+  <span>v1.2 — exports four-field prompt as .txt</span>
 </header>
 
 <div class="layout">
   <nav class="sidebar">
     <div class="nav-section">
       <div class="nav-section-label">Fields</div>
-      <button class="nav-item active" onclick="showPanel('name')">
+      <button class="nav-item active" onclick="showPanel('name', this)">
         <div class="nav-dot"></div> Name
         <span class="badge req">required</span>
       </button>
-      <button class="nav-item" onclick="showPanel('desc')">
+      <button class="nav-item" onclick="showPanel('desc', this)">
         <div class="nav-dot"></div> Description
         <span class="badge req">required</span>
       </button>
-      <button class="nav-item" onclick="showPanel('opening')">
+      <button class="nav-item" onclick="showPanel('opening', this)">
         <div class="nav-dot"></div> Opening
         <span class="badge req">required</span>
       </button>
@@ -492,23 +471,23 @@ textarea { min-height: 80px; }
 
     <div class="nav-section">
       <div class="nav-section-label">Instructions</div>
-      <button class="nav-item" onclick="showPanel('pacing')">
+      <button class="nav-item" onclick="showPanel('pacing', this)">
         <div class="nav-dot"></div> Pacing rules
         <span class="badge opt">optional</span>
       </button>
-      <button class="nav-item" onclick="showPanel('setting')">
+      <button class="nav-item" onclick="showPanel('setting', this)">
         <div class="nav-dot"></div> Setting
         <span class="badge req">required</span>
       </button>
-      <button class="nav-item" onclick="showPanel('roleplay')">
+      <button class="nav-item" onclick="showPanel('roleplay', this)">
         <div class="nav-dot"></div> Roleplay rules
         <span class="badge req">required</span>
       </button>
-      <button class="nav-item" onclick="showPanel('factions')">
+      <button class="nav-item" onclick="showPanel('factions', this)">
         <div class="nav-dot"></div> Factions
         <span class="badge opt">optional</span>
       </button>
-      <button class="nav-item" onclick="showPanel('characters')">
+      <button class="nav-item" onclick="showPanel('characters', this)">
         <div class="nav-dot"></div> Characters
         <span class="badge req">required</span>
       </button>
@@ -516,15 +495,15 @@ textarea { min-height: 80px; }
 
     <div class="nav-section">
       <div class="nav-section-label">Trackers</div>
-      <button class="nav-item" onclick="showPanel('trackers-vis')">
+      <button class="nav-item" onclick="showPanel('trackers-vis', this)">
         <div class="nav-dot"></div> Visible trackers
         <span class="badge vis">visible</span>
       </button>
-      <button class="nav-item" onclick="showPanel('trackers-hid')">
+      <button class="nav-item" onclick="showPanel('trackers-hid', this)">
         <div class="nav-dot"></div> Hidden trackers
         <span class="badge hid">hidden</span>
       </button>
-      <button class="nav-item" onclick="showPanel('trackers-hyb')">
+      <button class="nav-item" onclick="showPanel('trackers-hyb', this)">
         <div class="nav-dot"></div> Hybrid trackers
         <span class="badge hyb">hybrid</span>
       </button>
@@ -532,19 +511,19 @@ textarea { min-height: 80px; }
 
     <div class="nav-section">
       <div class="nav-section-label">Add-ons</div>
-      <button class="nav-item" onclick="showPanel('memory')">
+      <button class="nav-item" onclick="showPanel('memory', this)">
         <div class="nav-dot"></div> Memory system
         <span class="badge req">required</span>
       </button>
-      <button class="nav-item" onclick="showPanel('timeskip')">
+      <button class="nav-item" onclick="showPanel('timeskip', this)">
         <div class="nav-dot"></div> Time skip engine
-        <span class="badge add">add-on</span>
+        <span class="badge req">required</span>
       </button>
     </div>
 
     <div class="nav-section">
       <div class="nav-section-label">Output</div>
-      <button class="nav-item" onclick="showPanel('export')">
+      <button class="nav-item" onclick="showPanel('export', this)">
         <div class="nav-dot"></div> Export prompt ↗
       </button>
     </div>
@@ -563,8 +542,7 @@ textarea { min-height: 80px; }
         <p class="field-note">Published title. Appears on the storefront card and nameplate. Short, specific, searchable. Not seen by the model.</p>
         <div class="input-group">
           <label class="input-label">Chatbot title</label>
-          <span class="input-hint">Format: [Fandom / World] [AU Type] — e.g. MHA Fantasy AU, JJK Yakuza AU</span>
-          <input type="text" id="f-name" placeholder="MHA Fantasy AU" oninput="updatePreview()">
+          <input type="text" id="f-name" placeholder="Title" oninput="updatePreview()">
         </div>
       </div>
     </div>
@@ -582,17 +560,23 @@ textarea { min-height: 80px; }
         <div class="input-group">
           <label class="input-label">Hook sentence</label>
           <span class="input-hint">The world, the stakes, or the dynamic in one line.</span>
-          <input type="text" id="desc-hook1" placeholder="The Kingdom of Musutafu stands against the gathering dark..." oninput="updatePreview()">
+          <input type="text" id="desc-hook1" placeholder="The city doesn't forgive debts — it just waits for the right moment to collect." oninput="updatePreview()">
         </div>
         <div class="input-group">
           <label class="input-label">Second sentence</label>
           <span class="input-hint">Who {{user}} is in this world, or what pulls them in.</span>
-          <input type="text" id="desc-hook2" placeholder="You are one of the Irregulars — the Empire's last defence." oninput="updatePreview()">
+          <input type="text" id="desc-hook2" placeholder="You've just walked into a room where everyone already knows your name." oninput="updatePreview()">
         </div>
         <div class="input-group">
           <label class="input-label">Third sentence <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
           <span class="input-hint">The tension or question the story will orbit.</span>
-          <input type="text" id="desc-hook3" placeholder="" oninput="updatePreview()">
+          <input type="text" id="desc-hook3" placeholder="Some debts can't be paid — only passed on." oninput="updatePreview()">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Tag delimiter</label>
+          <span class="input-hint">Symbol used between tags in the tagline.</span>
+          <div class="delim-picker" id="delim-picker"></div>
         </div>
 
         <div class="input-group">
@@ -638,8 +622,8 @@ textarea { min-height: 80px; }
         <p class="field-note">First message in chat. Seen by user and model. Drop the user mid-scene — not at the beginning but inside it. End on something that invites a response.</p>
         <div class="input-group">
           <label class="input-label">Opening narration</label>
-          <span class="input-hint">Location, atmosphere, sensory detail..</span>
-          <textarea id="open-narration" rows="4" placeholder="*The Yellow Smog hangs heavy over Whitechapel tonight, the gas lamps bleeding amber through the haze...*" oninput="updatePreview()"></textarea>
+          <span class="input-hint">Location, atmosphere, sensory detail. Present tense, second person.</span>
+          <textarea id="open-narration" rows="4" placeholder="*The city hums beneath a bruised sky, the kind of night that makes people careless...*" oninput="updatePreview()"></textarea>
         </div>
         <div class="input-group">
           <label class="input-label">Opening image <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
@@ -654,12 +638,12 @@ textarea { min-height: 80px; }
         <div class="input-group">
           <label class="input-label">Opening dialogue <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
           <span class="input-hint">A character mid-thought, not an introduction.</span>
-          <input type="text" id="open-dialogue" placeholder='"You\'re late," he says, not looking up from the map.' oninput="updatePreview()">
+          <input type="text" id="open-dialogue" placeholder='"You should not be here," he says, not looking up.' oninput="updatePreview()">
         </div>
         <div class="input-group">
           <label class="input-label">Closing beat</label>
           <span class="input-hint">One moment of tension, curiosity, or open question. Do not resolve it.</span>
-          <textarea id="open-beat" rows="2" placeholder="*He finally looks at you — and something in his expression makes you wonder how much he already knows.*" oninput="updatePreview()"></textarea>
+          <textarea id="open-beat" rows="2" placeholder="*He finally turns to look at you — and something in his expression makes it clear this was never a coincidence.*" oninput="updatePreview()"></textarea>
         </div>
       </div>
     </div>
@@ -669,17 +653,17 @@ textarea { min-height: 80px; }
       <div class="field-block">
         <div class="field-header">
           <span class="field-label">Pacing Rules</span>
-          <span class="field-tag f-inst">Instructions</span>
+          <span class="field-tag f-inst">Instructions §0</span>
           <span class="badge opt">optional</span>
         </div>
         <p class="field-note">Use for slow burn, rivals-to-lovers, or any arc where premature escalation breaks the story. Goes first in Instructions — governs everything below it.</p>
-        <div class="check-group">
+        <label class="check-group">
           <input type="checkbox" id="inc-pacing" onchange="updatePreview()">
-          <label for="inc-pacing" class="check-label">
+          <span class="check-label">
             Include pacing rules in this prompt
             <span class="check-hint">Adds slow burn / restraint rules at the top of Instructions.</span>
-          </label>
-        </div>
+          </span>
+        </label>
       </div>
     </div>
 
@@ -694,20 +678,20 @@ textarea { min-height: 80px; }
         <p class="field-note">Seeds CORE MEMORY. The model's live "where / when / what" for the whole session.</p>
         <div class="input-group">
           <label class="input-label">World / time period / location</label>
-          <textarea id="set-world" rows="3" placeholder="London, 1898. Society is divided into three tiers: the High Gentry, the Steam-Cogs, and the Menagerie..." oninput="updatePreview()"></textarea>
+          <textarea id="set-world" rows="3" placeholder="A sprawling coastal city, present day. Power runs through family names, old money, and older debts..." oninput="updatePreview()"></textarea>
         </div>
         <div class="input-group">
           <label class="input-label">Social structure, power dynamics, relevant lore</label>
-          <textarea id="set-lore" rows="3" placeholder="The High Gentry control Parliament through Quirk use..." oninput="updatePreview()"></textarea>
+          <textarea id="set-lore" rows="3" placeholder="Three factions divide the city. The old families control the institutions. The newcomers control the money. Everyone else survives on the margins..." oninput="updatePreview()"></textarea>
         </div>
         <div class="input-group">
           <label class="input-label">Tone and atmosphere</label>
-          <input type="text" id="set-tone" placeholder="Gothic noir. Fog-choked streets. Danger dressed in good manners." oninput="updatePreview()">
+          <input type="text" id="set-tone" placeholder="Neo-noir. Expensive clothes on dangerous people. Tension that never quite breaks." oninput="updatePreview()">
         </div>
         <div class="section-divider">CORE MEMORY — starting state</div>
         <div class="input-group">
           <label class="input-label">Opening date</label>
-          <input type="text" id="cm-date" placeholder="Thursday, 14 November 1898" oninput="updatePreview()">
+          <input type="text" id="cm-date" placeholder="Friday, 3 October" oninput="updatePreview()">
         </div>
         <div class="input-group">
           <label class="input-label">Opening time</label>
@@ -715,11 +699,11 @@ textarea { min-height: 80px; }
         </div>
         <div class="input-group">
           <label class="input-label">Opening location</label>
-          <input type="text" id="cm-location" placeholder="The U.A. Sanitarium, East Wing" oninput="updatePreview()">
+          <input type="text" id="cm-location" placeholder="The grand ballroom, Ashford Estate" oninput="updatePreview()">
         </div>
         <div class="input-group">
           <label class="input-label">Opening scene (one sentence)</label>
-          <input type="text" id="cm-scene" placeholder="The Irregulars have been called to an emergency briefing." oninput="updatePreview()">
+          <input type="text" id="cm-scene" placeholder="The gala is in full swing; everyone is watching everyone else." oninput="updatePreview()">
         </div>
       </div>
     </div>
@@ -736,7 +720,12 @@ textarea { min-height: 80px; }
         <div class="input-group">
           <label class="input-label">Additional constraints <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
           <span class="input-hint">Anything specific to this prompt beyond the universal rules.</span>
-          <textarea id="rp-extra" rows="3" placeholder="Never use Victorian slang anachronistically. Steam-fire is always pressurised, never a generic flame." oninput="updatePreview()"></textarea>
+          <textarea id="rp-extra" rows="3" placeholder="Keep all faction names consistent — never abbreviate. Technology is present but never central to scenes." oninput="updatePreview()"></textarea>
+        </div>
+        <div class="input-group">
+          <label class="input-label">NSFW behaviour <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
+          <span class="input-hint">Character behaviour during intimate scenes. Be specific about tone and limits. Only included in export if filled.</span>
+          <textarea id="rp-nsfw" rows="4" placeholder="Overstimulation. Multiple rounds. Soft bondage.&#10;Never uses Power during intimacy — that line is absolute.&#10;Uses statements, not questions. Direction without negotiation.&#10;Attentive without being soft. The register shifts but the control doesn't." oninput="updatePreview()"></textarea>
         </div>
       </div>
     </div>
@@ -750,12 +739,10 @@ textarea { min-height: 80px; }
           <span class="badge opt">optional</span>
         </div>
         <p class="field-note">Political map for ensemble prompts. The model reads this before individual characters.</p>
-        <div class="check-group">
+        <label class="check-group">
           <input type="checkbox" id="inc-factions" onchange="toggleFactions()">
-          <label for="inc-factions" class="check-label">
-            Include factions in this prompt
-          </label>
-        </div>
+          <span class="check-label">Include factions in this prompt</span>
+        </label>
         <div id="factions-fields" style="display:none;margin-top:.75rem">
           <div id="faction-list"></div>
           <button class="add-char-btn" onclick="addFaction()">+ Add faction</button>
@@ -786,18 +773,12 @@ textarea { min-height: 80px; }
           <span class="badge vis">visible</span>
         </div>
         <div class="tracker-note">Displayed every response. Values held in-context by the model — no backend. Resets when chat ends.</div>
-        <!-- source: _addons/trackers/affection.md -->
         <label class="check-group"><input type="checkbox" id="t-aff" onchange="updatePreview()"><span class="check-label">❤️ Affection / relationship meter<span class="check-hint">Numeric bar. Milestone events log to EVENT MEMORY.</span></span></label>
-        <!-- source: _addons/trackers/suspicion.md -->
         <label class="check-group"><input type="checkbox" id="t-sus" onchange="updatePreview()"><span class="check-label">🔍 Suspicion / trust meter<span class="check-hint">Inconsistencies logged to EVENT MEMORY for soft recall.</span></span></label>
-        <!-- source: _addons/trackers/tension.md -->
         <label class="check-group"><input type="checkbox" id="t-ten" onchange="updatePreview()"><span class="check-label">⚡ Tension meter<span class="check-hint">Unresolved tension carries forward across scene breaks.</span></span></label>
-        <!-- source: _addons/trackers/resource.md -->
         <label class="check-group"><input type="checkbox" id="t-res" onchange="updatePreview()"><span class="check-label">💰 Resource / currency tracker<span class="check-hint">Items consumed on use. Good for heist, RPG, survival.</span></span></label>
-        <!-- source: _addons/trackers/time-countdown.md -->
-        <label class="check-group"><input type="checkbox" id="t-time" onchange="updatePreview()"><span class="check-label">🕐 Time / countdown tracker<span class="check-hint">Pairs with time skip engine. Countdown events log to EVENT MEMORY.</span></span></label>
-        <!-- source: _addons/trackers/time-date-location.md -->
-        <label class="check-group"><input type="checkbox" id="t-tdl" onchange="updatePreview()"><span class="check-label">📅 Time / date / location display<span class="check-hint">Displays at the top of every response. 12-hour format. Updates on every time or location change.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-time" onchange="updatePreview()"><span class="check-label">🕐 Time / countdown tracker<span class="check-hint">Time + location + optional countdown. Pairs with time skip engine.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-tdl" onchange="updatePreview()"><span class="check-label">📅 Time / date / location display<span class="check-hint">Displays at top of every response. 12-hour format. Updates on every time or location change.</span></span></label>
       </div>
     </div>
 
@@ -810,13 +791,9 @@ textarea { min-height: 80px; }
           <span class="badge hid">hidden</span>
         </div>
         <div class="tracker-note">Never displayed. Govern behaviour through threshold rules only. Values held in-context.</div>
-        <!-- source: _addons/trackers/intrigue-hidden.md -->
         <label class="check-group"><input type="checkbox" id="t-int" onchange="updatePreview()"><span class="check-label">🧠 Hidden intrigue tracker<span class="check-hint">How intriguing the character finds {{user}}. Surfaces through dialogue texture only.</span></span></label>
-        <!-- source: _addons/trackers/rivalry-jealousy-hidden.md -->
         <label class="check-group"><input type="checkbox" id="t-riv" onchange="updatePreview()"><span class="check-label">😤 Hidden rivalry / jealousy tracker<span class="check-hint">Multi-character triangular dynamics. Jealousy decays; memory of events does not.</span></span></label>
-        <!-- source: _addons/trackers/guard-hidden.md -->
         <label class="check-group"><input type="checkbox" id="t-guard" onchange="updatePreview()"><span class="check-label">🛡️ Hidden guard / vulnerability tracker<span class="check-hint">Emotional availability. Drop-moments logged to EVENT MEMORY.</span></span></label>
-        <!-- source: _addons/trackers/danger-hidden.md -->
         <label class="check-group"><input type="checkbox" id="t-danger" onchange="updatePreview()"><span class="check-label">⚠️ Hidden danger / threat tracker<span class="check-hint">Scene stakes and pacing. Consequences persist until resolved in-scene.</span></span></label>
       </div>
     </div>
@@ -830,7 +807,6 @@ textarea { min-height: 80px; }
           <span class="badge hyb">hybrid</span>
         </div>
         <div class="tracker-note">Tracked silently. Stage label surfaces once on change, then returns to invisible tracking.</div>
-        <!-- source: _addons/trackers/relationship-stage-hybrid.md -->
         <label class="check-group"><input type="checkbox" id="t-stage" onchange="updatePreview()"><span class="check-label">🔓 Relationship stage tracker<span class="check-hint">1 Stranger → 5 Entangled. Displays once on change. Never regresses without in-scene cause.</span></span></label>
       </div>
     </div>
@@ -843,9 +819,8 @@ textarea { min-height: 80px; }
           <span class="field-tag f-inst">Instructions §7</span>
           <span class="badge req">required</span>
         </div>
-        <!-- source: _addons/memory-layer.md -->
-        <p class="field-note">The Persistent Memory Add-On. Always included. Governs CORE MEMORY, CHARACTER STATE, and EVENT MEMORY. EVENT MEMORY starts empty and builds in-context for this session only.</p>
-        <div style="background:var(--paper-2);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem;font-size:12px;color:var(--ink-2);line-height:1.7;font-family:var(--mono);">Always included — no configuration needed.</div>
+        <p class="field-note">The Persistent Memory Add-On. Governs CORE MEMORY, CHARACTER STATE, and EVENT MEMORY. EVENT MEMORY starts empty and builds in-context for this session only.</p>
+        <div class="always-on-notice">Always included in every export — no configuration needed.</div>
       </div>
     </div>
 
@@ -855,17 +830,10 @@ textarea { min-height: 80px; }
         <div class="field-header">
           <span class="field-label">Time Skip Engine</span>
           <span class="field-tag f-inst">Instructions §8</span>
-          <span class="badge add">add-on</span>
+          <span class="badge req">required</span>
         </div>
-        <!-- source: _addons/time-skip.md -->
         <p class="field-note">Handles pacing and time progression. Updates CORE MEMORY and CHARACTER STATE on trigger. Works best alongside the Time / date / location display tracker.</p>
-        <label class="check-group">
-          <input type="checkbox" id="inc-timeskip" onchange="updatePreview()">
-          <label for="inc-timeskip" class="check-label">
-            Include time skip engine
-            <span class="check-hint">Adds auto time-skip triggers and rules after the memory block.</span>
-          </label>
-        </label>
+        <div class="always-on-notice">Always included in every export — no configuration needed.</div>
       </div>
     </div>
 
@@ -923,15 +891,43 @@ textarea { min-height: 80px; }
 </div>
 
 <script>
-// ── NAV ──────────────────────────────────────────────────
-function showPanel(id) {
+function showPanel(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
-  event.currentTarget.classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'export') buildAll();
 }
 
-// ── TAGS ─────────────────────────────────────────────────
+const DELIMITERS = [
+  { symbol: '✦', label: '✦' },
+  { symbol: '·', label: '·' },
+  { symbol: '♡', label: '♡' },
+  { symbol: '★', label: '★' },
+  { symbol: '✿', label: '✿' },
+  { symbol: '—', label: '—' },
+  { symbol: '|', label: '|' },
+];
+let selectedDelim = '✦';
+
+function initDelimPicker() {
+  const container = document.getElementById('delim-picker');
+  DELIMITERS.forEach(d => {
+    const chip = document.createElement('span');
+    chip.className = 'delim-chip' + (d.symbol === selectedDelim ? ' selected' : '');
+    chip.textContent = d.label;
+    chip.title = d.symbol;
+    chip.onclick = () => {
+      selectedDelim = d.symbol;
+      document.querySelectorAll('.delim-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      updateTagPreview();
+      updatePreview();
+    };
+    container.appendChild(chip);
+  });
+}
+
 const TAG_DATA = {
   dynamic: [
     'ʀɪᴠᴀʟʀʏ','ꜰʀɪᴇɴᴅꜱʜɪᴘ','ᴇɴᴇᴍɪᴇꜱ ᴛᴏ ʟᴏᴠᴇʀꜱ','ᴘʀᴏᴛᴇᴄᴛɪᴠᴇ','ᴅᴏᴍɪɴᴀɴᴛ',
@@ -951,12 +947,12 @@ const TAG_DATA = {
   ],
   cast: [
     'ᴇɴꜱᴇᴍʙʟᴇ ᴄᴀꜱᴛ','ᴍᴜʟᴛɪ ʀᴏᴜᴛᴇ','ᴏᴄ','ꜰᴀɴ-ᴍᴀᴅᴇ','ᴀɴʏᴘᴏᴠ',
-    'ꜰᴇᴍᴀʟᴇ ᴘᴏᴠ','ᴍᴀʟᴇ ᴘᴏᴠ','ᴡʟᴡ','ʟɢʙᴛQ+','ᴍᴜʟᴛɪᴘʟᴇ',
+    'ꜰᴇᴍᴀʟᴇ ᴘᴏᴠ','ᴍᴀʟᴇ ᴘᴏᴠ','ʟɢʙᴛQ+','ᴍᴜʟᴛɪᴘʟᴇ',
     'ꜰɪᴄᴛɪᴏɴᴀʟ','ᴄᴇʟᴇʙʀɪᴛʏ'
   ],
   plot: [
     'ᴘᴏʟɪᴛɪᴄꜱ','ʀᴇᴠᴇɴɢᴇ','ꜱᴜʀᴠɪᴠᴀʟ','ʜᴇɪꜱᴛ','ꜰᴀᴍᴇ','ᴠɪᴏʟᴇɴᴄᴇ',
-    'ᴛʀᴀᴜᴍᴀ','ᴀᴄᴛɪᴏɴ','ᴄʀɪᴍᴇ','ʜᴏʀʀᴏʀ','ᴍʟᴍ','ᴏᴍᴇɢᴀᴠᴇʀꜱᴇ',
+    'ᴛʀᴀᴜᴍᴀ','ᴀᴄᴛɪᴏɴ','ᴄʀɪᴍᴇ','ʜᴏʀʀᴏʀ','ᴍʟᴍ','ᴡʟᴡ','ᴏᴍᴇɢᴀᴠᴇʀꜱᴇ',
     'ᴅᴇᴍᴏɴ','ᴠᴀᴍᴘɪʀᴇ','ᴍᴏɴꜱᴛᴇʀ','ɴᴏɴ-ʜᴜᴍᴀɴ','ꜰᴜʀʀʏ','ᴍᴜꜱᴄʟᴇ',
     'ꜰᴇᴍʙᴏʏ','ꜰᴜᴛᴀɴᴀʀɪ','ʙᴅꜱᴍ'
   ]
@@ -991,15 +987,15 @@ function toggleTag(chip, tag) {
 
 function updateTagPreview() {
   const tags = [...selectedTags];
+  const d = selectedDelim;
   const preview = document.getElementById('tag-preview');
   if (tags.length === 0) {
     preview.textContent = '[select tags above]';
   } else {
-    preview.textContent = '[✦ ' + tags.join(' ✦ ') + ']';
+    preview.textContent = '[' + d + ' ' + tags.join(' ' + d + ' ') + ']';
   }
 }
 
-// ── CHARACTERS ───────────────────────────────────────────
 let charCount = 0;
 function addCharacter() {
   charCount++;
@@ -1016,6 +1012,10 @@ function addCharacter() {
     <div class="input-group">
       <label class="input-label">Name</label>
       <input type="text" id="${id}-name" placeholder="Character name" oninput="updateCharDisplay('${id}');updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Age <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
+      <input type="text" id="${id}-age" placeholder="e.g. 28, or mid-thirties" oninput="updatePreview()">
     </div>
     <div class="input-group">
       <label class="input-label">Appearance</label>
@@ -1038,12 +1038,20 @@ function addCharacter() {
       <input type="text" id="${id}-motivation" placeholder="What they actually want" oninput="updatePreview()">
     </div>
     <div class="input-group">
+      <label class="input-label">Operational context <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
+      <input type="text" id="${id}-opctx" placeholder="Role, job, specialisation — e.g. field medic, intelligence handler" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
       <label class="input-label">Relationships</label>
       <input type="text" id="${id}-relationships" placeholder="To {{user}} and to other characters" oninput="updatePreview()">
     </div>
     <div class="input-group">
       <label class="input-label">Dialogue texture</label>
       <input type="text" id="${id}-dialogue" placeholder='"Example line." / "Example line." / "Example line."' oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Relationship to intimacy <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
+      <input type="text" id="${id}-intimacy" placeholder="Behaviour during intimate scenes — tone, limits, what shifts" oninput="updatePreview()">
     </div>
     <div class="section-divider">CHARACTER STATE — starting</div>
     <div class="input-group">
@@ -1072,7 +1080,6 @@ function removeChar(id) {
   updatePreview();
 }
 
-// ── FACTIONS ─────────────────────────────────────────────
 let factionCount = 0;
 function toggleFactions() {
   const show = document.getElementById('inc-factions').checked;
@@ -1093,7 +1100,7 @@ function addFaction() {
     </div>
     <div class="input-group">
       <label class="input-label">Faction name</label>
-      <input type="text" id="${id}-name" placeholder="The Gojo Clan" oninput="updatePreview()">
+      <input type="text" id="${id}-name" placeholder="The Outcasts" oninput="updatePreview()">
     </div>
     <div class="input-group">
       <label class="input-label">Role</label>
@@ -1110,11 +1117,6 @@ function addFaction() {
   `;
   document.getElementById('faction-list').appendChild(div);
 }
-
-// ── CONTENT BLOCKS ───────────────────────────────────────
-// These strings are sourced verbatim from addon files.
-// To update: edit the source file and rebuild the HTML.
-// Do NOT edit these strings directly in the HTML.
 
 const UNIVERSAL = `UNIVERSAL RULES — APPLY TO EVERY RESPONSE
 
@@ -1164,7 +1166,6 @@ rules apply throughout.
 Never: break character, reference the prompt or its mechanics,
 summarise past events as a list, or use out-of-character commentary.`;
 
-// source: _addons/memory-layer.md
 const MEMORY = `PERSISTENT MEMORY SYSTEM
 
 Hold an internal, continuously updated memory of the story.
@@ -1220,7 +1221,6 @@ Narrative consistency over perfection.
 EVENT MEMORY LOG:
 [Empty — log key events, promises, and turning points as they occur]`;
 
-// source: _addons/time-skip.md
 const TIMESKIP = `AUTO TIME-SKIP ENGINE
 
 Time may skip forward when appropriate for pacing.
@@ -1247,8 +1247,6 @@ Constraints:
 - Keep skips proportional: minutes → hours → next day`;
 
 const TRACKERS = {
-
-  // source: _addons/trackers/affection.md
   aff: `[AFFECTION TRACKER — VISIBLE]
 Display every response:
 ❤️ Affection: [##########] 0/100
@@ -1265,7 +1263,6 @@ Memory rules:
 - Never narrate the number — show it through behaviour
 - On decrease: carry emotional coolness forward; do not reset`,
 
-  // source: _addons/trackers/suspicion.md
   sus: `[SUSPICION TRACKER — VISIBLE]
 Display every response:
 🔍 Suspicion: [####------] 40/100
@@ -1281,7 +1278,6 @@ Memory rules:
 - Trust once broken does not reset without in-scene cause
 - Anchor via: watchful pauses, clipped tone, measured responses`,
 
-  // source: _addons/trackers/tension.md
   ten: `[TENSION TRACKER — VISIBLE]
 Display every response:
 ⚡ Tension: [#######---] 70/100
@@ -1298,7 +1294,6 @@ Memory rules:
 - Soft recall: "The same tension from earlier still lingers."
 - At 90+: force escalation or rupture — no idle beats`,
 
-  // source: _addons/trackers/resource.md
   res: `[RESOURCE TRACKER — VISIBLE]
 Display every response:
 💰 Funds: [starting amount]
@@ -1315,7 +1310,6 @@ Memory rules:
   e.g. "He reaches for it — then remembers it's gone."
 - Critical resource loss carries into scene mood`,
 
-  // source: _addons/trackers/time-countdown.md
   time: `[TIME TRACKER — VISIBLE]
 Display every response:
 🕐 Time: [time] — [day, date]
@@ -1330,7 +1324,6 @@ Memory rules:
 - Soft recall: "The city is quieter now — must be past midnight."
 - Countdown events log in EVENT MEMORY; urgency builds as they near`,
 
-  // source: _addons/trackers/time-date-location.md
   tdl: `[TIME / DATE / LOCATION TRACKER — VISIBLE]
 Display at the top of every response.
 Format exactly as follows:
@@ -1355,7 +1348,6 @@ Memory rules:
 - Soft recall: "It's nearly midnight now — the streets are quieter."
 - Pairs with the time-skip engine: skips should update this display`,
 
-  // source: _addons/trackers/intrigue-hidden.md
   int: `[INTRIGUE TRACKER — HIDDEN]
 Never displayed. Governs behaviour only.
 Track internally: 0–100 (start: 30)
@@ -1378,7 +1370,6 @@ Memory rules:
 - Soft recall: "Something you said earlier is still with him."
 - Value carries forward; does not reset between scenes`,
 
-  // source: _addons/trackers/rivalry-jealousy-hidden.md
   riv: `[RIVALRY / JEALOUSY TRACKER — HIDDEN]
 Never displayed. Governs multi-character dynamics.
 
@@ -1405,7 +1396,6 @@ Memory rules:
 - Jealousy decays; the memory of the event does not
 - Do not surface all rivalries simultaneously`,
 
-  // source: _addons/trackers/guard-hidden.md
   guard: `[GUARD TRACKER — HIDDEN]
 Never displayed. Governs emotional availability.
 Track internally: 0–100 (start: 80)
@@ -1428,7 +1418,6 @@ Memory rules:
 - Anchor: the topic avoided, the almost-said thing
 - Soft recall: "He said more than he meant to, earlier."`,
 
-  // source: _addons/trackers/danger-hidden.md
   danger: `[DANGER TRACKER — HIDDEN]
 Never displayed. Governs stakes and pacing.
 Track internally: 0–100 (start: 20)
@@ -1451,7 +1440,6 @@ Memory rules:
 - Soft recall: "The room felt different after what happened."
 - Danger that was real stays real until resolved in-scene`,
 
-  // source: _addons/trackers/relationship-stage-hybrid.md
   stage: `[RELATIONSHIP STAGE — HYBRID]
 Track internally. Display label only when stage changes.
 
@@ -1477,18 +1465,18 @@ Memory rules:
 - Between notifications: show stage through behaviour only`
 };
 
-// ── BUILD ─────────────────────────────────────────────────
 function g(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
 function checked(id) { const el = document.getElementById(id); return el ? el.checked : false; }
 
-function buildName() {
-  return g('f-name') || '[Chatbot Title]';
-}
+function buildName() { return g('f-name') || '[Chatbot Title]'; }
 
 function buildDesc() {
   const lines = [g('desc-hook1'), g('desc-hook2'), g('desc-hook3')].filter(Boolean);
   const tags = [...selectedTags];
-  const tagLine = tags.length ? '\n[✦ ' + tags.join(' ✦ ') + ']' : '\n[✦ ᴛᴀɢ ✦ ᴛᴀɢ ✦ ᴛᴀɢ]';
+  const d = selectedDelim;
+  const tagLine = tags.length
+    ? '\n[' + d + ' ' + tags.join(' ' + d + ' ') + ']'
+    : '\n[' + d + ' ᴛᴀɢ ' + d + ' ᴛᴀɢ ' + d + ' ᴛᴀɢ]';
   return lines.join('\n') + tagLine;
 }
 
@@ -1508,14 +1496,9 @@ function buildOpening() {
 
 function buildInstructions() {
   const sections = [];
-
-  // Universal (always)
   sections.push(UNIVERSAL);
-
-  // Pacing (optional)
   if (checked('inc-pacing')) sections.push(PACING);
 
-  // Setting
   const settingParts = [];
   if (g('set-world')) settingParts.push(g('set-world'));
   if (g('set-lore')) settingParts.push(g('set-lore'));
@@ -1525,17 +1508,16 @@ function buildInstructions() {
   if (g('cm-time')) cm.push('- Time: ' + g('cm-time'));
   if (g('cm-location')) cm.push('- Location: ' + g('cm-location'));
   if (g('cm-scene')) cm.push('- Scene: ' + g('cm-scene'));
-  const settingBlock = 'SETTING\n\n' + (settingParts.join('\n\n') || '[World / time period / location]') +
-    '\n\nCORE MEMORY — STARTING STATE:\n' + (cm.length ? cm.join('\n') : '- [Fill in starting state]');
-  sections.push(settingBlock);
+  sections.push('SETTING\n\n' + (settingParts.join('\n\n') || '[World / time period / location]') +
+    '\n\nCORE MEMORY — STARTING STATE:\n' + (cm.length ? cm.join('\n') : '- [Fill in starting state]'));
 
-  // Roleplay rules
   let rpBlock = ROLEPLAY_BASE;
   const rpExtra = g('rp-extra');
   if (rpExtra) rpBlock += '\n\nAdditional rules:\n' + rpExtra;
+  const rpNsfw = g('rp-nsfw');
+  if (rpNsfw) rpBlock += '\n\nNSFW BEHAVIOUR:\n' + rpNsfw;
   sections.push(rpBlock);
 
-  // Factions
   if (checked('inc-factions')) {
     const fBlocks = [];
     document.querySelectorAll('[id^="faction-"][id$="-name"]').forEach(el => {
@@ -1547,23 +1529,26 @@ function buildInstructions() {
     if (fBlocks.length) sections.push('FACTIONS\n\n' + fBlocks.join('\n\n'));
   }
 
-  // Characters
   const charBlocks = [];
   document.querySelectorAll('[id^="char-"][id$="-name"]').forEach(el => {
     const cid = el.id.replace('-name','');
     const n = el.value.trim();
     if (!n) return;
-    const block = `[${n}]
-
-Appearance: ${g(cid+'-appearance')||'[Appearance]'}
+    const age = g(cid+'-age');
+    const opctx = g(cid+'-opctx');
+    const intimacy = g(cid+'-intimacy');
+    let block = `[${n}]\n\n`;
+    if (age) block += `Age: ${age}\n`;
+    block += `Appearance: ${g(cid+'-appearance')||'[Appearance]'}
 Personality: ${g(cid+'-personality')||'[Personality]'}
 Voice: ${g(cid+'-voice')||'[Voice]'}
 Surface goal: ${g(cid+'-goal')||'[Surface goal]'}
-Hidden motivation: ${g(cid+'-motivation')||'[Hidden motivation]'}
-Relationships: ${g(cid+'-relationships')||'[Relationships]'}
-Dialogue texture: ${g(cid+'-dialogue')||'["Example line."]'}
-
-CHARACTER STATE — STARTING:
+Hidden motivation: ${g(cid+'-motivation')||'[Hidden motivation]'}`;
+    if (opctx) block += `\nOperational context: ${opctx}`;
+    block += `\nRelationships: ${g(cid+'-relationships')||'[Relationships]'}
+Dialogue texture: ${g(cid+'-dialogue')||'["Example line."]'}`;
+    if (intimacy) block += `\nRelationship to intimacy: ${intimacy}`;
+    block += `\n\nCHARACTER STATE — STARTING:
 - Outfit: ${g(cid+'-outfit')||'[Outfit]'}
 - Condition: ${g(cid+'-condition')||'[Condition]'}
 - Emotional baseline: ${g(cid+'-emotion')||'[Emotional baseline]'}`;
@@ -1571,16 +1556,12 @@ CHARACTER STATE — STARTING:
   });
   if (charBlocks.length) sections.push(charBlocks.join('\n\n---\n\n'));
 
-  // Trackers — ordered: visible first, hidden, hybrid
   const trackerKeys = ['aff','sus','ten','res','time','tdl','int','riv','guard','danger','stage'];
   const activeTrackers = trackerKeys.filter(k => checked('t-'+k)).map(k => TRACKERS[k]);
   if (activeTrackers.length) sections.push(activeTrackers.join('\n\n---\n\n'));
 
-  // Memory (always) — source: _addons/memory-layer.md
   sections.push(MEMORY);
-
-  // Time skip (optional) — source: _addons/time-skip.md
-  if (checked('inc-timeskip')) sections.push(TIMESKIP);
+  sections.push(TIMESKIP);
 
   return sections.join('\n\n---\n\n');
 }
@@ -1593,21 +1574,14 @@ function buildAll() {
 }
 
 function updatePreview() {
-  if (document.getElementById('panel-export').classList.contains('active')) {
-    buildAll();
-  }
+  if (document.getElementById('panel-export').classList.contains('active')) buildAll();
 }
 
-// ── EXPORT ────────────────────────────────────────────────
 function buildAndExport() {
   buildAll();
   const name = buildName();
-  const desc = buildDesc();
-  const open = buildOpening();
-  const inst = buildInstructions();
-
   const txt = `TIPSY PROMPT EXPORT
-Generated by Tipsy Prompt Builder v1.1
+Generated by Tipsy Prompt Builder v1.2
 ${'─'.repeat(60)}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1622,14 +1596,14 @@ FIELD 2 — DESCRIPTION
 Paste into Tipsy → Description field
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-${desc}
+${buildDesc()}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 FIELD 3 — OPENING
 Paste into Tipsy → Opening field
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-${open}
+${buildOpening()}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 FIELD 4 — INSTRUCTIONS
@@ -1637,9 +1611,8 @@ Paste into Tipsy → Instructions field
 (Model only — not shown to users)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-${inst}
+${buildInstructions()}
 `;
-
   const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1660,7 +1633,7 @@ function copyField(id, btn) {
   });
 }
 
-// ── INIT ──────────────────────────────────────────────────
+initDelimPicker();
 initTags();
 addCharacter();
 </script>

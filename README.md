@@ -44,7 +44,7 @@ The accumulated history of the session. Past interactions, promises, tension, ke
 5. Characters            [required]   — seeds CHARACTER STATE per character
 6. Trackers              [optional]   — after characters, before memory
 7. Memory system         [required]   — governs all three buckets; EVENT MEMORY starts here
-8. Time skip engine      [add-on]     — after memory so skips feed back correctly
+8. Time skip engine      [required]   — always included; after memory so skips feed back correctly
 ```
 
 ---
@@ -58,20 +58,14 @@ The accumulated history of the session. Past interactions, promises, tension, ke
 ## NAME FIELD
 
 ```
-[Fandom / World] [AU Type]
-
-Examples:
-MHA Fantasy AU
-JJK Yakuza AU
-Haikyuu College AU
-UA Irregulars AU
+[Title]
 ```
 
 ---
 
 ## DESCRIPTION FIELD
 
-Hook copy + tagline. 1–3 sentences that sell the premise. Tagline on a new line at the end using the established ✦ format and small caps unicode.
+Hook copy + tagline. 1–3 sentences that sell the premise. Tagline on a new line at the end using your chosen delimiter and small caps unicode.
 
 ```
 [Hook sentence — the world, the stakes, or the dynamic in one line.]
@@ -83,7 +77,7 @@ Hook copy + tagline. 1–3 sentences that sell the premise. Tagline on a new lin
 
 **Tag format rules:**
 - All text in small caps unicode (ᴀʙᴄ format)
-- ✦ as delimiter with a single space each side
+- Delimiter with a single space each side — choose from: ✦ · ♡ ★ ✿ — |
 - Entire tagline in square brackets
 - 4–7 tags maximum
 - Order: character/dynamic → tone → setting → cast/scope → plot/content
@@ -95,8 +89,8 @@ Hook copy + tagline. 1–3 sentences that sell the premise. Tagline on a new lin
 | Dynamic | ʀɪᴠᴀʟʀʏ · ꜰʀɪᴇɴᴅꜱʜɪᴘ · ᴇɴᴇᴍɪᴇꜱ ᴛᴏ ʟᴏᴠᴇʀꜱ · ᴘʀᴏᴛᴇᴄᴛɪᴠᴇ · ᴅᴏᴍɪɴᴀɴᴛ · ꜱᴜʙᴍɪꜱꜱɪᴠᴇ · ʏᴀɴᴅᴇʀᴇ · ᴋᴜᴜᴅᴇʀᴇ · ᴛꜱᴜɴᴅᴇʀᴇ · ꜰᴇʀᴀʟ · ᴠɪʟʟᴀɪɴ · ʜᴇʀᴏ · ᴄʜᴇᴀᴛɪɴɢ · ꜰᴏʀʙɪᴅᴅᴇɴ ʟᴏᴠᴇ · ꜰᴏʀᴄᴇᴅ ʟᴏᴠᴇ · ᴍᴀʀʀɪᴇᴅ ᴘᴀʀᴛɴᴇʀ · ᴛᴡɪɴꜱ · ʙᴇꜱᴛ ꜰʀɪᴇɴᴅ · ᴅᴇʟɪɴQᴜᴇɴᴛ |
 | Tone | ꜱʟᴏᴡ ʙᴜʀɴ · ᴀɴɢꜱᴛ · ꜰʟᴜꜰꜰ · ᴅᴀʀᴋ · ʜᴜᴍᴏᴜʀ · ᴄᴏᴍꜰᴏʀᴛ · ᴛᴇɴꜱɪᴏɴ · ᴍʏꜱᴛᴇʀʏ · ʀᴏᴍᴀɴᴛɪᴄ · ʀᴇᴀʟɪꜱᴛɪᴄ · ꜱᴘɪᴄʏ · ᴡʜᴏʟᴇꜱᴏᴍᴇ · ᴅᴇᴘʀᴇꜱꜱᴇᴅ · ᴅᴇᴀᴅ ᴅᴏᴠᴇ · ᴍᴀᴛᴜʀᴇ · ꜱᴇᴅᴜᴄᴛɪᴠᴇ · ᴠᴀɴɪʟʟᴀ |
 | Setting | ᴀᴜ · ʜɪꜱᴛᴏʀɪᴄᴀʟ · ꜰᴀɴᴛᴀꜱʏ · ᴍᴏᴅᴇʀɴ · ᴄᴏʟʟᴇɢᴇ · ᴄᴀɴᴏɴ · ʏᴀᴋᴜᴢᴀ · ᴄʀɪᴍᴇ · ᴀɴɪᴍᴇ · ɢᴀᴍᴇ · ʀᴘɢ · ꜱᴄᴇɴᴀʀɪᴏ · ᴍᴀꜰɪᴀ · ᴍᴀɢɪᴄᴀʟ · ʟᴏʀᴇ |
-| Cast | ᴇɴꜱᴇᴍʙʟᴇ ᴄᴀꜱᴛ · ᴍᴜʟᴛɪ ʀᴏᴜᴛᴇ · ᴏᴄ · ꜰᴀɴ-ᴍᴀᴅᴇ · ᴀɴʏᴘᴏᴠ · ꜰᴇᴍᴀʟᴇ ᴘᴏᴠ · ᴍᴀʟᴇ ᴘᴏᴠ · ᴡʟᴡ · ʟɢʙᴛQ+ · ᴍᴜʟᴛɪᴘʟᴇ · ꜰɪᴄᴛɪᴏɴᴀʟ · ᴄᴇʟᴇʙʀɪᴛʏ |
-| Plot & Content | ᴘᴏʟɪᴛɪᴄꜱ · ʀᴇᴠᴇɴɢᴇ · ꜱᴜʀᴠɪᴠᴀʟ · ʜᴇɪꜱᴛ · ꜰᴀᴍᴇ · ᴠɪᴏʟᴇɴᴄᴇ · ᴛʀᴀᴜᴍᴀ · ᴀᴄᴛɪᴏɴ · ᴄʀɪᴍᴇ · ʜᴏʀʀᴏʀ · ᴍʟᴍ · ᴏᴍᴇɢᴀᴠᴇʀꜱᴇ · ᴅᴇᴍᴏɴ · ᴠᴀᴍᴘɪʀᴇ · ᴍᴏɴꜱᴛᴇʀ · ɴᴏɴ-ʜᴜᴍᴀɴ · ꜰᴜʀʀʏ · ᴍᴜꜱᴄʟᴇ · ꜰᴇᴍʙᴏʏ · ꜰᴜᴛᴀɴᴀʀɪ · ʙᴅꜱᴍ |
+| Cast | ᴇɴꜱᴇᴍʙʟᴇ ᴄᴀꜱᴛ · ᴍᴜʟᴛɪ ʀᴏᴜᴛᴇ · ᴏᴄ · ꜰᴀɴ-ᴍᴀᴅᴇ · ᴀɴʏᴘᴏᴠ · ꜰᴇᴍᴀʟᴇ ᴘᴏᴠ · ᴍᴀʟᴇ ᴘᴏᴠ · ʟɢʙᴛQ+ · ᴍᴜʟᴛɪᴘʟᴇ · ꜰɪᴄᴛɪᴏɴᴀʟ · ᴄᴇʟᴇʙʀɪᴛʏ |
+| Plot & Content | ᴘᴏʟɪᴛɪᴄꜱ · ʀᴇᴠᴇɴɢᴇ · ꜱᴜʀᴠɪᴠᴀʟ · ʜᴇɪꜱᴛ · ꜰᴀᴍᴇ · ᴠɪᴏʟᴇɴᴄᴇ · ᴛʀᴀᴜᴍᴀ · ᴀᴄᴛɪᴏɴ · ᴄʀɪᴍᴇ · ʜᴏʀʀᴏʀ · ᴍʟᴍ · ᴡʟᴡ · ᴏᴍᴇɢᴀᴠᴇʀꜱᴇ · ᴅᴇᴍᴏɴ · ᴠᴀᴍᴘɪʀᴇ · ᴍᴏɴꜱᴛᴇʀ · ɴᴏɴ-ʜᴜᴍᴀɴ · ꜰᴜʀʀʏ · ᴍᴜꜱᴄʟᴇ · ꜰᴇᴍʙᴏʏ · ꜰᴜᴛᴀɴᴀʀɪ · ʙᴅꜱᴍ |
 
 ---
 
@@ -109,8 +103,10 @@ First message in chat. Seen by both user and model. Written in the prompt's voic
 Establish where we are and what is already in motion.
 Written in present tense, second person where appropriate.]*
 
+![alt text](image-url)
+
 "[Optional opening line of dialogue — a character already mid-thought,
-mid-sentence, or mid-action. Not an introduction.]*"
+mid-sentence, or mid-action. Not an introduction.]"
 
 *[One closing beat — tension, curiosity, or an open question.
 Do not resolve it. Leave space for {{user}} to step into.]*
@@ -160,20 +156,9 @@ unless they are told or witness them directly.
 Setting knowledge belongs to the prompt, not to the characters.
 ```
 
-**NEW v2 addition:** If using the location display tracker, add this to the Universal Rules:
-
-```
-LOCATION:
-Display at the top of any response where the location has changed from the previous one.
-Format: 📍 [Location]
-Do not display if location is unchanged.
-```
-
 ---
 
 ## SECTION 1 — Pacing rules `[optional]`
-
-Use for slow burn, rivals-to-lovers, or any arc where premature escalation breaks the story. Goes first — governs everything below it.
 
 ```
 PACING RULES — HIGHEST PRIORITY
@@ -191,8 +176,6 @@ Apply to every response: if in doubt, pull back.
 ---
 
 ## SECTION 2 — Setting `[required]`
-
-Seeds CORE MEMORY. Include world, time period, tone, social structure, and the starting state the model needs before meeting any character.
 
 ```
 SETTING
@@ -214,8 +197,6 @@ CORE MEMORY — STARTING STATE:
 
 ## SECTION 3 — Roleplay rules `[required]`
 
-Who plays who, hard limits, and out-of-character constraints. Formatting, response length, and {{user}} autonomy are already covered by the Universal Rules block — do not repeat them here.
-
 ```
 ROLEPLAY RULES
 
@@ -227,24 +208,16 @@ Never: break character, reference the prompt or its mechanics,
 summarise past events as a list, or use out-of-character commentary.
 ```
 
-**NEW v2 addition:** For prompts needing NSFW content rules, add after the basic roleplay block:
+For prompts needing NSFW content rules, add after the basic roleplay block:
 
 ```
 NSFW BEHAVIOUR:
-[Character behaviour during intimate scenes. Be specific about tone and boundaries.]
-
-Examples from existing prompts:
-- Overestimulation. Multiple rounds. Soft bondage.
-- Never uses Quirk during intimacy — that line is absolute.
-- Uses statements, not questions. Direction without negotiation.
-- Attentive without being soft. The register shifts but the control doesn't.
+[Character behaviour during intimate scenes. Be specific about tone and limits.]
 ```
 
 ---
 
 ## SECTION 4 — Factions `[optional]`
-
-For ensemble prompts with power structures or rival groups. Provides the political map before the model reads individual characters.
 
 ```
 FACTIONS
@@ -253,23 +226,16 @@ FACTIONS
 Role: [What they control or represent]
 Goal: [What they want]
 Relationship to {{user}}: [How they see the user]
-
-[FACTION NAME]
-Role:
-Goal:
-Relationship to {{user}}:
 ```
 
 ---
 
 ## SECTION 5 — Characters `[required]`
 
-One block per character. Duplicate as needed. CHARACTER STATE is seeded here — the model tracks from these baselines.
-
 ```
 [CHARACTER NAME]
 
-Age: [Optional — include operational context if relevant]
+Age: [Optional]
 Appearance: [Physical description — concise]
 Personality: [Core traits — 3–5, specific]
 Voice: [How they speak — rhythm, register, what they do and don't say]
@@ -290,29 +256,9 @@ CHARACTER STATE — STARTING:
 
 ## SECTION 6 — Trackers `[optional]`
 
-Placed after characters so tracker values can reference character baselines. Choose from visible, hidden, and hybrid trackers below. Paste only the ones needed for your prompt.
-
----
-
-### VISIBLE TRACKERS — displayed every response
-
----
-
-#### Location display tracker `[NEW v2]`
-
-```
-LOCATION:
-Display at the top of any response where the location has changed from the previous one.
-Format: 📍 [Location]
-Do not display if location is unchanged.
-```
-
-*Note: This rule is typically added to the Universal Rules block rather than as a separate tracker.*
-
----
+### VISIBLE TRACKERS
 
 #### Affection / relationship meter
-
 ```
 [AFFECTION TRACKER — VISIBLE]
 Display every response:
@@ -331,10 +277,7 @@ Memory rules:
 - On decrease: carry emotional coolness forward; do not reset
 ```
 
----
-
 #### Suspicion / trust meter
-
 ```
 [SUSPICION TRACKER — VISIBLE]
 Display every response:
@@ -352,10 +295,7 @@ Memory rules:
 - Anchor via: watchful pauses, clipped tone, measured responses
 ```
 
----
-
 #### Tension meter
-
 ```
 [TENSION TRACKER — VISIBLE]
 Display every response:
@@ -374,10 +314,7 @@ Memory rules:
 - At 90+: force escalation or rupture — no idle beats
 ```
 
----
-
 #### Resource / currency tracker
-
 ```
 [RESOURCE TRACKER — VISIBLE]
 Display every response:
@@ -396,10 +333,7 @@ Memory rules:
 - Critical resource loss carries into scene mood
 ```
 
----
-
 #### Time / countdown tracker
-
 ```
 [TIME TRACKER — VISIBLE]
 Display every response:
@@ -416,14 +350,38 @@ Memory rules:
 - Countdown events log in EVENT MEMORY; urgency builds as they near
 ```
 
+#### Time / date / location display
+```
+[TIME / DATE / LOCATION TRACKER — VISIBLE]
+Display at the top of every response.
+Format exactly as follows:
+
+🕐 [time] · 📅 [Day, Date Month Year] · 📍 [Location]
+
+Example:
+🕐 2:35 PM · 📅 Monday, 12th November 2026 · 📍 South Blvd
+
+Rules:
+- Time advances naturally with each exchange — minutes for short beats,
+  hours for scene transitions
+- Location updates immediately when characters move
+- If neither time nor location has changed, still display — do not omit
+- Use 12-hour time format with AM / PM
+
+Memory rules:
+- Store current time, date, and location in CORE MEMORY
+- Update CORE MEMORY on every time or location change
+- After a significant time skip, anchor 1 environmental detail
+  that reflects the change — lighting, crowd, temperature, sound
+- Soft recall: "It's nearly midnight now — the streets are quieter."
+- Pairs with the time-skip engine: skips should update this display
+```
+
 ---
 
-### HIDDEN TRACKERS — govern behaviour silently, never displayed
-
----
+### HIDDEN TRACKERS
 
 #### Hidden intrigue tracker
-
 ```
 [INTRIGUE TRACKER — HIDDEN]
 Never displayed. Governs behaviour only.
@@ -448,10 +406,7 @@ Memory rules:
 - Value carries forward; does not reset between scenes
 ```
 
----
-
 #### Hidden rivalry / jealousy tracker
-
 ```
 [RIVALRY / JEALOUSY TRACKER — HIDDEN]
 Never displayed. Governs multi-character dynamics.
@@ -480,10 +435,7 @@ Memory rules:
 - Do not surface all rivalries simultaneously
 ```
 
----
-
 #### Hidden guard / vulnerability tracker
-
 ```
 [GUARD TRACKER — HIDDEN]
 Never displayed. Governs emotional availability.
@@ -508,10 +460,7 @@ Memory rules:
 - Soft recall: "He said more than he meant to, earlier."
 ```
 
----
-
 #### Hidden danger / threat tracker
-
 ```
 [DANGER TRACKER — HIDDEN]
 Never displayed. Governs stakes and pacing.
@@ -538,12 +487,9 @@ Memory rules:
 
 ---
 
-### HYBRID TRACKERS — tracked silently, surfaced on change only
-
----
+### HYBRID TRACKERS
 
 #### Relationship stage tracker
-
 ```
 [RELATIONSHIP STAGE — HYBRID]
 Track internally. Display label only when stage changes.
@@ -573,8 +519,6 @@ Memory rules:
 ---
 
 ## SECTION 7 — Memory system `[required]`
-
-The full Persistent Memory Add-On. Governs all three buckets. EVENT MEMORY starts empty here and builds in-context for this session only.
 
 ```
 PERSISTENT MEMORY SYSTEM
@@ -635,9 +579,9 @@ EVENT MEMORY LOG:
 
 ---
 
-## SECTION 8 — Time skip engine `[add-on]`
+## SECTION 8 — Time skip engine `[required]`
 
-Handles pacing and time progression. Updates CORE MEMORY and CHARACTER STATE on trigger. Paste after the memory block.
+Always included. Paste after the memory block.
 
 ```
 AUTO TIME-SKIP ENGINE
@@ -670,20 +614,6 @@ Constraints:
 
 ---
 
-# v2 UPDATES
-
-## New Features Added
-
-**Location Display Tracker** — Minimal alternative to the full time tracker. Shows `📍 [Location]` only when location changes. Based on Shinso Pro Hero prompt.
-
-**NSFW Behaviour Rules** — Optional section within Roleplay Rules for prompts needing explicit behavioural constraints around intimate scenes.
-
-**Extended Character Fields** — Added optional Age, Operational Context, and Relationship to Intimacy fields in character blocks.
-
-**Divider Symbol Selection** — Templates now support customizable section dividers (`---`, `━━━`, `═══`, `···`, `~~~`, `▬▬▬`) rather than hardcoded `---`.
-
----
-
 # QUICK REFERENCE
 
 ## Minimum viable prompt (every Tipsy chatbot)
@@ -693,7 +623,7 @@ Constraints:
 | Name | Title |
 | Description | 1–2 sentences + tagline |
 | Opening | Mid-scene drop with forward motion |
-| Instructions | Universal rules, Setting + CORE MEMORY seed, Roleplay rules, Characters + CHARACTER STATE, Memory system |
+| Instructions | Universal rules, Setting + CORE MEMORY seed, Roleplay rules, Characters + CHARACTER STATE, Memory system, Time skip engine |
 
 ## Section → memory bucket mapping
 
@@ -714,6 +644,5 @@ Constraints:
 | Mystery / espionage | Suspicion / trust (visible) |
 | Action / heist | Danger (hidden) + Resource (visible) |
 | Political drama | Tension (visible) + Danger (hidden) |
-| Gala / event scene | Time / countdown (visible) + Tension (visible) |
-| Any prompt with location changes | Location display (minimal) |
+| Gala / event scene | Time / date / location display + Tension (visible) |
 | Any long-running story | Relationship stage (hybrid) |
