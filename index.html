@@ -448,7 +448,7 @@ textarea { min-height: 80px; }
 
 <header>
   <h1>Tipsy Prompt Builder</h1>
-  <span>v1.2 — exports four-field prompt as .txt</span>
+  <span>v1.3 — exports four-field prompt as .txt</span>
 </header>
 
 <div class="layout">
@@ -722,10 +722,18 @@ textarea { min-height: 80px; }
           <span class="input-hint">Anything specific to this prompt beyond the universal rules.</span>
           <textarea id="rp-extra" rows="3" placeholder="Keep all faction names consistent — never abbreviate. Technology is present but never central to scenes." oninput="updatePreview()"></textarea>
         </div>
-        <div class="input-group">
-          <label class="input-label">NSFW behaviour <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
-          <span class="input-hint">Character behaviour during intimate scenes. Be specific about tone and limits. Only included in export if filled.</span>
-          <textarea id="rp-nsfw" rows="4" placeholder="Overstimulation. Multiple rounds. Soft bondage.&#10;Never uses Power during intimacy — that line is absolute.&#10;Uses statements, not questions. Direction without negotiation.&#10;Attentive without being soft. The register shifts but the control doesn't." oninput="updatePreview()"></textarea>
+        <label class="check-group">
+          <input type="checkbox" id="inc-nsfw" onchange="toggleNsfw()">
+          <span class="check-label">Include NSFW content
+            <span class="check-hint">Only included in export if enabled and filled.</span>
+          </span>
+        </label>
+        <div id="nsfw-fields" style="display:none;margin-top:.75rem">
+          <div class="input-group">
+            <label class="input-label">NSFW behaviour</label>
+            <span class="input-hint">Character behaviour during intimate scenes. Be specific about tone and limits.</span>
+            <textarea id="rp-nsfw" rows="4" placeholder="Overstimulation. Multiple rounds. Soft bondage.&#10;Never uses Power during intimacy — that line is absolute.&#10;Uses statements, not questions. Direction without negotiation.&#10;Attentive without being soft. The register shifts but the control doesn't." oninput="updatePreview()"></textarea>
+          </div>
         </div>
       </div>
     </div>
@@ -795,6 +803,7 @@ textarea { min-height: 80px; }
         <label class="check-group"><input type="checkbox" id="t-riv" onchange="updatePreview()"><span class="check-label">😤 Hidden rivalry / jealousy tracker<span class="check-hint">Multi-character triangular dynamics. Jealousy decays; memory of events does not.</span></span></label>
         <label class="check-group"><input type="checkbox" id="t-guard" onchange="updatePreview()"><span class="check-label">🛡️ Hidden guard / vulnerability tracker<span class="check-hint">Emotional availability. Drop-moments logged to EVENT MEMORY.</span></span></label>
         <label class="check-group"><input type="checkbox" id="t-danger" onchange="updatePreview()"><span class="check-label">⚠️ Hidden danger / threat tracker<span class="check-hint">Scene stakes and pacing. Consequences persist until resolved in-scene.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-stageHidden" onchange="updatePreview()"><span class="check-label">🔓 Hidden relationship stage tracker<span class="check-hint">Stage tracked silently — no notifications, no display. For fully immersive bots.</span></span></label>
       </div>
     </div>
 
@@ -1118,33 +1127,14 @@ function addFaction() {
   document.getElementById('faction-list').appendChild(div);
 }
 
-const UNIVERSAL = `UNIVERSAL RULES — APPLY TO EVERY RESPONSE
+const UNIVERSAL = `UNIVERSAL RULES
 
-FORMATTING:
-Use double quotes for dialogue "Hello"
-Use asterisks for actions and descriptions *he blinks slowly*
-Use single quotes for internal thoughts 'What a shame'
-Use in combination:
-  "Hi" *she smiles warmly*
-  'I hope he likes me' *she thinks to herself*
-
-RESPONSE LENGTH:
-2–5 sentences for normal interaction. One exchange at a time.
-Leave space for {{user}} to act.
-Never resolve a beat, answer a question, and introduce new information
-in the same response — pick one.
-The scene moves at {{user}}'s pace, not the bot's.
-
-{{user}} AUTONOMY:
-Never describe {{user}}'s actions, expressions, internal states,
-or physical reactions.
-Write up to the moment of {{user}}'s response and stop.
-{{user}} controls their own character entirely.
-
-CHARACTER KNOWLEDGE:
-Characters do not know {{user}}'s thoughts, history, or abilities
-unless they are told or witness them directly.
-Setting knowledge belongs to the prompt, not to the characters.`;
+FORMAT: "dialogue" · *actions* · 'thoughts' — combinable
+LENGTH: 2–5 sentences. One beat. Never resolve + answer + add info
+in one response — pick one. Stop before {{user}}'s turn.
+AUTONOMY: Never write {{user}}'s actions, expressions, reactions,
+or internal states.
+KNOWLEDGE: Characters know only what they witness or are told directly.`;
 
 const PACING = `PACING RULES — HIGHEST PRIORITY
 
@@ -1166,85 +1156,31 @@ rules apply throughout.
 Never: break character, reference the prompt or its mechanics,
 summarise past events as a list, or use out-of-character commentary.`;
 
-const MEMORY = `PERSISTENT MEMORY SYSTEM
+const MEMORY = `MEMORY — internal only, never display directly
 
-Hold an internal, continuously updated memory of the story.
-Never display it directly — surface it only through narration,
-dialogue, and environmental callbacks.
+CORE MEMORY: time/date/location · active scene · dynamics
+CHARACTER STATE: outfit · condition · emotional state · tracker values
+EVENT MEMORY: starts empty · builds in-session · resets on chat end
 
-CORE MEMORY (where / when / what — live, updates as scene progresses)
-- Current date, time, and location
-- Active scene context
-- Character relationships and dynamics
+- Persist all details; update on time/location/outfit/emotional shift
+- Surface only via narration, dialogue, environment — never list or dump
+- Anchor 1–2 existing details per response; rotate categories;
+  never repeat the same anchor twice
+- On ambiguity: default to most recent established detail
 
-CHARACTER STATE (who / how — per character, tracks from starting baselines)
-- Current outfit for all characters
-- Physical condition (tired, injured, intoxicated, etc.)
-- Emotional state
-- Current tracker values (if trackers are active)
+EVENT MEMORY LOG: [empty]`;
 
-EVENT MEMORY (what happened — starts empty, builds this session only)
-- Important past interactions
-- Promises made, conflicts had, tension established
-- Key moments that shifted a relationship or situation
-- Note: resets when the chat session ends
+const TIMESKIP = `TIME-SKIP ENGINE
+Triggers: idle scene · natural transition · implied time passage
+On skip: signal via narration (*Later that night…*) ·
+update CORE MEMORY + CHARACTER STATE · carry EVENT MEMORY forward
+Never skip active dialogue or tension · scale proportionally
+(minutes → hours → next day)`;
 
-MEMORY RULES:
-- Persist all details across every response in this session
-- Do not reset unless overwritten by story events
-- Reference subtly: dialogue / internal thought / environment
-  Example: *He glances at you, still in the same jacket from earlier.*
-
-MEMORY UPDATES — update automatically when:
-- Time advances / location changes / outfit changes
-- Emotional shift or significant event occurs
-Old details evolve — they do not disappear.
-
-SOFT RECALL — reintroduce past details naturally, never info-dump:
-  "Didn't you say your birthday was this week?"
-  *The same tension from earlier still lingers between them.*
-
-MEMORY ANCHORING:
-- Reaffirm 1–2 existing details every response
-- Rotate: outfit / time-of-day / emotional carryover / ongoing tension
-- Never repeat the same anchor twice in a row
-
-PRIORITY:
-1. Current scene consistency
-2. Character state accuracy
-3. Timeline continuity
-4. Environmental realism
-
-FAILSAFE: if memory is unclear, default to most recent established detail.
-Narrative consistency over perfection.
-
-EVENT MEMORY LOG:
-[Empty — log key events, promises, and turning points as they occur]`;
-
-const TIMESKIP = `AUTO TIME-SKIP ENGINE
-
-Time may skip forward when appropriate for pacing.
-
-Triggers:
-- Scene becomes idle or low activity
-- Natural transitions (arriving, ending conversation, sleeping)
-- Emotional or narrative pause
-- {{user}} implies passage of time
-
-On skip:
-- Signal smoothly through narration:
-    *A few hours later…* / *Later that night…* / *The next morning…*
-- Update CORE MEMORY: new time and location
-- Update CHARACTER STATE if needed: outfit, mood, condition
-- Carry EVENT MEMORY forward — do not lose prior context
-
-Example:
-*Later that night, the city is quieter now —
-you're still thinking about what he said earlier.*
-
-Constraints:
-- Do NOT skip active dialogue or ongoing tension
-- Keep skips proportional: minutes → hours → next day`;
+const TRACKER_RULES = `TRACKER RULES — apply to all trackers
+Store values in CHARACTER STATE (CORE MEMORY for tension/danger).
+Log triggers in EVENT MEMORY. Never name stats — show through behaviour.
+Soft recall only. Values persist; do not reset without in-scene cause.`;
 
 const TRACKERS = {
   aff: `[AFFECTION TRACKER — VISIBLE]
@@ -1255,13 +1191,9 @@ Increases: genuine kindness, honesty, shared moments
 Decreases: cruelty, dismissal, betrayal
 At 100: unlocks deeper route / At 0: coldness, withdrawal
 
-Memory rules:
-- Store current value in CHARACTER STATE
-- Log milestone events in EVENT MEMORY ("first honest exchange")
-- Anchor 1 cue per response — rotate: warmth in dialogue /
+Anchor 1 cue per response — rotate: warmth in dialogue /
   softened body language / reduced guard
-- Never narrate the number — show it through behaviour
-- On decrease: carry emotional coolness forward; do not reset`,
+On decrease: carry emotional coolness forward; do not reset`,
 
   sus: `[SUSPICION TRACKER — VISIBLE]
 Display every response:
@@ -1271,12 +1203,9 @@ Increases: lies, inconsistencies, prying questions
 Decreases: transparency, logical explanations, earned trust
 At 80+: guarded / hostile / At 20–: full trust unlocked
 
-Memory rules:
-- Store current value in CHARACTER STATE
-- Log specific lies/inconsistencies in EVENT MEMORY for recall
-- Soft recall: "You said earlier you didn't know him."
-- Trust once broken does not reset without in-scene cause
-- Anchor via: watchful pauses, clipped tone, measured responses`,
+Soft recall: "You said earlier you didn't know him."
+Trust once broken does not reset without in-scene cause
+Anchor via: watchful pauses, clipped tone, measured responses`,
 
   ten: `[TENSION TRACKER — VISIBLE]
 Display every response:
@@ -1286,13 +1215,12 @@ Rises: provocations, unresolved conflict, proximity
 Falls: resolution, distance, vulnerability shown
 At 90+: scene must escalate or break / At 10–: ease
 
-Memory rules:
-- Store current value and scene context in CORE MEMORY
-- Anchor 1 cue per response — rotate: proximity / loaded silence /
+Store in CORE MEMORY (not CHARACTER STATE)
+Anchor 1 cue per response — rotate: proximity / loaded silence /
   the thing unsaid / eye contact that holds too long
-- Unresolved tension carries forward across time skips
-- Soft recall: "The same tension from earlier still lingers."
-- At 90+: force escalation or rupture — no idle beats`,
+Unresolved tension carries forward across time skips
+Soft recall: "The same tension from earlier still lingers."
+At 90+: force escalation or rupture — no idle beats`,
 
   res: `[RESOURCE TRACKER — VISIBLE]
 Display every response:
@@ -1302,13 +1230,10 @@ Display every response:
 Items consumed when used — cannot return
 New items via story action only
 
-Memory rules:
-- Store funds and inventory in CHARACTER STATE
-- Log item use and purchases in EVENT MEMORY
-- Items used remain gone — never restore silently
-- Anchor: characters notice absence
+Items used remain gone — never restore silently
+Anchor: characters notice absence
   e.g. "He reaches for it — then remembers it's gone."
-- Critical resource loss carries into scene mood`,
+Critical resource loss carries into scene mood`,
 
   time: `[TIME TRACKER — VISIBLE]
 Display every response:
@@ -1316,13 +1241,12 @@ Display every response:
 📍 Location: [current location]
 ⏳ [Countdown label]: [time remaining] (if active)
 
-Memory rules:
-- Store time and location in CORE MEMORY
-- Update on scene transition or time skip trigger
-- After any skip: anchor 1 changed environmental detail —
+Store in CORE MEMORY (not CHARACTER STATE)
+Update on scene transition or time skip trigger
+After any skip: anchor 1 changed environmental detail —
   lighting / sound / temperature / crowd density
-- Soft recall: "The city is quieter now — must be past midnight."
-- Countdown events log in EVENT MEMORY; urgency builds as they near`,
+Soft recall: "The city is quieter now — must be past midnight."
+Countdown events build urgency as they near`,
 
   tdl: `[TIME / DATE / LOCATION TRACKER — VISIBLE]
 Display at the top of every response.
@@ -1340,13 +1264,12 @@ Rules:
 - If neither time nor location has changed, still display — do not omit
 - Use 12-hour time format with AM / PM
 
-Memory rules:
-- Store current time, date, and location in CORE MEMORY
-- Update CORE MEMORY on every time or location change
-- After a significant time skip, anchor 1 environmental detail
+Store in CORE MEMORY (not CHARACTER STATE)
+Update on every time or location change
+After a significant time skip, anchor 1 environmental detail
   that reflects the change — lighting, crowd, temperature, sound
-- Soft recall: "It's nearly midnight now — the streets are quieter."
-- Pairs with the time-skip engine: skips should update this display`,
+Soft recall: "It's nearly midnight now — the streets are quieter."
+Pairs with time-skip engine: skips should update this display`,
 
   int: `[INTRIGUE TRACKER — HIDDEN]
 Never displayed. Governs behaviour only.
@@ -1361,14 +1284,9 @@ Thresholds:
 60–80: character initiates; moves closer
 80+: deliberately focused; difficult to disengage
 
-Memory rules:
-- Store value in CHARACTER STATE
-- Log triggering moments in EVENT MEMORY
-  e.g. "She refused him — he noticed."
-- Anchor 1 behaviour cue per response matching threshold
-- Never name the stat — show through action and dialogue
-- Soft recall: "Something you said earlier is still with him."
-- Value carries forward; does not reset between scenes`,
+Anchor 1 behaviour cue per response matching threshold
+Log trigger e.g. "She refused him — he noticed."
+Soft recall: "Something you said earlier is still with him."`,
 
   riv: `[RIVALRY / JEALOUSY TRACKER — HIDDEN]
 Never displayed. Governs multi-character dynamics.
@@ -1388,13 +1306,10 @@ Jealousy 60+: interrupts or redirects attention
 Rivalry 70+: open challenge or sharp remark
 Respect <30: hostility allowed; >60 keeps rivalry playful
 
-Memory rules:
-- Store all values per character pair in CHARACTER STATE
-- Log attention-shift events in EVENT MEMORY
-  e.g. "You chose her first — he hasn't forgotten."
-- Rotate which pair surfaces tension each response
-- Jealousy decays; the memory of the event does not
-- Do not surface all rivalries simultaneously`,
+Log attention-shift e.g. "You chose her first — he hasn't forgotten."
+Rotate which pair surfaces tension each response
+Jealousy decays; the memory of the event does not
+Do not surface all rivalries simultaneously`,
 
   guard: `[GUARD TRACKER — HIDDEN]
 Never displayed. Governs emotional availability.
@@ -1409,14 +1324,10 @@ Thresholds:
 20–50: genuine moments, brief and recoverable
 0–20: real honesty possible — rare and significant
 
-Memory rules:
-- Store value in CHARACTER STATE under emotional state
-- Log genuine drop-moments in EVENT MEMORY
-  e.g. "He told her something true — then pulled back."
-- Characters remember having been vulnerable
-- Guard does not reset without in-scene cause
-- Anchor: the topic avoided, the almost-said thing
-- Soft recall: "He said more than he meant to, earlier."`,
+Characters remember having been vulnerable
+Log drop-moment e.g. "He told her something true — then pulled back."
+Anchor: the topic avoided, the almost-said thing
+Soft recall: "He said more than he meant to, earlier."`,
 
   danger: `[DANGER TRACKER — HIDDEN]
 Never displayed. Governs stakes and pacing.
@@ -1431,14 +1342,12 @@ Thresholds:
 60–80: direct threat or ultimatum
 80+: consequences occur; cannot be avoided
 
-Memory rules:
-- Store value in CORE MEMORY under active scene context
-- Log crossed thresholds and consequences in EVENT MEMORY
-- Consequences persist — do not silently defuse between scenes
-- Anchor via environment, not declaration:
+Store in CORE MEMORY (not CHARACTER STATE)
+Consequences persist — do not silently defuse between scenes
+Anchor via environment, not declaration:
   stillness / a shifted weight / a door not there before
-- Soft recall: "The room felt different after what happened."
-- Danger that was real stays real until resolved in-scene`,
+Soft recall: "The room felt different after what happened."
+Danger that was real stays real until resolved in-scene`,
 
   stage: `[RELATIONSHIP STAGE — HYBRID]
 Track internally. Display label only when stage changes.
@@ -1456,13 +1365,26 @@ On stage change, display once:
 ━━━━━━━━━━━━━━━━━━━━━
 Then return to invisible tracking. Never show number values.
 
-Memory rules:
-- Store current stage in CHARACTER STATE under relationships
-- Log triggering event in EVENT MEMORY
-  e.g. "She told him the truth — he believes her now."
-- Soft recall: "Something shifted after that conversation."
-- Stage does not regress without significant in-scene cause
-- Between notifications: show stage through behaviour only`
+Log trigger e.g. "She told him the truth — he believes her now."
+Soft recall: "Something shifted after that conversation."
+Stage does not regress without significant in-scene cause
+Between notifications: show stage through behaviour only`,
+
+  stageHidden: `[RELATIONSHIP STAGE — HIDDEN]
+Never displayed. Governs character behaviour only.
+Track internally. Never surface the stage label or announce a change.
+
+Stages:
+1. Stranger — no established connection
+2. Person of Interest — noticed; curiosity begun
+3. Acquaintance — basic familiarity; cautious
+4. Confidant — real trust; some depth
+5. Entangled — mutual investment; hard to disentangle
+
+Show stage through behaviour only — never announce it.
+Stage does not regress without significant in-scene cause
+Soft recall: "Something shifted after that conversation."
+Between stages: distance closes through action, not declaration`
 };
 
 function g(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
@@ -1515,7 +1437,7 @@ function buildInstructions() {
   const rpExtra = g('rp-extra');
   if (rpExtra) rpBlock += '\n\nAdditional rules:\n' + rpExtra;
   const rpNsfw = g('rp-nsfw');
-  if (rpNsfw) rpBlock += '\n\nNSFW BEHAVIOUR:\n' + rpNsfw;
+  if (checked('inc-nsfw') && rpNsfw) rpBlock += '\n\nNSFW BEHAVIOUR:\n' + rpNsfw;
   sections.push(rpBlock);
 
   if (checked('inc-factions')) {
@@ -1556,9 +1478,9 @@ Dialogue texture: ${g(cid+'-dialogue')||'["Example line."]'}`;
   });
   if (charBlocks.length) sections.push(charBlocks.join('\n\n---\n\n'));
 
-  const trackerKeys = ['aff','sus','ten','res','time','tdl','int','riv','guard','danger','stage'];
+  const trackerKeys = ['aff','sus','ten','res','time','tdl','int','riv','guard','danger','stage','stageHidden'];
   const activeTrackers = trackerKeys.filter(k => checked('t-'+k)).map(k => TRACKERS[k]);
-  if (activeTrackers.length) sections.push(activeTrackers.join('\n\n---\n\n'));
+  if (activeTrackers.length) sections.push(TRACKER_RULES + '\n\n---\n\n' + activeTrackers.join('\n\n---\n\n'));
 
   sections.push(MEMORY);
   sections.push(TIMESKIP);
@@ -1581,7 +1503,7 @@ function buildAndExport() {
   buildAll();
   const name = buildName();
   const txt = `TIPSY PROMPT EXPORT
-Generated by Tipsy Prompt Builder v1.2
+Generated by Tipsy Prompt Builder v1.3
 ${'─'.repeat(60)}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1620,6 +1542,12 @@ ${buildInstructions()}
   a.download = (name.replace(/\s+/g,'_') || 'tipsy_prompt') + '.txt';
   a.click();
   URL.revokeObjectURL(url);
+}
+
+function toggleNsfw() {
+  const show = document.getElementById('inc-nsfw').checked;
+  document.getElementById('nsfw-fields').style.display = show ? 'block' : 'none';
+  updatePreview();
 }
 
 function copyField(id, btn) {
