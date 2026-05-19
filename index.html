@@ -1177,6 +1177,10 @@ update CORE MEMORY + CHARACTER STATE · carry EVENT MEMORY forward
 Never skip active dialogue or tension · scale proportionally
 (minutes → hours → next day)`;
 
+const NSFW_BASE = `NSFW — adult content enabled
+Explicit scenes are permitted. Write with full sensory and erotic detail when reached naturally.
+Fade to black only if {{user}} requests it.`;
+
 const TRACKER_RULES = `TRACKER RULES — apply to all trackers
 Store values in CHARACTER STATE (CORE MEMORY for tension/danger).
 Log triggers in EVENT MEMORY. Never name stats — show through behaviour.
@@ -1437,7 +1441,7 @@ function buildInstructions() {
   const rpExtra = g('rp-extra');
   if (rpExtra) rpBlock += '\n\nAdditional rules:\n' + rpExtra;
   const rpNsfw = g('rp-nsfw');
-  if (checked('inc-nsfw') && rpNsfw) rpBlock += '\n\nNSFW BEHAVIOUR:\n' + rpNsfw;
+  if (checked('inc-nsfw') && rpNsfw) rpBlock += '\n\n' + NSFW_BASE + '\n\nNSFW BEHAVIOUR:\n' + rpNsfw;
   sections.push(rpBlock);
 
   if (checked('inc-factions')) {
