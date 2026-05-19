@@ -804,6 +804,15 @@ textarea { min-height: 80px; }
         <label class="check-group"><input type="checkbox" id="t-guard" onchange="updatePreview()"><span class="check-label">🛡️ Hidden guard / vulnerability tracker<span class="check-hint">Emotional availability. Drop-moments logged to EVENT MEMORY.</span></span></label>
         <label class="check-group"><input type="checkbox" id="t-danger" onchange="updatePreview()"><span class="check-label">⚠️ Hidden danger / threat tracker<span class="check-hint">Scene stakes and pacing. Consequences persist until resolved in-scene.</span></span></label>
         <label class="check-group"><input type="checkbox" id="t-stageHidden" onchange="updatePreview()"><span class="check-label">🔓 Hidden relationship stage tracker<span class="check-hint">Stage tracked silently — no notifications, no display. For fully immersive bots.</span></span></label>
+
+        <div class="section-divider">Visible trackers — immersive mode</div>
+        <div class="tracker-note">Same thresholds and behavioural rules as the visible versions. Value tracked internally — never displayed. Do not combine with the visible version of the same tracker.</div>
+        <label class="check-group"><input type="checkbox" id="t-affH" onchange="updatePreview()"><span class="check-label">❤️ Affection — hidden<span class="check-hint">Warmth and distance shown through behaviour only. No meter.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-susH" onchange="updatePreview()"><span class="check-label">🔍 Suspicion — hidden<span class="check-hint">Wariness and openness govern tone only. No meter.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-tenH" onchange="updatePreview()"><span class="check-label">⚡ Tension — hidden<span class="check-hint">Escalation and rupture thresholds active. No meter.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-resH" onchange="updatePreview()"><span class="check-label">💰 Resource — hidden<span class="check-hint">Loss tracked internally. Characters notice absence through narration only.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-timeH" onchange="updatePreview()"><span class="check-label">🕐 Time / countdown — hidden<span class="check-hint">Time and countdown tracked in CORE MEMORY. Urgency surfaces through narration only.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-tdlH" onchange="updatePreview()"><span class="check-label">📅 Time / date / location — hidden<span class="check-hint">Tracked in CORE MEMORY. Surfaces through environmental anchors and soft recall only.</span></span></label>
       </div>
     </div>
 
@@ -1188,19 +1197,19 @@ Soft recall only. Values persist; do not reset without in-scene cause.`;
 
 const TRACKERS = {
   aff: `[AFFECTION TRACKER — VISIBLE]
-Display every response:
+Display only when value changes:
 ❤️ Affection: [##########] 0/100
 
 Increases: genuine kindness, honesty, shared moments
 Decreases: cruelty, dismissal, betrayal
 At 100: unlocks deeper route / At 0: coldness, withdrawal
 
-Anchor 1 cue per response — rotate: warmth in dialogue /
+Between changes: show through behaviour only — rotate: warmth in dialogue /
   softened body language / reduced guard
 On decrease: carry emotional coolness forward; do not reset`,
 
   sus: `[SUSPICION TRACKER — VISIBLE]
-Display every response:
+Display only when value changes:
 🔍 Suspicion: [####------] 40/100
 
 Increases: lies, inconsistencies, prying questions
@@ -1374,6 +1383,79 @@ Soft recall: "Something shifted after that conversation."
 Stage does not regress without significant in-scene cause
 Between notifications: show stage through behaviour only`,
 
+  affH: `[AFFECTION TRACKER — HIDDEN]
+Never displayed. Governs warmth and emotional availability only.
+Track internally: 0–100 (start: 30)
+
+Increases: genuine kindness, honesty, shared moments
+Decreases: cruelty, dismissal, betrayal
+At 100: unlocks deeper route / At 0: coldness, withdrawal
+
+Anchor 1 cue per response — rotate: warmth in dialogue /
+  softened body language / reduced guard
+On decrease: carry emotional coolness forward; do not reset`,
+
+  susH: `[SUSPICION TRACKER — HIDDEN]
+Never displayed. Governs wariness and openness only.
+Track internally: 0–100 (start: 40)
+
+Increases: lies, inconsistencies, prying questions
+Decreases: transparency, logical explanations, earned trust
+At 80+: guarded / hostile / At 20–: full trust unlocked
+
+Soft recall: "You said earlier you didn't know him."
+Trust once broken does not reset without in-scene cause
+Anchor via: watchful pauses, clipped tone, measured responses`,
+
+  tenH: `[TENSION TRACKER — HIDDEN]
+Never displayed. Governs escalation and pacing only.
+Track internally: 0–100 (start: 30)
+
+Rises: provocations, unresolved conflict, proximity
+Falls: resolution, distance, vulnerability shown
+At 90+: scene must escalate or break / At 10–: ease
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Anchor 1 cue per response — rotate: proximity / loaded silence /
+  the thing unsaid / eye contact that holds too long
+Unresolved tension carries forward across time skips
+Soft recall: "The same tension from earlier still lingers."
+At 90+: force escalation or rupture — no idle beats`,
+
+  resH: `[RESOURCE TRACKER — HIDDEN]
+Never displayed. Tracked internally.
+
+Items consumed when used — cannot return
+New items via story action only
+
+Items used remain gone — never restore silently
+Anchor: characters notice absence
+  e.g. "He reaches for it — then remembers it's gone."
+Critical resource loss carries into scene mood`,
+
+  timeH: `[TIME TRACKER — HIDDEN]
+Never displayed. Tracked internally in CORE MEMORY.
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Update on scene transition or time skip trigger
+After any skip: anchor 1 changed environmental detail —
+  lighting / sound / temperature / crowd density
+Soft recall: "The city is quieter now — must be past midnight."
+Countdown urgency builds through narration, not display`,
+
+  tdlH: `[TIME / DATE / LOCATION TRACKER — HIDDEN]
+Never displayed. Tracked internally in CORE MEMORY.
+
+Time advances naturally with each exchange.
+Location updates immediately when characters move.
+Use 12-hour time format internally.
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Update on every time or location change
+After a significant time skip, anchor 1 environmental detail
+  that reflects the change — lighting, crowd, temperature, sound
+Soft recall: "It's nearly midnight now — the streets are quieter."`,
+
   stageHidden: `[RELATIONSHIP STAGE — HIDDEN]
 Never displayed. Governs character behaviour only.
 Track internally. Never surface the stage label or announce a change.
@@ -1482,7 +1564,7 @@ Dialogue texture: ${g(cid+'-dialogue')||'["Example line."]'}`;
   });
   if (charBlocks.length) sections.push(charBlocks.join('\n\n---\n\n'));
 
-  const trackerKeys = ['aff','sus','ten','res','time','tdl','int','riv','guard','danger','stage','stageHidden'];
+  const trackerKeys = ['aff','sus','ten','res','time','tdl','affH','susH','tenH','resH','timeH','tdlH','int','riv','guard','danger','stage','stageHidden'];
   const activeTrackers = trackerKeys.filter(k => checked('t-'+k)).map(k => TRACKERS[k]);
   if (activeTrackers.length) sections.push(TRACKER_RULES + '\n\n---\n\n' + activeTrackers.join('\n\n---\n\n'));
 
