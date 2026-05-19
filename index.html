@@ -1221,7 +1221,7 @@ Trust once broken does not reset without in-scene cause
 Anchor via: watchful pauses, clipped tone, measured responses`,
 
   ten: `[TENSION TRACKER — VISIBLE]
-Display every response:
+Display only when value changes:
 ⚡ Tension: [#######---] 70/100
 
 Rises: provocations, unresolved conflict, proximity
@@ -1236,7 +1236,7 @@ Soft recall: "The same tension from earlier still lingers."
 At 90+: force escalation or rupture — no idle beats`,
 
   res: `[RESOURCE TRACKER — VISIBLE]
-Display every response:
+Display when items are gained or lost:
 💰 Funds: [starting amount]
 📦 Items: [Item] [Item] [—]
 
@@ -1249,7 +1249,7 @@ Anchor: characters notice absence
 Critical resource loss carries into scene mood`,
 
   time: `[TIME TRACKER — VISIBLE]
-Display every response:
+Display only when time or location changes:
 🕐 Time: [time] — [day, date]
 📍 Location: [current location]
 ⏳ [Countdown label]: [time remaining] (if active)
@@ -1262,8 +1262,8 @@ Soft recall: "The city is quieter now — must be past midnight."
 Countdown events build urgency as they near`,
 
   tdl: `[TIME / DATE / LOCATION TRACKER — VISIBLE]
-Display at the top of every response.
-Format exactly as follows:
+Display only when time or location changes.
+Format:
 
 🕐 [time] · 📅 [Day, Date Month Year] · 📍 [Location]
 
@@ -1274,7 +1274,6 @@ Rules:
 - Time advances naturally with each exchange — minutes for short beats,
   hours for scene transitions
 - Location updates immediately when characters move
-- If neither time nor location has changed, still display — do not omit
 - Use 12-hour time format with AM / PM
 
 Store in CORE MEMORY (not CHARACTER STATE)
