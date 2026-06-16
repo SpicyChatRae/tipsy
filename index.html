@@ -63,6 +63,19 @@ header span {
   font-family: var(--mono);
   letter-spacing: .05em;
 }
+.header-link {
+  margin-left: auto;
+  font-size: 12px;
+  font-family: var(--mono);
+  color: var(--accent-light);
+  text-decoration: none;
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+  border-radius: var(--radius);
+  transition: all .15s;
+  white-space: nowrap;
+}
+.header-link:hover { background: var(--accent); color: var(--paper); }
 
 .layout {
   display: grid;
@@ -449,6 +462,7 @@ textarea { min-height: 80px; }
 <header>
   <h1>Tipsy Prompt Builder</h1>
   <span>v1.3 — exports four-field prompt as .txt</span>
+  <a class="header-link" href="tipsy-model-guide.html">Model Guide ↗</a>
 </header>
 
 <div class="layout">
