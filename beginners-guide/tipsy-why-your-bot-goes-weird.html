@@ -131,6 +131,22 @@ footer a:hover { color: var(--cream-text); }
   .page-wrap { padding: 0 1.1rem; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; transform: none !important; } }
+.home-btn {
+  position: fixed;
+  top: 1rem;
+  right: 1.25rem;
+  z-index: 200;
+  background: var(--red);
+  color: var(--cream-text);
+  font-family: var(--hand);
+  font-size: .95rem;
+  padding: .3rem .9rem;
+  border-radius: 99px;
+  border: 2px solid var(--red-dark);
+  text-decoration: none;
+  transition: background .15s;
+}
+.home-btn:hover { background: var(--red-dark); color: var(--cream-text); }
 </style>
 </head>
 <body>
