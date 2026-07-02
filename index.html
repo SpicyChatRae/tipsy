@@ -161,6 +161,7 @@ body {
   transform: translateX(-50%);
   width: 360px;
   filter: drop-shadow(0 18px 26px rgba(0,0,0,.5));
+  padding: 15px;
 }
 
 /* ===== SECTION LABEL ===== */
@@ -181,7 +182,7 @@ body {
   font-family: 'Caveat', cursive;
   font-weight: 700;
   font-size: 30px;
-  color: #f0e7da;
+  color: #fff8f0;
 }
 .section-arrow {
   color: #b0242a;
@@ -276,19 +277,21 @@ body {
 .rae-stuff-label {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   margin-bottom: 14px;
 }
 .rae-stuff-rule {
   flex: 1;
-  height: 1px;
-  background: rgba(240,231,218,.2);
+  height: 2px;
+  max-width: 90px;
+  background: repeating-linear-gradient(90deg, rgba(240,231,218,.4) 0 8px, transparent 8px 14px);
 }
 .rae-stuff-text {
   font-family: 'Caveat', cursive;
   font-weight: 700;
-  font-size: 22px;
-  color: #c8b6a7;
+  font-size: 30px;
+  color: #fff8f0;
   white-space: nowrap;
 }
 .rae-links {
