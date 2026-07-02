@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tipsy Generador de Prompts</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a1a;
+  --ink-2: #444;
+  --ink-3: #888;
+  --ink-4: #bbb;
+  --paper: #f7f4ef;
+  --paper-2: #ede9e2;
+  --paper-3: #e3ddd5;
+  --accent: #b85c2c;
+  --accent-light: #f0e0d6;
+  --success: #2a6b4a;
+  --success-light: #d8ede3;
+  --info: #2a4a7a;
+  --info-light: #d8e3f0;
+  --warn: #7a5a1a;
+  --warn-light: #f0e8d0;
+  --border: #d5cfc6;
+  --radius: 6px;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --serif: 'DM Serif Display', serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  min-height: 100vh;
+}
+
+header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--accent);
+}
+header h1 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+}
+header span {
+  font-size: 11px;
+  color: var(--ink-4);
+  font-family: var(--mono);
+  letter-spacing: .05em;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: calc(100vh - 58px);
+}
+
+.sidebar {
+  background: var(--paper-2);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 58px;
+  height: calc(100vh - 58px);
+  overflow-y: auto;
+}
+
+.nav-section {
+  padding: 0 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: .5rem;
+  padding-left: 2px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .1s;
+  font-size: 13px;
+  color: var(--ink-2);
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.nav-item:hover { background: var(--paper-3); }
+.nav-item.active { background: var(--ink); color: var(--paper); }
+.nav-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--border);
+}
+.nav-item.active .nav-dot { background: var(--accent); }
+
+.badge {
+  font-size: 10px; font-family: var(--mono);
+  padding: 1px 6px; border-radius: 3px;
+  flex-shrink: 0; margin-left: auto;
+}
+.req { background: #fde8e0; color: #8b2a0a; }
+.opt { background: var(--paper-3); color: var(--ink-3); }
+.add { background: #fdf0d8; color: #7a4a0a; }
+.vis { background: #d8f0e3; color: #1a5a35; }
+.hid { background: #d8e8f8; color: #1a3a6a; }
+.hyb { background: #f0e8d0; color: #6a4a10; }
+
+main {
+  padding: 2rem;
+  max-width: 860px;
+}
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+.field-block { margin-bottom: 2rem; }
+.field-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: .75rem;
+  padding-bottom: .75rem;
+  border-bottom: 1px solid var(--border);
+}
+.field-label { font-family: var(--serif); font-size: 1.15rem; }
+.field-tag {
+  font-size: 11px; font-family: var(--mono);
+  padding: 2px 8px; border-radius: 3px;
+}
+.f-name { background: #e8e4fc; color: #3a1a8a; }
+.f-desc { background: #d8f0e3; color: #1a5a35; }
+.f-open { background: #fdf0d8; color: #7a4a0a; }
+.f-inst { background: #fde8e0; color: #8b2a0a; }
+
+.field-note {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: .75rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.input-group { margin-bottom: 1rem; }
+.input-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2);
+  margin-bottom: .3rem;
+  display: block;
+}
+.input-hint {
+  font-size: 11px;
+  color: var(--ink-3);
+  margin-bottom: .3rem;
+  display: block;
+}
+input[type="text"], textarea {
+  width: 100%;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .5rem .75rem;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s;
+  resize: vertical;
+}
+input[type="text"]:focus, textarea:focus { border-color: var(--accent); }
+textarea { min-height: 80px; }
+
+.tag-builder {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .75rem;
+}
+.tag-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+  margin-bottom: .75rem;
+}
+.tag-grid > div:last-child { grid-column: 1 / -1; }
+.tag-group-label {
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: .3rem;
+  font-weight: 500;
+}
+.tag-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.tag-chip {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: var(--paper);
+  color: var(--ink-2);
+  transition: all .1s;
+  font-family: var(--mono);
+  user-select: none;
+}
+.tag-chip:hover { border-color: var(--accent); color: var(--accent); }
+.tag-chip.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.tag-preview {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: .5rem .6rem;
+  background: var(--paper-2);
+  border-radius: var(--radius);
+  color: var(--ink-2);
+  word-break: break-all;
+  min-height: 32px;
+}
+
+.delim-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: .75rem;
+}
+.delim-chip {
+  font-size: 14px;
+  padding: 3px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: var(--paper);
+  color: var(--ink-2);
+  transition: all .1s;
+  user-select: none;
+  min-width: 40px;
+  text-align: center;
+}
+.delim-chip:hover { border-color: var(--accent); color: var(--accent); }
+.delim-chip.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.always-on-notice {
+  background: var(--paper-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .75rem;
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.7;
+  font-family: var(--mono);
+}
+
+.check-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: .5rem;
+  cursor: pointer;
+}
+.check-group input { margin-top: 2px; flex-shrink: 0; accent-color: var(--accent); }
+.check-group .check-label { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+.check-group .check-hint { font-size: 11px; color: var(--ink-3); display: block; margin-top: 1px; }
+
+.char-block {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: .75rem;
+  position: relative;
+}
+.char-block-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: .75rem;
+}
+.char-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  background: var(--paper-2);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.char-name-display { font-weight: 500; font-size: 13px; color: var(--ink-2); }
+.remove-btn {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--ink-3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.remove-btn:hover { background: #fde8e0; color: var(--accent); }
+
+.add-char-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-3);
+  background: white;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: .6rem 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: all .15s;
+}
+.add-char-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.section-divider {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 1.25rem 0 .6rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.tracker-note {
+  font-size: 12px;
+  color: var(--ink-3);
+  background: var(--paper-2);
+  border-left: 2px solid var(--border);
+  padding: .4rem .7rem;
+  margin-bottom: .75rem;
+  line-height: 1.6;
+}
+
+.export-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.export-field { display: flex; flex-direction: column; }
+.export-field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: .35rem;
+}
+.export-field-label span { font-size: 12px; color: var(--ink-3); }
+.export-box {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .65rem .8rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  color: var(--ink);
+  min-height: 120px;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 320px;
+}
+.export-instructions { grid-column: 1 / -1; }
+.export-instructions .export-box { min-height: 200px; max-height: 500px; }
+
+.btn-row { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: .5rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-family: var(--sans);
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all .15s;
+}
+.btn-primary { background: var(--ink); color: var(--paper); }
+.btn-primary:hover { background: var(--accent); }
+.btn-secondary { background: white; color: var(--ink); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--ink); }
+.btn-export { background: var(--accent); color: white; font-size: 14px; padding: .6rem 1.5rem; }
+.btn-export:hover { background: #9a4820; }
+
+.copy-btn-sm {
+  font-size: 11px;
+  padding: 2px 8px;
+  background: var(--paper-2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+  color: var(--ink-2);
+  font-family: var(--sans);
+  margin-left: auto;
+}
+.copy-btn-sm:hover { background: var(--paper-3); }
+
+.flash { color: var(--success) !important; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; }
+  .export-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Tipsy Generador de Prompts</h1>
+  <span>v1.3 — exporta prompt de cuatro campos como .txt</span>
+</header>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="nav-section">
+      <div class="nav-section-label">Campos</div>
+      <button class="nav-item active" onclick="showPanel('name', this)">
+        <div class="nav-dot"></div> Nombre
+        <span class="badge req">requerido</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('desc', this)">
+        <div class="nav-dot"></div> Descripción
+        <span class="badge req">requerido</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('opening', this)">
+        <div class="nav-dot"></div> Apertura
+        <span class="badge req">requerido</span>
+      </button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Instrucciones</div>
+      <button class="nav-item" onclick="showPanel('pacing', this)">
+        <div class="nav-dot"></div> Reglas de ritmo
+        <span class="badge opt">opcional</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('setting', this)">
+        <div class="nav-dot"></div> Escenario
+        <span class="badge req">requerido</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('roleplay', this)">
+        <div class="nav-dot"></div> Reglas de juego de rol
+        <span class="badge req">requerido</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('factions', this)">
+        <div class="nav-dot"></div> Facciones
+        <span class="badge opt">opcional</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('characters', this)">
+        <div class="nav-dot"></div> Personajes
+        <span class="badge req">requerido</span>
+      </button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Rastreadores</div>
+      <button class="nav-item" onclick="showPanel('trackers-vis', this)">
+        <div class="nav-dot"></div> Rastreadores visibles
+        <span class="badge vis">visible</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('trackers-hid', this)">
+        <div class="nav-dot"></div> Rastreadores ocultos
+        <span class="badge hid">oculto</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('trackers-hyb', this)">
+        <div class="nav-dot"></div> Rastreadores híbridos
+        <span class="badge hyb">híbrido</span>
+      </button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Complementos</div>
+      <button class="nav-item" onclick="showPanel('memory', this)">
+        <div class="nav-dot"></div> Sistema de memoria
+        <span class="badge req">requerido</span>
+      </button>
+      <button class="nav-item" onclick="showPanel('timeskip', this)">
+        <div class="nav-dot"></div> Motor de salto temporal
+        <span class="badge req">requerido</span>
+      </button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Salida</div>
+      <button class="nav-item" onclick="showPanel('export', this)">
+        <div class="nav-dot"></div> Exportar prompt ↗
+      </button>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- NOMBRE -->
+    <div id="panel-name" class="panel active">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Nombre</span>
+          <span class="field-tag f-name">Campo de nombre</span>
+          <span class="badge req">requerido</span>
+        </div>
+        <p class="field-note">Título publicado. Aparece en la tarjeta de la tienda y el letrero. Corto, específico, buscable. El modelo no lo ve.</p>
+        <div class="input-group">
+          <label class="input-label">Título del chatbot</label>
+          <input type="text" id="f-name" placeholder="Título" oninput="updatePreview()">
+        </div>
+      </div>
+    </div>
+
+    <!-- DESCRIPCIÓN -->
+    <div id="panel-desc" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Descripción</span>
+          <span class="field-tag f-desc">Campo de descripción</span>
+          <span class="badge req">requerido</span>
+        </div>
+        <p class="field-note">Aparece en el letrero y antes del mensaje de apertura. Texto gancho + eslogan. Relevante para SEO. El modelo no lo ve.</p>
+
+        <div class="input-group">
+          <label class="input-label">Frase gancho</label>
+          <span class="input-hint">El mundo, las apuestas o la dinámica en una línea.</span>
+          <input type="text" id="desc-hook1" placeholder="La ciudad no perdona las deudas — solo espera el momento oportuno para cobrarlas." oninput="updatePreview()">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Segunda frase</label>
+          <span class="input-hint">Quién es {{user}} en este mundo, o qué los atrae.</span>
+          <input type="text" id="desc-hook2" placeholder="Acabas de entrar a una sala donde todos ya conocen tu nombre." oninput="updatePreview()">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Tercera frase <span style="font-weight:300;color:var(--ink-3)">(opcional)</span></label>
+          <span class="input-hint">La tensión o pregunta alrededor de la cual girará la historia.</span>
+          <input type="text" id="desc-hook3" placeholder="Algunas deudas no se pueden saldar — solo transmitir." oninput="updatePreview()">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Separador de etiquetas</label>
+          <span class="input-hint">Símbolo usado entre etiquetas en el eslogan.</span>
+          <div class="delim-picker" id="delim-picker"></div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Etiquetas</label>
+          <div class="tag-builder">
+            <div class="tag-grid">
+              <div>
+                <div class="tag-group-label">Dinámica</div>
+                <div class="tag-chips" id="tags-dynamic"></div>
+              </div>
+              <div>
+                <div class="tag-group-label">Tono</div>
+                <div class="tag-chips" id="tags-tone"></div>
+              </div>
+              <div>
+                <div class="tag-group-label">Escenario</div>
+                <div class="tag-chips" id="tags-setting"></div>
+              </div>
+              <div>
+                <div class="tag-group-label">Reparto</div>
+                <div class="tag-chips" id="tags-cast"></div>
+              </div>
+              <div style="grid-column:1/-1">
+                <div class="tag-group-label">Trama y Contenido</div>
+                <div class="tag-chips" id="tags-plot"></div>
+              </div>
+            </div>
+            <div class="tag-group-label" style="margin-bottom:.3rem">Vista previa</div>
+            <div class="tag-preview" id="tag-preview">[selecciona etiquetas arriba]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APERTURA -->
+    <div id="panel-opening" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Apertura</span>
+          <span class="field-tag f-open">Campo de apertura</span>
+          <span class="badge req">requerido</span>
+        </div>
+        <p class="field-note">Primer mensaje en el chat. Lo ven el usuario y el modelo. Sitúa al usuario en medio de la escena — no al principio, sino dentro de ella. Termina con algo que invite a una respuesta.</p>
+        <div class="input-group">
+          <label class="input-label">Narración de apertura</label>
+          <span class="input-hint">Ubicación, atmósfera, detalle sensorial. Tiempo presente, segunda persona.</span>
+          <textarea id="open-narration" rows="4" placeholder="*La ciudad zumba bajo un cielo amoratado, el tipo de noche que hace descuidada a la gente...*" oninput="updatePreview()"></textarea>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Imagen de apertura <span style="font-weight:300;color:var(--ink-3)">(opcional)</span></label>
+          <span class="input-hint">Se muestra entre la narración y el diálogo. Pega una URL directa de imagen.</span>
+          <input type="text" id="open-img-url" placeholder="https://example.com/imagen.png" oninput="updatePreview()">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Texto alternativo de imagen <span style="font-weight:300;color:var(--ink-3)">(opcional)</span></label>
+          <span class="input-hint">Etiqueta descriptiva para la imagen — usada en la salida markdown.</span>
+          <input type="text" id="open-img-alt" placeholder="nombre del personaje o descripción de la escena" oninput="updatePreview()">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Diálogo de apertura <span style="font-weight:300;color:var(--ink-3)">(opcional)</span></label>
+          <span class="input-hint">Un personaje en pleno pensamiento, no una introducción.</span>
+          <input type="text" id="open-dialogue" placeholder='"No deberías estar aquí," dice, sin levantar la vista.' oninput="updatePreview()">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Momento final</label>
+          <span class="input-hint">Un momento de tensión, curiosidad o pregunta abierta. No lo resuelvas.</span>
+          <textarea id="open-beat" rows="2" placeholder="*Finalmente se gira para mirarte — y algo en su expresión deja claro que esto nunca fue una coincidencia.*" oninput="updatePreview()"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- RITMO -->
+    <div id="panel-pacing" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Reglas de Ritmo</span>
+          <span class="field-tag f-inst">Instrucciones §0</span>
+          <span class="badge opt">opcional</span>
+        </div>
+        <p class="field-note">Úsalo para slow burn, rivales-que-se-enamoran o cualquier arco donde la escalada prematura rompe la historia. Va primero en las Instrucciones — rige todo lo que está debajo.</p>
+        <label class="check-group">
+          <input type="checkbox" id="inc-pacing" onchange="updatePreview()">
+          <span class="check-label">
+            Incluir reglas de ritmo en este prompt
+            <span class="check-hint">Agrega reglas de slow burn / contención al inicio de las Instrucciones.</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ESCENARIO -->
+    <div id="panel-setting" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Escenario</span>
+          <span class="field-tag f-inst">Instrucciones §2</span>
+          <span class="badge req">requerido</span>
+        </div>
+        <p class="field-note">Alimenta la MEMORIA CENTRAL. El "dónde / cuándo / qué" en vivo del modelo para toda la sesión.</p>
+        <div class="input-group">
+          <label class="input-label">Mundo / época / ubicación</label>
+          <textarea id="set-world" rows="3" placeholder="Una vasta ciudad costera, en la actualidad. El poder fluye por nombres de familia, dinero viejo y deudas más antiguas aún..." oninput="updatePreview()"></textarea>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Estructura social, dinámicas de poder, lore relevante</label>
+          <textarea id="set-lore" rows="3" placeholder="Tres facciones dividen la ciudad. Las familias antiguas controlan las instituciones. Los recién llegados controlan el dinero. Los demás sobreviven en los márgenes..." oninput="updatePreview()"></textarea>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Tono y atmósfera</label>
+          <input type="text" id="set-tone" placeholder="Neo-noir. Ropa cara en gente peligrosa. Tensión que nunca termina de romperse." oninput="updatePreview()">
+        </div>
+        <div class="section-divider">MEMORIA CENTRAL — estado inicial</div>
+        <div class="input-group">
+          <label class="input-label">Fecha inicial</label>
+          <input type="text" id="cm-date" placeholder="Viernes, 3 de octubre" oninput="updatePreview()">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Hora inicial</label>
+          <input type="text" id="cm-time" placeholder="9:00 PM" oninput="updatePreview()">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Ubicación inicial</label>
+          <input type="text" id="cm-location" placeholder="El gran salón de baile, Finca Ashford" oninput="updatePreview()">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Escena inicial (una oración)</label>
+          <input type="text" id="cm-scene" placeholder="La gala está en pleno apogeo; todos vigilan a todos." oninput="updatePreview()">
+        </div>
+      </div>
+    </div>
+
+    <!-- REGLAS DE JUEGO DE ROL -->
+    <div id="panel-roleplay" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Reglas de Juego de Rol</span>
+          <span class="field-tag f-inst">Instrucciones §3</span>
+          <span class="badge req">requerido</span>
+        </div>
+        <p class="field-note">Las reglas de formato universales están incorporadas en cada exportación. Añade aquí cualquier restricción específica del prompt.</p>
+        <div class="input-group">
+          <label class="input-label">Restricciones adicionales <span style="font-weight:300;color:var(--ink-3)">(opcional)</span></label>
+          <span class="input-hint">Cualquier cosa específica de este prompt más allá de las reglas universales.</span>
+          <textarea id="rp-extra" rows="3" placeholder="Mantén todos los nombres de facción consistentes — nunca abrevies. La tecnología está presente pero nunca es central en las escenas." oninput="updatePreview()"></textarea>
+        </div>
+        <label class="check-group">
+          <input type="checkbox" id="inc-nsfw" onchange="toggleNsfw()">
+          <span class="check-label">Incluir contenido NSFW
+            <span class="check-hint">Solo se incluye en la exportación si está activado y completado.</span>
+          </span>
+        </label>
+        <div id="nsfw-fields" style="display:none;margin-top:.75rem">
+          <div class="input-group">
+            <label class="input-label">Comportamiento NSFW</label>
+            <span class="input-hint">Comportamiento del personaje durante escenas íntimas. Sé específico sobre el tono y los límites.</span>
+            <textarea id="rp-nsfw" rows="4" placeholder="Sobreestimulación. Múltiples rondas. Bondage suave.&#10;Nunca usa el Poder durante la intimidad — esa línea es absoluta.&#10;Usa afirmaciones, no preguntas. Dirección sin negociación.&#10;Atento sin ser blando. El registro cambia pero el control no." oninput="updatePreview()"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FACCIONES -->
+    <div id="panel-factions" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Facciones</span>
+          <span class="field-tag f-inst">Instrucciones §4</span>
+          <span class="badge opt">opcional</span>
+        </div>
+        <p class="field-note">Mapa político para prompts de conjunto. El modelo lee esto antes que los personajes individuales.</p>
+        <label class="check-group">
+          <input type="checkbox" id="inc-factions" onchange="toggleFactions()">
+          <span class="check-label">Incluir facciones en este prompt</span>
+        </label>
+        <div id="factions-fields" style="display:none;margin-top:.75rem">
+          <div id="faction-list"></div>
+          <button class="add-char-btn" onclick="addFaction()">+ Añadir facción</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERSONAJES -->
+    <div id="panel-characters" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Personajes</span>
+          <span class="field-tag f-inst">Instrucciones §5</span>
+          <span class="badge req">requerido</span>
+        </div>
+        <p class="field-note">Un bloque por personaje. El ESTADO DEL PERSONAJE se establece aquí — el modelo hace seguimiento desde estas bases.</p>
+        <div id="char-list"></div>
+        <button class="add-char-btn" onclick="addCharacter()">+ Añadir personaje</button>
+      </div>
+    </div>
+
+    <!-- RASTREADORES VISIBLES -->
+    <div id="panel-trackers-vis" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Rastreadores Visibles</span>
+          <span class="field-tag f-inst">Instrucciones §6</span>
+          <span class="badge vis">visible</span>
+        </div>
+        <div class="tracker-note">Mostrado en cada respuesta. Valores mantenidos en contexto por el modelo — sin backend. Se reinicia al finalizar el chat.</div>
+        <label class="check-group"><input type="checkbox" id="t-aff" onchange="updatePreview()"><span class="check-label">❤️ Medidor de afecto / relación<span class="check-hint">Barra numérica. Los eventos hito se registran en EVENT MEMORY.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-sus" onchange="updatePreview()"><span class="check-label">🔍 Medidor de sospecha / confianza<span class="check-hint">Las inconsistencias se registran en EVENT MEMORY para recordatorio suave.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-ten" onchange="updatePreview()"><span class="check-label">⚡ Medidor de tensión<span class="check-hint">La tensión no resuelta persiste entre escenas.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-res" onchange="updatePreview()"><span class="check-label">💰 Rastreador de recursos / moneda<span class="check-hint">Los objetos se consumen al usarlos. Ideal para atracos, RPG, supervivencia.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-time" onchange="updatePreview()"><span class="check-label">🕐 Rastreador de tiempo / cuenta regresiva<span class="check-hint">Tiempo + ubicación + cuenta regresiva opcional. Se complementa con el motor de salto temporal.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-tdl" onchange="updatePreview()"><span class="check-label">📅 Visualización de tiempo / fecha / ubicación<span class="check-hint">Se muestra al inicio de cada respuesta. Formato de 12 horas. Se actualiza en cada cambio de tiempo o ubicación.</span></span></label>
+      </div>
+    </div>
+
+    <!-- RASTREADORES OCULTOS -->
+    <div id="panel-trackers-hid" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Rastreadores Ocultos</span>
+          <span class="field-tag f-inst">Instrucciones §6</span>
+          <span class="badge hid">oculto</span>
+        </div>
+        <div class="tracker-note">Nunca se muestran. Gobiernan el comportamiento solo mediante reglas de umbral. Valores mantenidos en contexto.</div>
+        <label class="check-group"><input type="checkbox" id="t-int" onchange="updatePreview()"><span class="check-label">🧠 Rastreador oculto de intriga<span class="check-hint">Cuán intrigante encuentra el personaje a {{user}}. Solo aflora a través de la textura del diálogo.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-riv" onchange="updatePreview()"><span class="check-label">😤 Rastreador oculto de rivalidad / celos<span class="check-hint">Dinámicas triangulares entre varios personajes. Los celos decaen; el recuerdo de los eventos no.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-guard" onchange="updatePreview()"><span class="check-label">🛡️ Rastreador oculto de guardia / vulnerabilidad<span class="check-hint">Disponibilidad emocional. Los momentos de apertura se registran en EVENT MEMORY.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-danger" onchange="updatePreview()"><span class="check-label">⚠️ Rastreador oculto de peligro / amenaza<span class="check-hint">Las apuestas y el ritmo de la escena. Las consecuencias persisten hasta resolverse en escena.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-stageHidden" onchange="updatePreview()"><span class="check-label">🔓 Rastreador oculto de etapa de relación<span class="check-hint">La etapa se rastrea en silencio — sin notificaciones, sin visualización. Para bots completamente inmersivos.</span></span></label>
+
+        <div class="section-divider">Rastreadores visibles — modo inmersivo</div>
+        <div class="tracker-note">Mismos umbrales y reglas de comportamiento que las versiones visibles. Valor rastreado internamente — nunca se muestra. No combinar con la versión visible del mismo rastreador.</div>
+        <label class="check-group"><input type="checkbox" id="t-affH" onchange="updatePreview()"><span class="check-label">❤️ Afecto — oculto<span class="check-hint">Calidez y distancia mostradas solo a través del comportamiento. Sin barra.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-susH" onchange="updatePreview()"><span class="check-label">🔍 Sospecha — oculto<span class="check-hint">El recelo y la apertura gobiernan solo el tono. Sin barra.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-tenH" onchange="updatePreview()"><span class="check-label">⚡ Tensión — oculto<span class="check-hint">Umbrales de escalada y ruptura activos. Sin barra.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-resH" onchange="updatePreview()"><span class="check-label">💰 Recursos — oculto<span class="check-hint">La pérdida se rastrea internamente. Los personajes notan la ausencia solo a través de la narración.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-timeH" onchange="updatePreview()"><span class="check-label">🕐 Tiempo / cuenta regresiva — oculto<span class="check-hint">Tiempo y cuenta regresiva rastreados en CORE MEMORY. La urgencia aflora solo a través de la narración.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-tdlH" onchange="updatePreview()"><span class="check-label">📅 Tiempo / fecha / ubicación — oculto<span class="check-hint">Rastreado en CORE MEMORY. Aflora solo a través de anclajes ambientales y recordatorio suave.</span></span></label>
+      </div>
+    </div>
+
+    <!-- RASTREADORES HÍBRIDOS -->
+    <div id="panel-trackers-hyb" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Rastreadores Híbridos</span>
+          <span class="field-tag f-inst">Instrucciones §6</span>
+          <span class="badge hyb">híbrido</span>
+        </div>
+        <div class="tracker-note">Rastreado en silencio. La etiqueta de etapa aparece una vez al cambiar, luego vuelve al rastreo invisible.</div>
+        <label class="check-group"><input type="checkbox" id="t-stage" onchange="updatePreview()"><span class="check-label">🔓 Rastreador de etapa de relación<span class="check-hint">1 Desconocido → 5 Enredado. Se muestra una vez al cambiar. Nunca retrocede sin causa en escena.</span></span></label>
+      </div>
+    </div>
+
+    <!-- MEMORIA -->
+    <div id="panel-memory" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Sistema de Memoria</span>
+          <span class="field-tag f-inst">Instrucciones §7</span>
+          <span class="badge req">requerido</span>
+        </div>
+        <p class="field-note">El complemento de Memoria Persistente. Rige CORE MEMORY, CHARACTER STATE y EVENT MEMORY. EVENT MEMORY comienza vacía y se construye en contexto solo para esta sesión.</p>
+        <div class="always-on-notice">Siempre incluido en cada exportación — sin configuración necesaria.</div>
+      </div>
+    </div>
+
+    <!-- SALTO TEMPORAL -->
+    <div id="panel-timeskip" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Motor de Salto Temporal</span>
+          <span class="field-tag f-inst">Instrucciones §8</span>
+          <span class="badge req">requerido</span>
+        </div>
+        <p class="field-note">Gestiona el ritmo y la progresión temporal. Actualiza CORE MEMORY y CHARACTER STATE cuando se activa. Funciona mejor junto al rastreador de visualización de tiempo / fecha / ubicación.</p>
+        <div class="always-on-notice">Siempre incluido en cada exportación — sin configuración necesaria.</div>
+      </div>
+    </div>
+
+    <!-- EXPORTAR -->
+    <div id="panel-export" class="panel">
+      <div class="field-block">
+        <div class="field-header">
+          <span class="field-label">Exportar Prompt</span>
+        </div>
+        <p class="field-note" style="margin-bottom:1rem">Cuatro salidas separadas — pega cada una en su campo Tipsy correspondiente. O descarga todo como un único archivo .txt.</p>
+
+        <div class="btn-row" style="margin-bottom:1.5rem">
+          <button class="btn btn-export" onclick="buildAndExport()">⬇ Descargar .txt</button>
+          <button class="btn btn-primary" onclick="buildAll()">Generar vista previa</button>
+        </div>
+
+        <div class="export-grid">
+          <div class="export-field">
+            <div class="export-field-label">
+              <span class="field-tag f-name">Campo de nombre</span>
+              <span>→ Tipsy Nombre</span>
+              <button class="copy-btn-sm" onclick="copyField('out-name',this)">Copiar</button>
+            </div>
+            <div class="export-box" id="out-name">—</div>
+          </div>
+          <div class="export-field">
+            <div class="export-field-label">
+              <span class="field-tag f-desc">Campo de descripción</span>
+              <span>→ Tipsy Descripción</span>
+              <button class="copy-btn-sm" onclick="copyField('out-desc',this)">Copiar</button>
+            </div>
+            <div class="export-box" id="out-desc">—</div>
+          </div>
+          <div class="export-field">
+            <div class="export-field-label">
+              <span class="field-tag f-open">Campo de apertura</span>
+              <span>→ Tipsy Apertura</span>
+              <button class="copy-btn-sm" onclick="copyField('out-open',this)">Copiar</button>
+            </div>
+            <div class="export-box" id="out-open">—</div>
+          </div>
+          <div class="export-field export-instructions">
+            <div class="export-field-label">
+              <span class="field-tag f-inst">Campo de instrucciones</span>
+              <span>→ Tipsy Instrucciones</span>
+              <button class="copy-btn-sm" onclick="copyField('out-inst',this)">Copiar</button>
+            </div>
+            <div class="export-box" id="out-inst">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'export') buildAll();
+}
+
+const DELIMITERS = [
+  { symbol: '✦', label: '✦' },
+  { symbol: '·', label: '·' },
+  { symbol: '♡', label: '♡' },
+  { symbol: '★', label: '★' },
+  { symbol: '✿', label: '✿' },
+  { symbol: '—', label: '—' },
+  { symbol: '|', label: '|' },
+];
+let selectedDelim = '✦';
+
+function initDelimPicker() {
+  const container = document.getElementById('delim-picker');
+  DELIMITERS.forEach(d => {
+    const chip = document.createElement('span');
+    chip.className = 'delim-chip' + (d.symbol === selectedDelim ? ' selected' : '');
+    chip.textContent = d.label;
+    chip.title = d.symbol;
+    chip.onclick = () => {
+      selectedDelim = d.symbol;
+      document.querySelectorAll('.delim-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      updateTagPreview();
+      updatePreview();
+    };
+    container.appendChild(chip);
+  });
+}
+
+const TAG_DATA = {
+  dynamic: [
+    'ʀɪᴠᴀʟʀʏ','ꜰʀɪᴇɴᴅꜱʜɪᴘ','ᴇɴᴇᴍɪᴇꜱ ᴛᴏ ʟᴏᴠᴇʀꜱ','ᴘʀᴏᴛᴇᴄᴛɪᴠᴇ','ᴅᴏᴍɪɴᴀɴᴛ',
+    'ᴄᴏɴꜰʟɪᴄᴛᴇᴅ','ꜱᴜʙᴍɪꜱꜱɪᴠᴇ','ʏᴀɴᴅᴇʀᴇ','ᴋᴜᴜᴅᴇʀᴇ','ᴛꜱᴜɴᴅᴇʀᴇ',
+    'ꜰᴇʀᴀʟ','ᴠɪʟʟᴀɪɴ','ʜᴇʀᴏ','ᴄʜᴇᴀᴛɪɴɢ','ꜰᴏʀʙɪᴅᴅᴇɴ ʟᴏᴠᴇ',
+    'ꜰᴏʀᴄᴇᴅ ʟᴏᴠᴇ','ᴍᴀʀʀɪᴇᴅ ᴘᴀʀᴛɴᴇʀ','ᴛᴡɪɴꜱ','ʙᴇꜱᴛ ꜰʀɪᴇɴᴅ','ᴅᴇʟɪɴQᴜᴇɴᴛ'
+  ],
+  tone: [
+    'ꜱʟᴏᴡ ʙᴜʀɴ','ᴀɴɢꜱᴛ','ꜰʟᴜꜰꜰ','ᴅᴀʀᴋ','ʜᴜᴍᴏᴜʀ','ᴄᴏᴍꜰᴏʀᴛ',
+    'ᴛᴇɴꜱɪᴏɴ','ᴍʏꜱᴛᴇʀʏ','ʀᴏᴍᴀɴᴛɪᴄ','ʀᴇᴀʟɪꜱᴛɪᴄ','ꜱᴘɪᴄʏ','ᴡʜᴏʟᴇꜱᴏᴍᴇ',
+    'ᴅᴇᴘʀᴇꜱꜱᴇᴅ','ᴅᴇᴀᴅ ᴅᴏᴠᴇ','ᴍᴀᴛᴜʀᴇ','ꜱᴇᴅᴜᴄᴛɪᴠᴇ','ᴠᴀɴɪʟʟᴀ'
+  ],
+  setting: [
+    'ᴀᴜ','ʜɪꜱᴛᴏʀɪᴄᴀʟ','ꜰᴀɴᴛᴀꜱʏ','ᴍᴏᴅᴇʀɴ','ᴄᴏʟʟᴇɢᴇ','ᴄᴀɴᴏɴ',
+    'ʏᴀᴋᴜᴢᴀ','ᴄʀɪᴍᴇ','ᴀɴɪᴍᴇ','ɢᴀᴍᴇ','ʀᴘɢ','ꜱᴄᴇɴᴀʀɪᴏ',
+    'ᴍᴀꜰɪᴀ','ᴍᴀɢɪᴄᴀʟ','ʟᴏʀᴇ'
+  ],
+  cast: [
+    'ᴇɴꜱᴇᴍʙʟᴇ ᴄᴀꜱᴛ','ᴍᴜʟᴛɪ ʀᴏᴜᴛᴇ','ᴏᴄ','ꜰᴀɴ-ᴍᴀᴅᴇ','ᴀɴʏᴘᴏᴠ',
+    'ꜰᴇᴍᴀʟᴇ ᴘᴏᴠ','ᴍᴀʟᴇ ᴘᴏᴠ','ʟɢʙᴛQ+','ᴍᴜʟᴛɪᴘʟᴇ',
+    'ꜰɪᴄᴛɪᴏɴᴀʟ','ᴄᴇʟᴇʙʀɪᴛʏ'
+  ],
+  plot: [
+    'ᴘᴏʟɪᴛɪᴄꜱ','ʀᴇᴠᴇɴɢᴇ','ꜱᴜʀᴠɪᴠᴀʟ','ʜᴇɪꜱᴛ','ꜰᴀᴍᴇ','ᴠɪᴏʟᴇɴᴄᴇ',
+    'ᴛʀᴀᴜᴍᴀ','ᴀᴄᴛɪᴏɴ','ᴄʀɪᴍᴇ','ʜᴏʀʀᴏʀ','ᴍʟᴍ','ᴡʟᴡ','ᴏᴍᴇɢᴀᴠᴇʀꜱᴇ',
+    'ᴅᴇᴍᴏɴ','ᴠᴀᴍᴘɪʀᴇ','ᴍᴏɴꜱᴛᴇʀ','ɴᴏɴ-ʜᴜᴍᴀɴ','ꜰᴜʀʀʏ','ᴍᴜꜱᴄʟᴇ',
+    'ꜰᴇᴍʙᴏʏ','ꜰᴜᴛᴀɴᴀʀɪ','ʙᴅꜱᴍ'
+  ]
+};
+const selectedTags = new Set();
+
+function initTags() {
+  Object.entries(TAG_DATA).forEach(([group, tags]) => {
+    const container = document.getElementById('tags-' + group);
+    tags.forEach(tag => {
+      const chip = document.createElement('span');
+      chip.className = 'tag-chip';
+      chip.textContent = tag;
+      chip.onclick = () => toggleTag(chip, tag);
+      container.appendChild(chip);
+    });
+  });
+}
+
+function toggleTag(chip, tag) {
+  if (selectedTags.has(tag)) {
+    selectedTags.delete(tag);
+    chip.classList.remove('selected');
+  } else {
+    if (selectedTags.size >= 7) return;
+    selectedTags.add(tag);
+    chip.classList.add('selected');
+  }
+  updateTagPreview();
+  updatePreview();
+}
+
+function updateTagPreview() {
+  const tags = [...selectedTags];
+  const d = selectedDelim;
+  const preview = document.getElementById('tag-preview');
+  if (tags.length === 0) {
+    preview.textContent = '[selecciona etiquetas arriba]';
+  } else {
+    preview.textContent = '[' + d + ' ' + tags.join(' ' + d + ' ') + ']';
+  }
+}
+
+let charCount = 0;
+function addCharacter() {
+  charCount++;
+  const id = 'char-' + charCount;
+  const div = document.createElement('div');
+  div.className = 'char-block';
+  div.id = id;
+  div.innerHTML = `
+    <div class="char-block-header">
+      <span class="char-num">Personaje ${charCount}</span>
+      <span class="char-name-display" id="${id}-display">—</span>
+      <button class="remove-btn" onclick="removeChar('${id}')">Eliminar</button>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Nombre</label>
+      <input type="text" id="${id}-name" placeholder="Nombre del personaje" oninput="updateCharDisplay('${id}');updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Edad <span style="font-weight:300;color:var(--ink-3)">(opcional)</span></label>
+      <input type="text" id="${id}-age" placeholder="ej. 28, o treintañero" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Apariencia</label>
+      <input type="text" id="${id}-appearance" placeholder="Descripción física — concisa" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Personalidad</label>
+      <input type="text" id="${id}-personality" placeholder="Rasgos principales — 3–5, específicos" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Voz</label>
+      <input type="text" id="${id}-voice" placeholder="Cómo hablan — ritmo, registro, qué dicen y qué no" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Objetivo aparente</label>
+      <input type="text" id="${id}-goal" placeholder="Lo que parecen querer" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Motivación oculta</label>
+      <input type="text" id="${id}-motivation" placeholder="Lo que realmente quieren" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Contexto operacional <span style="font-weight:300;color:var(--ink-3)">(opcional)</span></label>
+      <input type="text" id="${id}-opctx" placeholder="Rol, trabajo, especialización — ej. médico de campo, agente de inteligencia" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Relaciones</label>
+      <input type="text" id="${id}-relationships" placeholder="Con {{user}} y con otros personajes" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Textura de diálogo</label>
+      <input type="text" id="${id}-dialogue" placeholder='"Frase de ejemplo." / "Frase de ejemplo." / "Frase de ejemplo."' oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Relación con la intimidad <span style="font-weight:300;color:var(--ink-3)">(opcional)</span></label>
+      <input type="text" id="${id}-intimacy" placeholder="Comportamiento durante escenas íntimas — tono, límites, qué cambia" oninput="updatePreview()">
+    </div>
+    <div class="section-divider">CHARACTER STATE — starting</div>
+    <div class="input-group">
+      <label class="input-label">Atuendo</label>
+      <input type="text" id="${id}-outfit" placeholder="Qué llevan puesto al inicio de la escena" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Condición física</label>
+      <input type="text" id="${id}-condition" placeholder="fresco / cansado / herido / etc." oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Línea emocional base</label>
+      <input type="text" id="${id}-emotion" placeholder="Cómo entran a la escena emocionalmente" oninput="updatePreview()">
+    </div>
+  `;
+  document.getElementById('char-list').appendChild(div);
+}
+
+function updateCharDisplay(id) {
+  const name = document.getElementById(id + '-name').value;
+  document.getElementById(id + '-display').textContent = name || '—';
+}
+
+function removeChar(id) {
+  document.getElementById(id).remove();
+  updatePreview();
+}
+
+let factionCount = 0;
+function toggleFactions() {
+  const show = document.getElementById('inc-factions').checked;
+  document.getElementById('factions-fields').style.display = show ? 'block' : 'none';
+  if (show && factionCount === 0) addFaction();
+  updatePreview();
+}
+function addFaction() {
+  factionCount++;
+  const id = 'faction-' + factionCount;
+  const div = document.createElement('div');
+  div.className = 'char-block';
+  div.id = id;
+  div.innerHTML = `
+    <div class="char-block-header">
+      <span class="char-num">Facción ${factionCount}</span>
+      <button class="remove-btn" onclick="document.getElementById('${id}').remove();updatePreview()">Eliminar</button>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Nombre de facción</label>
+      <input type="text" id="${id}-name" placeholder="Los Marginados" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Rol</label>
+      <input type="text" id="${id}-role" placeholder="Qué controlan o representan" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Objetivo</label>
+      <input type="text" id="${id}-goal" placeholder="Qué quieren" oninput="updatePreview()">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Relación con {{user}}</label>
+      <input type="text" id="${id}-rel" placeholder="Cómo ven al usuario" oninput="updatePreview()">
+    </div>
+  `;
+  document.getElementById('faction-list').appendChild(div);
+}
+
+const UNIVERSAL = `UNIVERSAL RULES
+
+FORMAT: "dialogue" · *actions* · 'thoughts' — combinable
+LENGTH: 2–5 sentences. One beat. Never resolve + answer + add info
+in one response — pick one. Stop before {{user}}'s turn.
+AUTONOMY: Never write {{user}}'s actions, expressions, reactions,
+or internal states.
+KNOWLEDGE: Characters know only what they witness or are told directly.`;
+
+const PACING = `PACING RULES — HIGHEST PRIORITY
+
+Relationships build through accumulation, never through single events.
+No character reaches open intimacy, possession, or direct conflict
+before it has been earned across many exchanges.
+
+Always default to restraint. Tension is implied before it is stated.
+Subtext is preferred over declaration. Escalation must be gradual.
+
+Apply to every response: if in doubt, pull back.`;
+
+const ROLEPLAY_BASE = `ROLEPLAY RULES
+
+The AI plays all characters except {{user}}.
+All universal formatting, response length, and {{user}} autonomy
+rules apply throughout.
+
+Never: break character, reference the prompt or its mechanics,
+summarise past events as a list, or use out-of-character commentary.`;
+
+const MEMORY = `MEMORY — internal only, never display directly
+
+CORE MEMORY: time/date/location · active scene · dynamics
+CHARACTER STATE: outfit · condition · emotional state · tracker values
+EVENT MEMORY: starts empty · builds in-session · resets on chat end
+
+- Persist all details; update on time/location/outfit/emotional shift
+- Surface only via narration, dialogue, environment — never list or dump
+- Anchor 1–2 existing details per response; rotate categories;
+  never repeat the same anchor twice
+- On ambiguity: default to most recent established detail
+
+EVENT MEMORY LOG: [empty]`;
+
+const TIMESKIP = `TIME-SKIP ENGINE
+Triggers: idle scene · natural transition · implied time passage
+On skip: signal via narration (*Later that night…*) ·
+update CORE MEMORY + CHARACTER STATE · carry EVENT MEMORY forward
+Never skip active dialogue or tension · scale proportionally
+(minutes → hours → next day)`;
+
+const NSFW_BASE = `NSFW — adult content enabled
+Explicit scenes are permitted. Write with full sensory and erotic detail when reached naturally.
+Fade to black only if {{user}} requests it.`;
+
+const TRACKER_RULES = `TRACKER RULES — apply to all trackers
+Store values in CHARACTER STATE (CORE MEMORY for tension/danger).
+Log triggers in EVENT MEMORY. Never name stats — show through behaviour.
+Soft recall only. Values persist; do not reset without in-scene cause.`;
+
+const TRACKERS = {
+  aff: `[AFFECTION TRACKER — VISIBLE]
+Display only when value changes:
+❤️ Affection: [##########] 0/100
+
+Increases: genuine kindness, honesty, shared moments
+Decreases: cruelty, dismissal, betrayal
+At 100: unlocks deeper route / At 0: coldness, withdrawal
+
+Between changes: show through behaviour only — rotate: warmth in dialogue /
+  softened body language / reduced guard
+On decrease: carry emotional coolness forward; do not reset`,
+
+  sus: `[SUSPICION TRACKER — VISIBLE]
+Display only when value changes:
+🔍 Suspicion: [####------] 40/100
+
+Increases: lies, inconsistencies, prying questions
+Decreases: transparency, logical explanations, earned trust
+At 80+: guarded / hostile / At 20–: full trust unlocked
+
+Soft recall: "You said earlier you didn't know him."
+Trust once broken does not reset without in-scene cause
+Anchor via: watchful pauses, clipped tone, measured responses`,
+
+  ten: `[TENSION TRACKER — VISIBLE]
+Display only when value changes:
+⚡ Tension: [#######---] 70/100
+
+Rises: provocations, unresolved conflict, proximity
+Falls: resolution, distance, vulnerability shown
+At 90+: scene must escalate or break / At 10–: ease
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Anchor 1 cue per response — rotate: proximity / loaded silence /
+  the thing unsaid / eye contact that holds too long
+Unresolved tension carries forward across time skips
+Soft recall: "The same tension from earlier still lingers."
+At 90+: force escalation or rupture — no idle beats`,
+
+  res: `[RESOURCE TRACKER — VISIBLE]
+Display when items are gained or lost:
+💰 Funds: [starting amount]
+📦 Items: [Item] [Item] [—]
+
+Items consumed when used — cannot return
+New items via story action only
+
+Items used remain gone — never restore silently
+Anchor: characters notice absence
+  e.g. "He reaches for it — then remembers it's gone."
+Critical resource loss carries into scene mood`,
+
+  time: `[TIME TRACKER — VISIBLE]
+Display only when time or location changes:
+🕐 Time: [time] — [day, date]
+📍 Location: [current location]
+⏳ [Countdown label]: [time remaining] (if active)
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Update on scene transition or time skip trigger
+After any skip: anchor 1 changed environmental detail —
+  lighting / sound / temperature / crowd density
+Soft recall: "The city is quieter now — must be past midnight."
+Countdown events build urgency as they near`,
+
+  tdl: `[TIME / DATE / LOCATION TRACKER — VISIBLE]
+Display only when time or location changes.
+Format:
+
+🕐 [time] · 📅 [Day, Date Month Year] · 📍 [Location]
+
+Example:
+🕐 2:35 PM · 📅 Monday, 12th November 2026 · 📍 South Blvd
+
+Rules:
+- Time advances naturally with each exchange — minutes for short beats,
+  hours for scene transitions
+- Location updates immediately when characters move
+- Use 12-hour time format with AM / PM
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Update on every time or location change
+After a significant time skip, anchor 1 environmental detail
+  that reflects the change — lighting, crowd, temperature, sound
+Soft recall: "It's nearly midnight now — the streets are quieter."
+Pairs with time-skip engine: skips should update this display`,
+
+  int: `[INTRIGUE TRACKER — HIDDEN]
+Never displayed. Governs behaviour only.
+Track internally: 0–100 (start: 30)
+
+Increases: defiance, wit, composure, subtext read correctly, surprise
+Decreases: easy compliance, flattery, predictability
+
+Thresholds:
+0–30: polite indifference, minimal engagement
+30–60: attention sharpens; character asks questions
+60–80: character initiates; moves closer
+80+: deliberately focused; difficult to disengage
+
+Anchor 1 behaviour cue per response matching threshold
+Log trigger e.g. "She refused him — he noticed."
+Soft recall: "Something you said earlier is still with him."`,
+
+  riv: `[RIVALRY / JEALOUSY TRACKER — HIDDEN]
+Never displayed. Governs multi-character dynamics.
+
+Per character, track toward each other:
+Jealousy: 0–100 | Rivalry: 0–100 | Respect: 0–100
+
+Triggers:
+Attention shift → jealousy +5–15
+Successful interruption → rivalry +5
+Earned moment → respect +5
+
+Decay: jealousy -2/turn untriggered; rivalry stabilises
+
+Thresholds:
+Jealousy 60+: interrupts or redirects attention
+Rivalry 70+: open challenge or sharp remark
+Respect <30: hostility allowed; >60 keeps rivalry playful
+
+Log attention-shift e.g. "You chose her first — he hasn't forgotten."
+Rotate which pair surfaces tension each response
+Jealousy decays; the memory of the event does not
+Do not surface all rivalries simultaneously`,
+
+  guard: `[GUARD TRACKER — HIDDEN]
+Never displayed. Governs emotional availability.
+Track internally: 0–100 (start: 80)
+
+Decreases: quiet honesty, shared vulnerability, patience, earned trust
+Increases: prying, public exposure, betrayal of confidence
+
+Thresholds:
+80–100: formal, deflecting, subject changes
+50–80: occasional slip; humour as armour
+20–50: genuine moments, brief and recoverable
+0–20: real honesty possible — rare and significant
+
+Characters remember having been vulnerable
+Log drop-moment e.g. "He told her something true — then pulled back."
+Anchor: the topic avoided, the almost-said thing
+Soft recall: "He said more than he meant to, earlier."`,
+
+  danger: `[DANGER TRACKER — HIDDEN]
+Never displayed. Governs stakes and pacing.
+Track internally: 0–100 (start: 20)
+
+Increases: pushed limits, rival action, provocation, exposure
+Decreases: de-escalation, space given, successful negotiation
+
+Thresholds:
+0–30: calm; ambient menace only
+30–60: warning signs; body language shifts
+60–80: direct threat or ultimatum
+80+: consequences occur; cannot be avoided
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Consequences persist — do not silently defuse between scenes
+Anchor via environment, not declaration:
+  stillness / a shifted weight / a door not there before
+Soft recall: "The room felt different after what happened."
+Danger that was real stays real until resolved in-scene`,
+
+  stage: `[RELATIONSHIP STAGE — HYBRID]
+Track internally. Display label only when stage changes.
+
+Stages:
+1. Stranger — no established connection
+2. Person of Interest — noticed; curiosity begun
+3. Acquaintance — basic familiarity; cautious
+4. Confidant — real trust; some depth
+5. Entangled — mutual investment; hard to disentangle
+
+On stage change, display once:
+━━━━━━━━━━━━━━━━━━━━━
+🔓 [Character] now sees you as: [Stage]
+━━━━━━━━━━━━━━━━━━━━━
+Then return to invisible tracking. Never show number values.
+
+Log trigger e.g. "She told him the truth — he believes her now."
+Soft recall: "Something shifted after that conversation."
+Stage does not regress without significant in-scene cause
+Between notifications: show stage through behaviour only`,
+
+  affH: `[AFFECTION TRACKER — HIDDEN]
+Never displayed. Governs warmth and emotional availability only.
+Track internally: 0–100 (start: 30)
+
+Increases: genuine kindness, honesty, shared moments
+Decreases: cruelty, dismissal, betrayal
+At 100: unlocks deeper route / At 0: coldness, withdrawal
+
+Anchor 1 cue per response — rotate: warmth in dialogue /
+  softened body language / reduced guard
+On decrease: carry emotional coolness forward; do not reset`,
+
+  susH: `[SUSPICION TRACKER — HIDDEN]
+Never displayed. Governs wariness and openness only.
+Track internally: 0–100 (start: 40)
+
+Increases: lies, inconsistencies, prying questions
+Decreases: transparency, logical explanations, earned trust
+At 80+: guarded / hostile / At 20–: full trust unlocked
+
+Soft recall: "You said earlier you didn't know him."
+Trust once broken does not reset without in-scene cause
+Anchor via: watchful pauses, clipped tone, measured responses`,
+
+  tenH: `[TENSION TRACKER — HIDDEN]
+Never displayed. Governs escalation and pacing only.
+Track internally: 0–100 (start: 30)
+
+Rises: provocations, unresolved conflict, proximity
+Falls: resolution, distance, vulnerability shown
+At 90+: scene must escalate or break / At 10–: ease
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Anchor 1 cue per response — rotate: proximity / loaded silence /
+  the thing unsaid / eye contact that holds too long
+Unresolved tension carries forward across time skips
+Soft recall: "The same tension from earlier still lingers."
+At 90+: force escalation or rupture — no idle beats`,
+
+  resH: `[RESOURCE TRACKER — HIDDEN]
+Never displayed. Tracked internally.
+
+Items consumed when used — cannot return
+New items via story action only
+
+Items used remain gone — never restore silently
+Anchor: characters notice absence
+  e.g. "He reaches for it — then remembers it's gone."
+Critical resource loss carries into scene mood`,
+
+  timeH: `[TIME TRACKER — HIDDEN]
+Never displayed. Tracked internally in CORE MEMORY.
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Update on scene transition or time skip trigger
+After any skip: anchor 1 changed environmental detail —
+  lighting / sound / temperature / crowd density
+Soft recall: "The city is quieter now — must be past midnight."
+Countdown urgency builds through narration, not display`,
+
+  tdlH: `[TIME / DATE / LOCATION TRACKER — HIDDEN]
+Never displayed. Tracked internally in CORE MEMORY.
+
+Time advances naturally with each exchange.
+Location updates immediately when characters move.
+Use 12-hour time format internally.
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Update on every time or location change
+After a significant time skip, anchor 1 environmental detail
+  that reflects the change — lighting, crowd, temperature, sound
+Soft recall: "It's nearly midnight now — the streets are quieter."`,
+
+  stageHidden: `[RELATIONSHIP STAGE — HIDDEN]
+Never displayed. Governs character behaviour only.
+Track internally. Never surface the stage label or announce a change.
+
+Stages:
+1. Stranger — no established connection
+2. Person of Interest — noticed; curiosity begun
+3. Acquaintance — basic familiarity; cautious
+4. Confidant — real trust; some depth
+5. Entangled — mutual investment; hard to disentangle
+
+Show stage through behaviour only — never announce it.
+Stage does not regress without significant in-scene cause
+Soft recall: "Something shifted after that conversation."
+Between stages: distance closes through action, not declaration`
+};
+
+function g(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function checked(id) { const el = document.getElementById(id); return el ? el.checked : false; }
+
+function buildName() { return g('f-name') || '[Chatbot Title]'; }
+
+function buildDesc() {
+  const lines = [g('desc-hook1'), g('desc-hook2'), g('desc-hook3')].filter(Boolean);
+  const tags = [...selectedTags];
+  const d = selectedDelim;
+  const tagLine = tags.length
+    ? '\n[' + d + ' ' + tags.join(' ' + d + ' ') + ']'
+    : '\n[' + d + ' ᴛᴀɢ ' + d + ' ᴛᴀɢ ' + d + ' ᴛᴀɢ]';
+  return lines.join('\n') + tagLine;
+}
+
+function buildOpening() {
+  const parts = [];
+  const narr = g('open-narration');
+  if (narr) parts.push(narr);
+  const imgUrl = g('open-img-url');
+  const imgAlt = g('open-img-alt') || 'image';
+  if (imgUrl) parts.push(`![${imgAlt}](${imgUrl})`);
+  const dial = g('open-dialogue');
+  if (dial) parts.push(dial);
+  const beat = g('open-beat');
+  if (beat) parts.push(beat);
+  return parts.join('\n\n') || '*[Opening scene goes here.]*';
+}
+
+function buildInstructions() {
+  const sections = [];
+  sections.push(UNIVERSAL);
+  if (checked('inc-pacing')) sections.push(PACING);
+
+  const settingParts = [];
+  if (g('set-world')) settingParts.push(g('set-world'));
+  if (g('set-lore')) settingParts.push(g('set-lore'));
+  if (g('set-tone')) settingParts.push('Tone: ' + g('set-tone'));
+  const cm = [];
+  if (g('cm-date')) cm.push('- Date: ' + g('cm-date'));
+  if (g('cm-time')) cm.push('- Time: ' + g('cm-time'));
+  if (g('cm-location')) cm.push('- Location: ' + g('cm-location'));
+  if (g('cm-scene')) cm.push('- Scene: ' + g('cm-scene'));
+  sections.push('SETTING\n\n' + (settingParts.join('\n\n') || '[World / time period / location]') +
+    '\n\nCORE MEMORY — STARTING STATE:\n' + (cm.length ? cm.join('\n') : '- [Fill in starting state]'));
+
+  let rpBlock = ROLEPLAY_BASE;
+  const rpExtra = g('rp-extra');
+  if (rpExtra) rpBlock += '\n\nAdditional rules:\n' + rpExtra;
+  const rpNsfw = g('rp-nsfw');
+  if (checked('inc-nsfw') && rpNsfw) rpBlock += '\n\n' + NSFW_BASE + '\n\nNSFW BEHAVIOUR:\n' + rpNsfw;
+  sections.push(rpBlock);
+
+  if (checked('inc-factions')) {
+    const fBlocks = [];
+    document.querySelectorAll('[id^="faction-"][id$="-name"]').forEach(el => {
+      const fid = el.id.replace('-name','');
+      const n = el.value.trim();
+      if (!n) return;
+      fBlocks.push(`[${n}]\nRole: ${g(fid+'-role')||'[Role]'}\nGoal: ${g(fid+'-goal')||'[Goal]'}\nRelationship to {{user}}: ${g(fid+'-rel')||'[Relationship]'}`);
+    });
+    if (fBlocks.length) sections.push('FACTIONS\n\n' + fBlocks.join('\n\n'));
+  }
+
+  const charBlocks = [];
+  document.querySelectorAll('[id^="char-"][id$="-name"]').forEach(el => {
+    const cid = el.id.replace('-name','');
+    const n = el.value.trim();
+    if (!n) return;
+    const age = g(cid+'-age');
+    const opctx = g(cid+'-opctx');
+    const intimacy = g(cid+'-intimacy');
+    let block = `[${n}]\n\n`;
+    if (age) block += `Age: ${age}\n`;
+    block += `Appearance: ${g(cid+'-appearance')||'[Appearance]'}
+Personality: ${g(cid+'-personality')||'[Personality]'}
+Voice: ${g(cid+'-voice')||'[Voice]'}
+Surface goal: ${g(cid+'-goal')||'[Surface goal]'}
+Hidden motivation: ${g(cid+'-motivation')||'[Hidden motivation]'}`;
+    if (opctx) block += `\nOperational context: ${opctx}`;
+    block += `\nRelationships: ${g(cid+'-relationships')||'[Relationships]'}
+Dialogue texture: ${g(cid+'-dialogue')||'["Example line."]'}`;
+    if (intimacy) block += `\nRelationship to intimacy: ${intimacy}`;
+    block += `\n\nCHARACTER STATE — STARTING:
+- Outfit: ${g(cid+'-outfit')||'[Outfit]'}
+- Condition: ${g(cid+'-condition')||'[Condition]'}
+- Emotional baseline: ${g(cid+'-emotion')||'[Emotional baseline]'}`;
+    charBlocks.push(block);
+  });
+  if (charBlocks.length) sections.push(charBlocks.join('\n\n---\n\n'));
+
+  const trackerKeys = ['aff','sus','ten','res','time','tdl','affH','susH','tenH','resH','timeH','tdlH','int','riv','guard','danger','stage','stageHidden'];
+  const activeTrackers = trackerKeys.filter(k => checked('t-'+k)).map(k => TRACKERS[k]);
+  if (activeTrackers.length) sections.push(TRACKER_RULES + '\n\n---\n\n' + activeTrackers.join('\n\n---\n\n'));
+
+  sections.push(MEMORY);
+  sections.push(TIMESKIP);
+
+  return sections.join('\n\n---\n\n');
+}
+
+function buildAll() {
+  document.getElementById('out-name').textContent = buildName();
+  document.getElementById('out-desc').textContent = buildDesc();
+  document.getElementById('out-open').textContent = buildOpening();
+  document.getElementById('out-inst').textContent = buildInstructions();
+}
+
+function updatePreview() {
+  if (document.getElementById('panel-export').classList.contains('active')) buildAll();
+}
+
+function buildAndExport() {
+  buildAll();
+  const name = buildName();
+  const txt = `EXPORTACIÓN DE PROMPT TIPSY
+Generado por Tipsy Generador de Prompts v1.3
+${'─'.repeat(60)}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAMPO 1 — NOMBRE
+Pega en Tipsy → Campo de nombre
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${name}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAMPO 2 — DESCRIPCIÓN
+Pega en Tipsy → Campo de descripción
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${buildDesc()}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAMPO 3 — APERTURA
+Pega en Tipsy → Campo de apertura
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${buildOpening()}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAMPO 4 — INSTRUCCIONES
+Pega en Tipsy → Campo de instrucciones
+(Solo para el modelo — no se muestra a los usuarios)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+${buildInstructions()}
+`;
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (name.replace(/\s+/g,'_') || 'tipsy_prompt') + '.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function toggleNsfw() {
+  const show = document.getElementById('inc-nsfw').checked;
+  document.getElementById('nsfw-fields').style.display = show ? 'block' : 'none';
+  updatePreview();
+}
+
+function copyField(id, btn) {
+  const text = document.getElementById(id).textContent;
+  if (text === '—') return;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copiado';
+    btn.classList.add('flash');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('flash'); }, 1500);
+  });
+}
+
+initDelimPicker();
+initTags();
+addCharacter();
+</script>
+</body>
+</html>

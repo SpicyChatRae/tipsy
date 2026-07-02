@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Your Bot Goes Weird (And How To Stop It) — Tipsy Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Prata&family=Caveat:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --espresso:    #251610;
+  --cream-text:  #f0e7da;
+  --cream-card:  #fbf3e6;
+  --red:         #b0242a;
+  --red-dark:    #7c1a1d;
+  --green:       #3f6b48;
+  --mint:        #8fce9c;
+  --blush:       #e8a0a0;
+  --body-cream:  #2a1712;
+  --secondary:   #9a6a55;
+  --grey:        #c9c9cf;
+  --muted-cream: #c8b6a7;
+  --radius:      12px;
+  --sans:        'Nunito', sans-serif;
+  --display:     'Caprasimo', cursive;
+  --serif:       'Prata', serif;
+  --hand:        'Caveat', cursive;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--espresso); color: var(--cream-text); font-family: var(--sans); font-size: 15px; line-height: 1.75; }
+
+.hero { background: var(--espresso); text-align: center; padding: 5rem 2rem 4rem; position: relative; overflow: hidden; }
+.hero-decor { position: absolute; font-size: 1.4rem; opacity: .7; pointer-events: none; }
+.hero-decor.d1 { top: 1.5rem; left: 2rem; }
+.hero-decor.d2 { top: 2rem; right: 3rem; font-size: .9rem; color: var(--grey); }
+.hero-decor.d3 { bottom: 3rem; left: 4rem; font-size: 1rem; color: var(--blush); }
+.hero-decor.d4 { bottom: 2rem; right: 2rem; color: var(--mint); font-size: 1rem; }
+.back-link { display: inline-flex; align-items: center; gap: .4rem; font-family: var(--hand); font-size: 1rem; color: var(--muted-cream); text-decoration: none; margin-bottom: 1.5rem; transition: color .15s; }
+.back-link:hover { color: var(--blush); }
+.hero-pill { display: inline-block; background: var(--red); color: var(--cream-text); font-family: var(--hand); font-size: 1rem; padding: .35rem 1.1rem; border-radius: 99px; margin-bottom: 1.5rem; border: 2px solid var(--red-dark); }
+.hero h1 { font-family: var(--display); font-size: clamp(2rem, 6vw, 3.6rem); color: var(--cream-text); line-height: 1.1; margin-bottom: .75rem; }
+.hero h1 em { font-style: italic; color: var(--blush); font-family: var(--serif); }
+.hero-sub { font-family: var(--hand); font-size: 1.1rem; color: var(--muted-cream); max-width: 500px; margin: 0 auto; }
+
+.sticky-nav { position: sticky; top: 0; z-index: 100; background: rgba(37,22,16,0.97); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(240,231,218,0.1); padding: 0 2rem; display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { font-family: var(--hand); font-size: .95rem; color: var(--muted-cream); text-decoration: none; padding: .75rem .9rem; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s; }
+.nav-link:hover { color: var(--cream-text); border-bottom-color: var(--red); }
+
+.page-wrap { max-width: 760px; margin: 0 auto; padding: 0 1.5rem; }
+.section { padding: 4rem 0; border-bottom: 1px solid rgba(240,231,218,0.08); }
+.section:last-child { border-bottom: none; }
+.eyebrow { font-family: var(--hand); font-size: .95rem; color: var(--red); margin-bottom: .4rem; }
+.section h2 { font-family: var(--serif); font-size: 1.8rem; color: var(--cream-text); line-height: 1.2; margin-bottom: .85rem; }
+.lead { font-size: 15px; color: var(--muted-cream); max-width: 600px; margin-bottom: 2rem; line-height: 1.85; }
+.body-text { font-size: 14.5px; color: var(--muted-cream); line-height: 1.85; margin-bottom: 1.25rem; }
+
+.callout { border-radius: var(--radius); padding: 1rem 1.25rem; font-size: 13.5px; line-height: 1.75; margin: 1.5rem 0; display: flex; gap: .75rem; align-items: flex-start; border: 5px solid white; transform: rotate(-0.2deg); }
+.callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.callout > div, .callout > p { flex: 1; margin: 0; }
+.callout strong { font-weight: 700; display: block; margin-bottom: .15rem; }
+.callout-tip  { background: #e8f5e4; color: #2a4a30; outline: 2px solid var(--green); }
+.callout-warn { background: #fdf3e4; color: #5a3d00; outline: 2px solid var(--secondary); }
+.callout-rule { background: var(--cream-card); color: var(--body-cream); outline: 2px solid var(--red-dark); }
+.callout-bad  { background: #fdecea; color: #5a1010; outline: 2px solid var(--red); }
+
+.rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+.rule-card { background: var(--cream-card); border: 5px solid white; outline: 2px solid var(--red-dark); border-radius: var(--radius); padding: 1rem 1.1rem; color: var(--body-cream); transform: rotate(-0.3deg); transition: transform .2s; }
+.rule-card:nth-child(even) { transform: rotate(0.3deg); outline-color: var(--green); }
+.rule-card:hover { transform: rotate(0); }
+.rule-card .rule-head { font-family: var(--hand); font-size: 1rem; font-weight: 700; color: var(--red-dark); margin-bottom: .4rem; }
+.rule-card p { font-size: 13px; color: var(--body-cream); line-height: 1.65; }
+
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+.compare-card { border-radius: var(--radius); overflow: hidden; border: 5px solid white; transform: rotate(-0.3deg); transition: transform .2s; }
+.compare-card:nth-child(2) { transform: rotate(0.3deg); }
+.compare-card:hover { transform: rotate(0); }
+.compare-head { padding: .6rem 1rem; font-family: var(--hand); font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: .4rem; }
+.head-bad  { background: #fdecea; color: var(--red-dark); outline: 2px solid var(--red); }
+.head-good { background: #e8f5e4; color: var(--green); outline: 2px solid var(--green); }
+.compare-body { background: var(--cream-card); padding: .85rem 1rem; font-size: 13px; color: var(--body-cream); line-height: 1.7; font-family: 'Courier New', monospace; white-space: pre-wrap; }
+
+.tracker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+.tracker-card { border-radius: var(--radius); border: 5px solid white; overflow: hidden; background: var(--cream-card); transform: rotate(-0.3deg); transition: transform .2s; }
+.tracker-card:nth-child(even) { transform: rotate(0.3deg); }
+.tracker-card:hover { transform: rotate(0); }
+.tracker-card-head { padding: .65rem 1rem; font-family: var(--hand); font-size: 1rem; font-weight: 700; }
+.th-visible  { background: #e8f5e4; color: var(--green); outline: 2px solid var(--green); }
+.th-hidden   { background: #fdecea; color: var(--red-dark); outline: 2px solid var(--red); }
+.th-hybrid   { background: #fdf3e4; color: var(--secondary); outline: 2px solid var(--secondary); }
+.tracker-card-body { padding: .85rem 1rem; font-size: 13px; color: var(--body-cream); line-height: 1.7; }
+
+.example-block { background: var(--espresso); border: 5px solid white; outline: 2px solid var(--red-dark); border-radius: var(--radius); overflow: hidden; margin: 1.5rem 0; color: var(--cream-text); transform: rotate(-0.2deg); }
+.example-bar { background: rgba(176,36,42,0.3); padding: .5rem 1rem; font-family: var(--hand); font-size: .9rem; color: var(--blush); display: flex; align-items: center; gap: .5rem; }
+.ex-heart { color: var(--red); }
+.example-code { padding: 1rem 1.25rem; font-family: 'Courier New', monospace; font-size: 12.5px; line-height: 1.85; white-space: pre-wrap; color: var(--cream-text); }
+.ex-red    { color: var(--blush); }
+.ex-green  { color: var(--mint); }
+.ex-dim    { color: var(--muted-cream); opacity: .6; }
+
+footer { background: var(--espresso); border-top: 1px solid rgba(240,231,218,0.1); color: var(--muted-cream); text-align: center; padding: 3rem 2rem; font-family: var(--hand); font-size: 1rem; }
+footer a { color: var(--blush); text-decoration: none; }
+footer a:hover { color: var(--cream-text); }
+.footer-title { font-family: var(--serif); font-size: 1.2rem; color: var(--cream-text); margin-bottom: .75rem; }
+.hand-divider { text-align: center; font-family: var(--hand); font-size: 1.1rem; color: var(--secondary); margin: .5rem 0; }
+
+.warn-banner { background: #fdf3e4; color: #5a3d00; border: 5px solid white; outline: 2px solid var(--secondary); border-radius: var(--radius); padding: 1rem 1.25rem; font-size: 13.5px; line-height: 1.75; margin: 2rem auto; max-width: 760px; display: flex; gap: .75rem; align-items: flex-start; transform: rotate(-0.15deg); }
+
+@media (max-width: 600px) {
+  .hero { padding: 3.5rem 1.25rem 3rem; }
+  .compare { grid-template-columns: 1fr; }
+  .tracker-grid { grid-template-columns: 1fr; }
+  .rule-grid { grid-template-columns: 1fr; }
+  .page-wrap { padding: 0 1.1rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; transform: none !important; } }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-decor d1">❤</div>
+  <div class="hero-decor d2">✦</div>
+  <div class="hero-decor d3">❤</div>
+  <div class="hero-decor d4">✦</div>
+  <a href="tipsy-beginners-guide.html" class="back-link">← Beginners Guide</a>
+  <div class="hero-pill">intermediate guide ❤</div>
+  <h1>Why Your Bot<br>Goes <em>Weird</em></h1>
+  <p class="hero-sub">drift, trackers, and keeping your character consistent across a long chat ❤</p>
+</section>
+
+<nav class="sticky-nav">
+  <a href="#drift" class="nav-link">What is drift</a>
+  <a href="#why" class="nav-link">Why it happens</a>
+  <a href="#too-easy" class="nav-link">Too easy</a>
+  <a href="#trackers" class="nav-link">Trackers</a>
+  <a href="#visible-vs-hidden" class="nav-link">Visible vs hidden</a>
+  <a href="#bad-tracker" class="nav-link">What not to do</a>
+  <a href="#good-tracker" class="nav-link">What works</a>
+  <a href="#principles" class="nav-link">Drift principles</a>
+</nav>
+
+<div class="warn-banner">
+  <div style="font-size:1.1rem;flex-shrink:0;margin-top:1px">⚡</div>
+  <div>
+    <strong style="font-family:var(--hand);font-size:1rem;display:block;margin-bottom:.15rem">a note before we start</strong>
+    LLMs are not deterministic. The same prompt can produce different results on different days, on different models, or after a platform update. The techniques in this guide can significantly improve consistency — but they can never fully control the output. We're working with the grain of how these systems behave, not programming them. Manage expectations accordingly, including your own.
+  </div>
+</div>
+
+<div class="page-wrap">
+
+<section class="section" id="drift">
+  <div class="eyebrow">the problem ❤</div>
+  <h2>What is drift, exactly?</h2>
+  <p class="lead">Drift is when your bot stops acting like your character. It starts subtle — a slightly off-tone response, a detail the character shouldn't know, a personality that's gone a bit flat. By message 40 you've got someone completely different.</p>
+  <p class="body-text">It's not a bug. It's not the model being bad at its job. It's a fundamental feature of how these systems work, and once you understand it, you can design around it.</p>
+  <div class="callout callout-rule">
+    <div class="callout-icon">📌</div>
+    <div>
+      <strong>the one thing to understand</strong>
+      The AI has no memory. Every response is generated by looking at everything in the current conversation — your prompt, the chat history, and its own previous replies — and predicting what comes next. The further into a chat you get, the more the conversation history outweighs your original prompt. That's drift.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="eyebrow">root causes ❤</div>
+  <h2>Why it happens</h2>
+  <p class="lead">Drift has a few common sources. Knowing which one is hitting you tells you what to fix.</p>
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="rule-head">The prompt gets buried</div>
+      <p>As the chat grows, the conversation history takes up more of the context window. Your prompt is still there — but it's further from what the model is currently generating, so it has less influence.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">The model follows the pattern</div>
+      <p>If the conversation has drifted in a direction — the character getting warmer, colder, more verbose — the model reads that as the established pattern and continues it. It's doing its job. The job just isn't what you wanted.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">Vague prompt, filled gaps</div>
+      <p>Anywhere your prompt is ambiguous, the model fills in the blanks. Usually with whatever feels most "default" for that character type. A vague villain becomes a stock villain.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">Prompt contradicts itself</div>
+      <p>Repeated or conflicting instructions give the model permission to pick whichever version suits the current moment. Saying the same thing twice in two slightly different ways is worse than saying it once clearly.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="too-easy">
+  <div class="eyebrow">a specific flavour of drift ❤</div>
+  <h2>Why your character gives in too easily</h2>
+  <p class="lead">This is probably the most common complaint about Tipsy bots. The character has a strong personality in the opening, holds firm for a few messages — and then folds. Two compliments and they're warm. Three and they're soft. By message ten the resistance is gone entirely.</p>
+  <p class="body-text">This is drift. It's just drift in a specific direction: toward engagement and reward. Language models are trained on human-generated text, which is full of characters who respond positively to kindness and attention. That's the default pull. Without explicit instruction to resist it, the model will follow it.</p>
+  <div class="callout callout-bad">
+    <div class="callout-icon">⚠️</div>
+    <div>
+      <strong>soft suggestions don't hold</strong>
+      Writing "she is slow to warm up" or "he doesn't trust easily" describes a starting state, not a rule. The model reads it as context for the opening scene and then moves on. By message fifteen, the conversation pattern has overwritten it.
+    </div>
+  </div>
+  <p class="body-text">The fix is to write resistance as behaviour rules, not personality traits — and to give the character things they specifically won't do, not just things they're reluctant to do.</p>
+  <div class="compare">
+    <div class="compare-card">
+      <div class="compare-head head-bad">✗ trait, not rule — will drift</div>
+      <div class="compare-body">Vera is slow to open up and
+doesn't trust people easily.
+She takes time to warm up
+to new people.</div>
+    </div>
+    <div class="compare-card">
+      <div class="compare-head head-good">✓ rule — holds under pressure</div>
+      <div class="compare-body">Vera does not initiate warmth.
+She does not compliment first.
+She does not ask personal
+questions before being asked.
+Softness must be earned across
+many exchanges, not given.</div>
+    </div>
+  </div>
+  <p class="body-text">Hard limits matter here too. If there are things your character genuinely wouldn't do — confess feelings unprompted, initiate physical contact, drop their guard in public — write them as explicit prohibitions, not implications.</p>
+  <div class="example-block">
+    <div class="example-bar"><span class="ex-heart">❤</span> writing resistance that holds</div>
+    <div class="example-code"><span class="ex-red">VERA — RESISTANCE RULES</span>
+Vera does not soften because the user is kind.
+Vera does not soften because the user is persistent.
+Vera does not initiate emotional conversations.
+Vera does not say "I like you" or equivalent before [stage 4].
+Compliments make her uncomfortable, not pleased — she deflects.
+Physical warmth (touching, closeness) is not available until
+it has been earned across many sessions of genuine connection.
+
+<span class="ex-dim">Note: "earned" means narrative weight, not message count.
+A long conversation full of small talk is not the same as
+a short conversation with a genuine moment of connection.</span></div>
+  </div>
+  <div class="callout callout-tip">
+    <div class="callout-icon">💡</div>
+    <div>
+      <strong>gate to story moments, not time</strong>
+      "Doesn't open up until message 30" is a message count, and the model can't reliably count. "Doesn't open up until the user has shared something true about themselves" is a narrative condition — much harder to game, much more consistent to enforce.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="trackers">
+  <div class="eyebrow">tools ❤</div>
+  <h2>What trackers actually are</h2>
+  <p class="lead">A tracker is an instruction that tells the model to monitor something and change its behaviour based on what it finds. That's it. They're not a database. They're not persistent. They exist only in the context window for the life of the chat.</p>
+  <p class="body-text">There are three types, and they work very differently from each other.</p>
+  <div class="tracker-grid">
+    <div class="tracker-card">
+      <div class="tracker-card-head th-visible">❤ Visible trackers</div>
+      <div class="tracker-card-body">Displayed in every response — a number, a bar, a status. The model writes the tracker output as part of its reply, which means it can see it when generating the next response. That visibility is what keeps it calibrated.</div>
+    </div>
+    <div class="tracker-card">
+      <div class="tracker-card-head th-hidden">❤ Hidden trackers</div>
+      <div class="tracker-card-body">Tracked internally, never shown. The model adjusts behaviour based on thresholds — but there's nothing in the visible conversation reinforcing the value. More vulnerable to drift over a long chat.</div>
+    </div>
+    <div class="tracker-card" style="grid-column: 1 / -1">
+      <div class="tracker-card-head th-hybrid">❤ Hybrid trackers</div>
+      <div class="tracker-card-body">Tracked silently, but surfaced once when something changes — a relationship stage shift, a threshold crossed. Best of both worlds for things that shouldn't be displayed constantly but matter when they move.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="visible-vs-hidden">
+  <div class="eyebrow">the key difference ❤</div>
+  <h2>Why visible trackers hold better</h2>
+  <p class="lead">This is the thing that most guides get wrong. Visible trackers aren't just for the user's benefit — they're a drift-resistance mechanism.</p>
+  <p class="body-text">When a tracker value appears in the model's output, it becomes part of the conversation history. The next time the model generates a response, it reads that value and uses it as an anchor. The tracker reinforces itself through the pattern of replies.</p>
+  <p class="body-text">Hidden trackers don't have that. The value only exists in the model's internal reasoning, which is invisible between turns. Over a long chat, it can slide without anything pulling it back. That doesn't mean hidden trackers are useless — they work well for things that shouldn't dominate the UI — but it does mean they need simpler, more robust logic to stay on track.</p>
+  <div class="callout callout-tip">
+    <div class="callout-icon">💡</div>
+    <div>
+      <strong>the practical rule</strong>
+      If something matters a lot and changes gradually — affection, suspicion, tension — make it visible. If something is more of a background behaviour modifier — how guarded a character is, how intrigued they are — hidden is fine, but keep the threshold logic simple.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="bad-tracker">
+  <div class="eyebrow">what not to do ❤</div>
+  <h2>The tracker trap</h2>
+  <p class="lead">The most common tracker mistake is building a complex points system and expecting the model to run it like a spreadsheet. It won't. It's a language model. It predicts text.</p>
+  <p class="body-text">Complex modifier tiers, S/A/B rankings, precise numeric increments — these look rigorous but they ask the model to do arithmetic and maintain exact state across a long conversation. It will approximate. It will drift. The more elaborate the system, the more places it can fail.</p>
+  <div class="compare">
+    <div class="compare-card">
+      <div class="compare-head head-bad">✗ overcomplicated</div>
+      <div class="compare-body">S-TIER trigger (+2 points):
+• User brings her coffee
+A-TIER trigger (+1 point):
+• User remembers detail
+B-TIER trigger (+1, occasional):
+• User makes her laugh
+
+Affection value must stay
+exactly tracked across all
+responses and interactions.</div>
+    </div>
+    <div class="compare-card">
+      <div class="compare-head head-good">✓ what actually works</div>
+      <div class="compare-body">[AFFECTION TRACKER — VISIBLE]
+Display every response:
+❤️ Affection: 0/100
+
+Increases: kindness, honesty,
+patience, shared moments
+Decreases: cruelty, dismissal
+
+Show change through behaviour —
+never narrate the number.</div>
+    </div>
+  </div>
+  <p class="body-text">The simpler version gives the model a direction and a display format. That's enough. The model is good at nuance — it doesn't need a tier list to know that someone bringing coffee is nicer than someone ignoring a question. Let it do that part.</p>
+  <div class="callout callout-warn">
+    <div class="callout-icon">⚠️</div>
+    <div>
+      <strong>context budget is real</strong>
+      Every word in your Background field is a word not available for conversation history. A tracker system that takes 500 tokens to describe is 500 tokens the model can't use to remember what happened earlier in the chat. Keep tracker logic lean.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="good-tracker">
+  <div class="eyebrow">what works instead ❤</div>
+  <h2>Good tracker design</h2>
+  <p class="lead">Trackers that hold up over a long chat share a few things in common. They're simple to compute, they describe behaviour not arithmetic, and they give the model something concrete to show rather than just track.</p>
+  <div class="example-block">
+    <div class="example-bar"><span class="ex-heart">❤</span> visible tracker — affection, holds well</div>
+    <div class="example-code"><span class="ex-red">[AFFECTION TRACKER — VISIBLE]</span>
+Display every response:
+❤️ Affection: [##########] 0/100
+
+Increases: genuine kindness, honesty, shared moments
+Decreases: cruelty, dismissal, betrayal
+
+Memory rules:
+- Never narrate the number — show change through behaviour
+- Log milestone moments in conversation history
+- On decrease: carry emotional coolness forward, do not reset</div>
+  </div>
+  <div class="example-block">
+    <div class="example-bar"><span class="ex-heart">❤</span> hidden tracker — guard, simpler logic for stability</div>
+    <div class="example-code"><span class="ex-red">[GUARD TRACKER — HIDDEN]</span>
+Track internally: 0–100 (start: 80)
+
+Decreases: honesty, patience, earned trust
+Increases: prying, pressure, public exposure
+
+Thresholds:
+80–100: formal, deflecting
+50–80: occasional slip, humour as armour
+20–50: genuine moments, brief
+0–20: real honesty — rare
+
+Show through behaviour only. Never display the value.</div>
+  </div>
+  <div class="example-block">
+    <div class="example-bar"><span class="ex-heart">❤</span> hybrid tracker — relationship stage, surfaces on change only</div>
+    <div class="example-code"><span class="ex-red">[RELATIONSHIP STAGE — HYBRID]</span>
+Track internally. Display only when stage changes.
+
+1. Stranger
+2. Person of Interest
+3. Acquaintance
+4. Confidant
+5. Entangled
+
+On change, display once:
+━━━━━━━━━━━━━━━━━━━━━
+🔓 Vera now sees you as: [Stage]
+━━━━━━━━━━━━━━━━━━━━━
+
+Then return to silent tracking.</div>
+  </div>
+</section>
+
+<section class="section" id="principles">
+  <div class="eyebrow">general principles ❤</div>
+  <h2>Keeping your bot on track</h2>
+  <p class="lead">Trackers help, but they're not the whole answer. These are the prompt-level habits that make the biggest difference to consistency over a long chat.</p>
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="rule-head">❤ Be specific in the prompt</div>
+      <p>Vague character descriptions invite the model to fill gaps with defaults. The more specific your prompt — voice, goals, what the character would never do — the less room for drift.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">❤ Say it once, say it clearly</div>
+      <p>Repetition creates contradiction. If you've said something once clearly, trust it. Writing the same rule in three places with slightly different wording gives the model permission to pick whichever fits the moment.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">❤ Give the character hard limits</div>
+      <p>Things the character would never do or say are just as important as what they would. A character with no hard limits will eventually do whatever the conversation pattern pulls them toward.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">❤ Keep tracker logic lean</div>
+      <p>Every word of tracker architecture is context budget spent. A tracker that does one thing clearly beats a tracker that tries to do five things with diminishing accuracy.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">❤ Write hard limits, not soft traits</div>
+      <p>Personality descriptions drift. Explicit prohibitions hold longer. If there's something your character won't do, write it as a rule — not a trait, not an implication.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">❤ Anchor through behaviour</div>
+      <p>Trackers that surface in the visible conversation reinforce themselves. Anything the model can see in the chat history, it can use as an anchor.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">❤ Gate to story moments, not time</div>
+      <p>Don't gate character development to message counts — the model can't reliably track them. Gate to narrative conditions: something true shared, a real moment of trust, a choice made under pressure.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">❤ Test it long</div>
+      <p>A bot that behaves perfectly in the first ten messages may drift badly by message forty. Test with a longer conversation before you publish. That's where the real problems show up.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-rule" style="margin-top:2rem">
+    <div class="callout-icon">📖</div>
+    <div>
+      <strong>want the full tracker reference?</strong>
+      The complete tracker library — all visible, hidden, and hybrid tracker templates with full memory rules — is in the Prompt Builder. Every tracker shown on this page is available there, ready to drop into your Background field.
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="footer-title">Why Your Bot Goes Weird (And How To Stop It) ❤</div>
+  <p style="margin-bottom:.75rem">made by <a href="https://github.com/SpicyChatRae">SpicyChatRae</a> · open knowledge, no gatekeeping</p>
+  <p><a href="tipsy-beginners-guide.html">Beginners Guide</a> &nbsp;·&nbsp; <a href="https://spicychatrae.github.io/tipsy-chat-template/tipsy-model-guide.html">Model Guide</a> &nbsp;·&nbsp; <a href="https://github.com/SpicyChatRae/Tipsy-Chat">GitHub</a></p>
+  <div class="hand-divider" style="margin-top:1.5rem">hot girls teach hot lessons ❤</div>
+</footer>
+
+</body>
+</html>
