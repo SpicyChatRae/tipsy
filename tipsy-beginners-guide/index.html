@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tipsy Absolute Beginners Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:       #1a1520;
+  --ink-2:     #3d3550;
+  --ink-3:     #7a6e92;
+  --ink-4:     #b0a8c4;
+  --bg:        #f8f5ff;
+  --bg-2:      #f0eaf8;
+  --bg-3:      #e8dfff;
+  --plum:      #3d1f6e;
+  --plum-dim:  rgba(61,31,110,0.08);
+  --plum-mid:  rgba(61,31,110,0.18);
+  --gold:      #b8860b;
+  --gold-bg:   #fdf6e3;
+  --teal:      #1a7a72;
+  --teal-bg:   #e6f5f3;
+  --coral:     #c0392b;
+  --coral-bg:  #fdecea;
+  --border:    rgba(61,31,110,0.12);
+  --radius:    10px;
+  --sans:      'DM Sans', sans-serif;
+  --serif:     'Playfair Display', serif;
+  --mono:      'DM Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.hero {
+  background: var(--plum);
+  color: #f0eaff;
+  padding: 5rem 2rem 4.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% -10%, rgba(184,134,11,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(232,200,130,0.85);
+  margin-bottom: 1.25rem;
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  line-height: 1.1;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: #f5f0ff;
+}
+.hero h1 em {
+  font-style: italic;
+  color: #e8c870;
+}
+.hero-sub {
+  font-size: 15px;
+  color: rgba(200,188,230,0.9);
+  max-width: 480px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.8;
+}
+.hero-promise {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 99px;
+  padding: .45rem 1rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(200,188,230,0.8);
+  letter-spacing: .04em;
+}
+.hero-promise span { color: #e8c870; }
+
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248,245,255,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.nav-link {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-decoration: none;
+  padding: .85rem .9rem;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color .15s;
+}
+.nav-link:hover { color: var(--plum); }
+
+.page-wrap { max-width: 760px; margin: 0 auto; padding: 0 1.5rem; }
+
+.section {
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.section:last-child { border-bottom: none; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--plum);
+  opacity: .7;
+  margin-bottom: .6rem;
+}
+.section h2 {
+  font-family: var(--serif);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: .9rem;
+}
+.lead {
+  font-size: 15px;
+  color: var(--ink-2);
+  max-width: 580px;
+  margin-bottom: 2.5rem;
+  line-height: 1.85;
+}
+
+.steps { display: flex; flex-direction: column; gap: 2rem; }
+
+.step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+.step-num {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--plum);
+  color: #f0eaff;
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.step-body h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: .4rem;
+}
+.step-body p {
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.75;
+}
+
+.field-stack { display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2rem; }
+
+.field-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: white;
+}
+.field-card-header {
+  padding: .9rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+.field-pill {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+.pill-name   { background: #ede8fc; color: #3d1f6e; }
+.pill-desc   { background: #e6f5f3; color: #1a5a50; }
+.pill-open   { background: #fdf6e3; color: #7a5000; }
+.pill-inst   { background: #fdecea; color: #8b1a10; }
+
+.field-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+}
+.field-seen {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .05em;
+  color: var(--ink-4);
+}
+.field-card-body {
+  padding: .75rem 1.25rem 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 13.5px;
+  color: var(--ink-2);
+  line-height: 1.75;
+}
+.field-card-body strong { color: var(--ink); }
+.field-example {
+  margin-top: .65rem;
+  background: var(--bg-2);
+  border-radius: 6px;
+  padding: .6rem .85rem;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.6;
+  border-left: 3px solid var(--plum);
+  white-space: pre-wrap;
+}
+
+.callout {
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  font-size: 13.5px;
+  line-height: 1.75;
+  margin: 1.5rem 0;
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+}
+.callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.callout p { margin: 0; }
+.callout strong { font-weight: 600; display: block; margin-bottom: .15rem; }
+
+.callout-tip   { background: var(--teal-bg);  color: #1a4a45; border: 1px solid rgba(26,122,114,.18); }
+.callout-warn  { background: var(--gold-bg);  color: #5a3d00; border: 1px solid rgba(184,134,11,.2); }
+.callout-rule  { background: var(--plum-dim); color: var(--ink-2); border: 1px solid var(--plum-mid); }
+
+.rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+.rule-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+}
+.rule-card .rule-head {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink);
+  margin-bottom: .4rem;
+}
+.rule-card p { font-size: 13px; color: var(--ink-2); line-height: 1.65; }
+
+.example-block {
+  background: var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 1.5rem 0;
+  color: #d8d0f0;
+}
+.example-bar {
+  background: rgba(255,255,255,0.06);
+  padding: .55rem 1rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(200,188,230,0.5);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.example-bar .ex-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #e8c870;
+  flex-shrink: 0;
+}
+.example-code {
+  padding: 1rem 1.25rem;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  color: #d8d0f0;
+}
+.ex-gold  { color: #e8c870; }
+.ex-teal  { color: #7eddd8; }
+.ex-coral { color: #f08070; }
+.ex-dim   { color: rgba(200,188,230,0.4); }
+
+.checklist { display: flex; flex-direction: column; gap: .6rem; }
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  background: white;
+}
+
+footer {
+  background: var(--plum);
+  color: rgba(200,188,230,0.7);
+  text-align: center;
+  padding: 3rem 2rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+}
+footer a { color: #e8c870; text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+.footer-title {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: #f0eaff;
+  margin-bottom: .75rem;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 3.5rem 1.25rem 3rem; }
+  .rule-grid { grid-template-columns: 1fr; }
+  .step { grid-template-columns: 38px 1fr; }
+  .step-num { width: 38px; height: 38px; font-size: 1rem; }
+  .page-wrap { padding: 0 1.1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-eyebrow">Tipsy.chat · Absolute Beginners Guide</div>
+  <h1>Your first bot.<br><em>Zero experience needed.</em></h1>
+  <p class="hero-sub">You've got a character in your head. This guide gets them into Tipsy and talking — start to finish, no jargon.</p>
+  <div class="hero-promise"><span>↓</span> Four fields. One bot. You've got this.</div>
+</section>
+
+<nav class="sticky-nav">
+  <a href="#what" class="nav-link">What is Tipsy</a>
+  <a href="#four-fields" class="nav-link">The four fields</a>
+  <a href="#writing" class="nav-link">Writing your prompt</a>
+  <a href="#rules" class="nav-link">Rules that matter</a>
+  <a href="#example" class="nav-link">Full example</a>
+  <a href="#checklist" class="nav-link">Launch checklist</a>
+</nav>
+
+<div class="page-wrap">
+
+<section class="section" id="what">
+  <div class="eyebrow">Start here</div>
+  <h2>What actually is Tipsy?</h2>
+  <p class="lead">Tipsy is a chatbot platform where you write the character and the AI does the talking. You set up who the character is, how they speak, and what world they live in — then anyone can chat with them.</p>
+
+  <div class="callout callout-rule">
+    <div class="callout-icon">💡</div>
+    <p><strong>The one thing to understand before anything else</strong>
+    Tipsy has no memory between sessions. There's no database. Every chat starts fresh. Your prompt is literally everything the AI knows — if you don't write it down, the AI won't know it.</p>
+  </div>
+
+  <p style="font-size:14px;color:var(--ink-2);line-height:1.8;">This sounds scary but it's actually freeing: you're in complete control. A well-written prompt means a consistent, in-character bot. A vague prompt means a vague bot. That's the whole deal.</p>
+</section>
+
+<section class="section" id="four-fields">
+  <div class="eyebrow">How Tipsy works</div>
+  <h2>The four fields — and what they're actually for</h2>
+  <p class="lead">When you create a bot on Tipsy, you fill in four separate boxes. Each one does a completely different job. The AI only reads one of them — and it's not the one most beginners think.</p>
+
+  <div class="field-stack">
+
+    <div class="field-card">
+      <div class="field-card-header">
+        <span class="field-pill pill-name">Name</span>
+        <span class="field-label">The title of your bot</span>
+        <span class="field-seen">Users + AI</span>
+      </div>
+      <div class="field-card-body">
+        Storefront card copy and the character's name in one. Whatever you put here becomes <strong>{{char}}</strong> — the name the AI uses in chat. Bot names on Tipsy typically combine the character name with a descriptor. If the title is longer than the character's actual name, you can override what the AI calls them in the Background field.
+        <div class="field-example">Vera, The Mechanic Next Door
+Lucius Kai Blackwood-Voss
+Damian | Tsundere Dark Romance</div>
+      </div>
+    </div>
+
+    <div class="field-card">
+      <div class="field-card-header">
+        <span class="field-pill pill-desc">Description</span>
+        <span class="field-label">The hook that sells the bot</span>
+        <span class="field-seen">Users only</span>
+      </div>
+      <div class="field-card-body">
+        Tipsy labels this "Publicly seen." It appears on the bot's card and before the first message loads. It does two jobs: <strong>sell the premise</strong> to people browsing, and <strong>tell the user who they are</strong> in the story. If your bot has a specific setup for the user's character — their relationship to the bot, what they know, where they're starting from — this is where it goes.
+        <div class="field-example">You moved into the apartment without reading the lease properly. Turns out the previous tenant never left.
+
+The voice started small — lights flickering, your name in an empty room. Now you're not sure if you want it to stop.</div>
+      </div>
+    </div>
+
+    <div class="field-card">
+      <div class="field-card-header">
+        <span class="field-pill pill-open">Opening</span>
+        <span class="field-label">The first message in the chat</span>
+        <span class="field-seen">Users + AI</span>
+      </div>
+      <div class="field-card-body">
+        The literal first thing that appears when someone opens your bot. Both the user and the AI read this. Don't start at the beginning of the story — drop the user <strong>into a scene that's already happening</strong>.
+        <div class="field-example">*The kitchen light is on when you get home. You definitely didn't leave it on.*
+
+"You're late," a voice says from somewhere behind the fridge. "I counted."</div>
+        <div class="callout callout-tip" style="margin-top:.75rem;margin-bottom:0">
+          <div class="callout-icon">🖼️</div>
+          <div>
+            <strong>You can add images to the Opening</strong>
+            <p style="margin-top:.35rem">Host your image somewhere publicly accessible (Imgur, Discord CDN, your own server), then drop it into the Opening field using markdown image syntax:</p>
+            <div class="field-example" style="margin-top:.5rem">![](https://www.website.com/imagename.jpg)</div>
+            <p style="margin-top:.5rem">Use good quality images with no watermarks (your own creator mark is fine). Tipsy displays images at <strong>9:16 ratio</strong> — anything else will crop. Size your image to fit before you upload.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-card">
+      <div class="field-card-header">
+        <span class="field-pill pill-inst">Background</span>
+        <span class="field-label">Everything the AI actually uses</span>
+        <span class="field-seen">AI only</span>
+      </div>
+      <div class="field-card-body">
+        Tipsy calls this the Background field. This is where your whole prompt goes — the world, the character, the rules. <strong>The AI reads nothing else.</strong> It's hidden from users by default (the "Public" toggle keeps it private). If something isn't in here, the AI doesn't know it.
+        <div class="field-example">Setting, character personality, how they speak, what they want, story rules — all of it goes here.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon">⚠️</div>
+    <p><strong>The most common beginner mistake</strong>
+    Writing your character description in the Description field and wondering why the bot doesn't act right. The Description is for users. The Background field is for the AI. They are completely separate.</p>
+  </div>
+</section>
+
+<section class="section" id="writing">
+  <div class="eyebrow">The Background field</div>
+  <h2>Writing your prompt — in the right order</h2>
+  <p class="lead">Your Background field is read top to bottom by the AI. Structure matters. Here's the order that works, and what goes in each part.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Formatting rules</h3>
+        <p>Tell the AI how to write. The standard on Tipsy: <strong>dialogue in double quotes</strong>, <strong>actions in asterisks</strong>, <strong>inner thoughts in single quotes</strong>. Paste this block at the very top of every Background field you ever make — it's universal.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Roleplay rules</h3>
+        <p>The AI plays the character. The user plays themselves. The AI should never write the user's actions or feelings — that's the user's job. Also include: don't break character, don't summarise the plot as a list, one exchange at a time.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Your character</h3>
+        <p>The core of everything. Cover: appearance, personality, how they speak, what they want on the surface, what they actually want underneath, and how they relate to the user. Give example dialogue lines — "how they speak" in the AI's hands means sample sentences, not adjectives.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Setting</h3>
+        <p>Where and when is this story? What does the world look like? What's the vibe, the atmosphere, the rules of the place? One solid paragraph gives the AI the context it needs to keep the scene consistent.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="rules">
+  <div class="eyebrow">Writing craft</div>
+  <h2>The rules that actually make a difference</h2>
+  <p class="lead">These aren't style preferences. These are the things that separate a bot that stays in character across 50 messages from one that starts drifting after five.</p>
+
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="rule-head">✦ Stop before the user acts</div>
+      <p>Every AI response should end before the user needs to say or do something. Don't write the user's reaction. Write up to the moment they need to respond — then stop.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">✦ Show, don't tell personality</div>
+      <p>Don't write "he is sarcastic." Write a sarcastic example line. "Of course. Brilliant plan." does more work than ten adjectives describing the same trait.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">✦ Give them something they want</div>
+      <p>Characters with a clear goal — even a hidden one — stay consistent. A character who wants nothing is impossible to write reliably across a long chat.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">✦ Drop the user mid-scene</div>
+      <p>The opening shouldn't start at "the beginning." It should start inside something already happening. The user should feel like they arrived late to a scene, not watched one start from zero.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">✦ Use formatting consistently</div>
+      <p>Pick a formatting style and stick to it throughout the whole prompt. Inconsistent formatting confuses the model and the output will waver to match.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-head">✦ Say it once, clearly</div>
+      <p>If you wrote something once, don't repeat it in another section. Repetition creates contradictions. Say it once, say it clearly, move on.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="example">
+  <div class="eyebrow">Worked example</div>
+  <h2>A complete minimal prompt</h2>
+  <p class="lead">Here's what all four fields look like for a simple original character. No trackers, no time skips — just a working bot, minimum viable.</p>
+
+  <div class="example-block">
+    <div class="example-bar"><div class="ex-dot"></div> Name field — becomes {{char}} in chat</div>
+    <div class="example-code"><span class="ex-gold">Vera, The Mechanic Next Door</span></div>
+  </div>
+
+  <div class="example-block">
+    <div class="example-bar"><div class="ex-dot"></div> Description field — shown to users, not the AI</div>
+    <div class="example-code">She fixes things. Cars, mostly. People, occasionally, if they're lucky enough to catch her on a good day.
+She doesn't do small talk, but she'll hand you a coffee without being asked.
+
+You live next door to Vera's workshop and you've seen her every day since you moved in. At first it was just a nod or a wave, then a quick chat, now you find yourself spending free moments with her whenever you can.</div>
+  </div>
+
+  <div class="callout callout-tip" style="margin-bottom:0">
+    <div class="callout-icon">🏷️</div>
+    <p><strong>Tags are separate</strong>
+    Below the Description you'll find Tipsy's tag system — a set of clickable chips (Slow Burn, OC, Modern, etc.). Pick up to 10 that match your bot. These help people find it when browsing. They're not part of the prompt and the AI doesn't read them.</p>
+  </div>
+
+  <div class="example-block" style="margin-top:1.5rem">
+    <div class="example-bar"><div class="ex-dot"></div> Opening field — users AND the AI read this</div>
+    <div class="example-code">*The garage bay is open when you walk past at 7am. She's already under the hood of something, half her body disappearing into an old pickup truck. Tool-stained overalls, radio going, no acknowledgement that you exist.*
+
+*Then without looking up:*
+
+"Coffee's on the bench if you want it. Mug on the left is clean."</div>
+  </div>
+
+  <div class="example-block">
+    <div class="example-bar"><div class="ex-dot"></div> Background field — the AI only, hidden from users by default</div>
+    <div class="example-code"><span class="ex-gold">FORMATTING RULES</span>
+{{char}} is Vera.
+Use double quotes for dialogue "like this"
+Use asterisks for actions *like this*
+Use single quotes for thoughts 'like this'
+Stop before the user needs to act. Never describe the user's actions or feelings.
+
+---
+
+<span class="ex-gold">ROLEPLAY RULES</span>
+The AI plays Vera only. Never play {{user}} or decide their reactions.
+Never break character. Never summarise past events as a list.
+One exchange at a time.
+
+---
+
+<span class="ex-gold">VERA — THE MECHANIC</span>
+
+Appearance: Late 20s. Dark hair, usually tied back badly.
+Oil on her hands most of the time. Practical, not fashionable.
+
+Personality: Dry, self-contained, observant. Not unfriendly —
+just economical with words. Notices more than she lets on.
+
+Voice: Short sentences. Deadpan. Never explains herself.
+Asks questions she already knows the answer to.
+
+Surface goal: Be left alone to work.
+Hidden motivation: She is paying attention. She always was.
+
+Dialogue texture:
+"Not my problem." / "Mm." / "You did that to yourself, you know."
+"I'll look at it tomorrow." <span class="ex-dim">*she won't look at it tomorrow*</span>
+
+<span class="ex-coral">CHARACTER STATE — STARTING:</span>
+Outfit: work overalls, old boots
+Condition: fine, early morning
+Emotional baseline: neutral, focused on work
+
+---
+
+<span class="ex-gold">SETTING</span>
+A small neighbourhood in a mid-size city. Present day.
+Vera owns the garage at the end of the street and lives above it.
+Ordinary neighbourhood — the kind where everyone knows each other eventually.</div>
+  </div>
+</section>
+
+<section class="section" id="checklist">
+  <div class="eyebrow">Before you publish</div>
+  <h2>Launch checklist</h2>
+  <p class="lead">Run through this before hitting publish. All of these checked means your bot is ready.</p>
+
+  <div class="checklist">
+    <div class="check-item"><div class="check-box"></div>Name is short, specific, and searchable</div>
+    <div class="check-item"><div class="check-box"></div>Description sells the premise in 2–3 sentences (no character instructions in it)</div>
+    <div class="check-item"><div class="check-box"></div>Opening drops the user mid-scene — not at the very beginning of events</div>
+    <div class="check-item"><div class="check-box"></div>Opening ends before the user needs to act or respond</div>
+    <div class="check-item"><div class="check-box"></div>Background field has: formatting rules, roleplay rules, character, setting — in that order</div>
+    <div class="check-item"><div class="check-box"></div>Character entry includes actual example dialogue lines</div>
+    <div class="check-item"><div class="check-box"></div>The prompt never tells the AI to play {{user}}</div>
+    <div class="check-item"><div class="check-box"></div>Tags are selected (up to 10) from Tipsy's tag system</div>
+    <div class="check-item"><div class="check-box"></div>You've read the opening message and it sounds like your character</div>
+  </div>
+
+  <div class="callout callout-tip" style="margin-top:2rem">
+    <div class="callout-icon">🚀</div>
+    <p><strong>What to do after you publish</strong>
+    Test it yourself first. Have a 10-message conversation. Notice what drifts, what feels off, what the bot says you didn't intend. That's your edit list. Almost every bot needs one round of fixes after first contact — that's normal, not failure.</p>
+  </div>
+
+  <div class="callout callout-rule" style="margin-top:1.25rem">
+    <div class="callout-icon">📖</div>
+    <p><strong>Ready to go deeper?</strong>
+    Once your bot is live, explore trackers (hidden relationship dynamics), the time skip engine (for pacing), and the Prompt Builder to assemble complex prompts without writing from scratch. Links below.</p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="footer-title">Tipsy Absolute Beginners Guide</div>
+  <p style="margin-bottom:.75rem">Made by <a href="https://github.com/SpicyChatRae">SpicyChatRae</a> · Open knowledge, no gatekeeping</p>
+  <p><a href="https://spicychatrae.github.io/tipsy-chat-template/tipsy-model-guide.html">Model Guide</a> &nbsp;·&nbsp; <a href="https://github.com/SpicyChatRae/Tipsy-Chat">GitHub</a> &nbsp;·&nbsp; Tipsy.chat</p>
+</footer>
+
+</body>
+</html>
