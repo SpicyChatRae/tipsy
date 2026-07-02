@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tipsy",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "4200", "."],
+      "port": 4200
+    }
+  ]
+}
