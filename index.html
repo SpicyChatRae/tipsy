@@ -268,32 +268,53 @@ body {
 }
 .card-arrow.green { color: #3f6b48; }
 
-/* ===== PROFILE CTA ===== */
-.profile-cta {
+
+/* ===== RAE'S STUFF ===== */
+.rae-stuff {
+  margin-top: 28px;
+}
+.rae-stuff-label {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 10px;
-  margin: 46px auto 0;
-  width: fit-content;
+  margin-bottom: 14px;
+}
+.rae-stuff-rule {
+  flex: 1;
+  height: 1px;
+  background: rgba(240,231,218,.2);
+}
+.rae-stuff-text {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 22px;
+  color: #c8b6a7;
+  white-space: nowrap;
+}
+.rae-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rae-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   text-decoration: none;
-  background: #b0242a;
-  color: #fff;
-  font-family: 'Caprasimo', cursive;
-  font-size: 19px;
-  padding: 12px 26px;
-  border-radius: 26px;
-  transform: rotate(-1.5deg);
-  box-shadow: 0 0 0 5px #fff, 0 12px 26px rgba(124,26,29,.5);
-  border: 2px solid #7c1a1d;
-  transition: transform .16s, box-shadow .16s;
+  color: #c8b6a7;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(240,231,218,.07);
+  border: 1px solid rgba(240,231,218,.12);
+  transition: background .15s, color .15s;
 }
-.profile-cta:hover {
-  transform: rotate(0deg) scale(1.04);
-  box-shadow: 0 0 0 5px #fff, 0 18px 36px rgba(124,26,29,.6);
-}
-.profile-cta-heart { font-size: 16px; }
-.profile-cta-arrow { font-size: 22px; font-weight: 900; }
+.rae-link:hover { background: rgba(240,231,218,.13); color: #f0e7da; }
+.rae-link-icon { font-size: 13px; color: #b0242a; flex-shrink: 0; }
+.rae-link-label { flex: 1; }
+.rae-link-arrow { font-size: 18px; color: #7a5540; }
 
 /* ===== FOOTER ===== */
 .footer {
@@ -362,32 +383,32 @@ body {
         <div class="tool-card-inner">
           <div class="card-num" style="transform:rotate(-5deg)">1</div>
           <div class="card-text">
-            <span class="card-title">Absolute Beginner's Guide</span>
+            <span class="card-title">Beginner's Guide</span>
             <span class="card-sub">start here — build your first bot &#10084;</span>
           </div>
           <span class="card-arrow">&#8250;</span>
         </div>
       </a>
 
-      <a class="tool-card" href="./prompt-builder/" rel="noopener" style="transform:rotate(1.2deg)">
+      <a class="tool-card" href="./tracker/" rel="noopener" style="transform:rotate(1.1deg)">
         <div class="tool-card-inner">
-          <div class="card-num" style="transform:rotate(5deg)">2</div>
+          <div class="card-num" style="transform:rotate(4deg)">2</div>
           <div class="card-text">
-            <span class="card-title">Easy Prompt Template</span>
-            <span class="card-sub">fill-in-the-blanks bot builder</span>
+            <span class="card-title">Tracker &amp; Anti-drift</span>
+            <span class="card-sub">keep your bot on track mid-chat</span>
           </div>
           <span class="card-arrow">&#8250;</span>
         </div>
       </a>
 
-      <a class="tool-card green" href="./prompt-builder/es/" rel="noopener" style="transform:rotate(-1deg);padding-left:18px">
+      <a class="tool-card" href="./prompt-builder/" rel="noopener" style="transform:rotate(-1deg)">
         <div class="tool-card-inner">
-          <div class="card-num green" style="transform:rotate(-5deg)">3</div>
+          <div class="card-num" style="transform:rotate(-4deg)">3</div>
           <div class="card-text">
-            <span class="card-title">Generador de Prompts</span>
-            <span class="card-sub">la plantilla, en espa&ntilde;ol &#10084;</span>
+            <span class="card-title">Prompt Builders</span>
+            <span class="card-sub">fill-in-the-blanks bot builder</span>
           </div>
-          <span class="card-arrow green">&#8250;</span>
+          <span class="card-arrow">&#8250;</span>
         </div>
       </a>
 
@@ -401,25 +422,33 @@ body {
           <span class="card-arrow">&#8250;</span>
         </div>
       </a>
-
-      <a class="tool-card" href="./prompt-builder/omegaverse/" rel="noopener" style="transform:rotate(-0.8deg)">
-        <div class="tool-card-inner">
-          <div class="card-num" style="transform:rotate(-4deg)">5</div>
-          <div class="card-text">
-            <span class="card-title">Omegaverse Template</span>
-            <span class="card-sub">prompt builder for omegaverse bots</span>
-          </div>
-          <span class="card-arrow">&#8250;</span>
-        </div>
-      </a>
     </div>
 
-    <!-- PROFILE CTA -->
-    <a class="profile-cta" href="https://tipsy.chat/profile/1775189540481259434" target="_blank" rel="noopener">
-      <span class="profile-cta-heart">&#10084;</span>
-      My Tipsy Profile
-      <span class="profile-cta-arrow">&#8250;</span>
-    </a>
+    <!-- RAE'S STUFF -->
+    <div class="rae-stuff">
+      <div class="rae-stuff-label">
+        <span class="rae-stuff-rule"></span>
+        <span class="rae-stuff-text">Rae's Stuff</span>
+        <span class="rae-stuff-rule"></span>
+      </div>
+      <div class="rae-links">
+        <a class="rae-link" href="https://tipsy.chat/profile/1775189540481259434" target="_blank" rel="noopener">
+          <span class="rae-link-icon">&#10084;</span>
+          <span class="rae-link-label">Rae's Tipsy Profile</span>
+          <span class="rae-link-arrow">&#8250;</span>
+        </a>
+        <a class="rae-link" href="https://suno.com/@spicychatrae" target="_blank" rel="noopener">
+          <span class="rae-link-icon">&#9835;</span>
+          <span class="rae-link-label">Suno Music</span>
+          <span class="rae-link-arrow">&#8250;</span>
+        </a>
+        <a class="rae-link" href="https://github.com/SpicyChatRae" target="_blank" rel="noopener">
+          <span class="rae-link-icon">&#10022;</span>
+          <span class="rae-link-label">GitHub</span>
+          <span class="rae-link-arrow">&#8250;</span>
+        </a>
+      </div>
+    </div>
 
     <!-- FOOTER -->
     <div class="footer">
