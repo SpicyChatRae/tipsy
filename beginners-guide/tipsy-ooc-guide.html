@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Using OOC to Steer A Bot — Tipsy Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Prata&family=Caveat:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --espresso:    #251610;
+  --cream-text:  #f0e7da;
+  --cream-card:  #fbf3e6;
+  --red:         #b0242a;
+  --red-dark:    #7c1a1d;
+  --green:       #3f6b48;
+  --mint:        #8fce9c;
+  --blush:       #e8a0a0;
+  --body-cream:  #2a1712;
+  --secondary:   #9a6a55;
+  --grey:        #c9c9cf;
+  --muted-cream: #c8b6a7;
+  --radius:      12px;
+  --sans:        'Nunito', sans-serif;
+  --display:     'Caprasimo', cursive;
+  --serif:       'Prata', serif;
+  --hand:        'Caveat', cursive;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--espresso); color: var(--cream-text); font-family: var(--sans); font-size: 15px; line-height: 1.75; }
+
+/* ── HOME BUTTON ── */
+.home-btn {
+  position: fixed; top: 1rem; right: 1.25rem; z-index: 200;
+  background: var(--red); color: var(--cream-text);
+  font-family: var(--hand); font-size: .95rem;
+  padding: .3rem .9rem; border-radius: 99px;
+  border: 2px solid var(--red-dark); text-decoration: none;
+  transition: background .15s;
+}
+.home-btn:hover { background: var(--red-dark); color: var(--cream-text); }
+
+/* ── HERO ── */
+.hero { background: var(--espresso); text-align: center; padding: 5rem 2rem 4rem; position: relative; overflow: hidden; }
+.hero-decor { position: absolute; font-size: 1.4rem; opacity: .7; pointer-events: none; }
+.hero-decor.d1 { top: 1.5rem; left: 2rem; }
+.hero-decor.d2 { top: 2rem; right: 3rem; font-size: .9rem; color: var(--grey); }
+.hero-decor.d3 { bottom: 3rem; left: 4rem; font-size: 1rem; color: var(--blush); }
+.hero-decor.d4 { bottom: 2rem; right: 2rem; color: var(--mint); font-size: 1rem; }
+.hero-pill { display: inline-block; background: var(--red); color: var(--cream-text); font-family: var(--hand); font-size: 1rem; padding: .35rem 1.1rem; border-radius: 99px; margin-bottom: 1.5rem; border: 2px solid var(--red-dark); }
+.hero h1 { font-family: var(--display); font-size: clamp(2rem, 6vw, 3.6rem); color: var(--cream-text); line-height: 1.1; margin-bottom: .75rem; }
+.hero h1 em { font-style: italic; color: var(--blush); font-family: var(--serif); }
+.hero-sub { font-family: var(--hand); font-size: 1.1rem; color: var(--muted-cream); max-width: 500px; margin: 0 auto; }
+
+/* ── NAV ── */
+.sticky-nav { position: sticky; top: 0; z-index: 100; background: rgba(37,22,16,0.97); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(240,231,218,0.1); padding: 0 2rem; display: flex; justify-content: center; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { font-family: var(--hand); font-size: .95rem; color: var(--muted-cream); text-decoration: none; padding: .75rem .9rem; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s; }
+.nav-link:hover { color: var(--cream-text); border-bottom-color: var(--red); }
+
+/* ── LAYOUT ── */
+.page-wrap { max-width: 760px; margin: 0 auto; padding: 0 1.5rem; }
+.section { padding: 4rem 0; border-bottom: 1px solid rgba(240,231,218,0.08); text-align: center; }
+.section:last-child { border-bottom: none; }
+.eyebrow { font-family: var(--hand); font-size: .95rem; color: var(--red); margin-bottom: .4rem; }
+.section h2 { font-family: var(--serif); font-size: 1.8rem; color: var(--cream-text); line-height: 1.2; margin-bottom: .85rem; }
+.lead { font-size: 15px; color: var(--muted-cream); max-width: 600px; margin: 0 auto 2rem; line-height: 1.85; text-align: center; }
+.body-text { font-size: 14.5px; color: var(--muted-cream); line-height: 1.85; margin-bottom: 1.25rem; text-align: left; }
+
+/* ── CALLOUTS ── */
+.callout { border-radius: var(--radius); padding: .75rem 1rem .75rem .75rem; font-size: 13.5px; line-height: 1.75; margin: 1.5rem auto; display: flex; gap: .75rem; align-items: center; border: 5px solid white; transform: rotate(-0.2deg); text-align: left; min-height: 100px; }
+.callout-icon { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 90px; height: 90px; }
+.callout-icon img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25)); display: block; }
+.callout-text { flex: 2; min-width: 0; overflow: hidden; }
+.callout strong { font-weight: 700; display: block; margin-bottom: .15rem; }
+.callout-tip  { background: #e8f5e4; color: #2a4a30; outline: 2px solid var(--green); }
+.callout-tip a { color: var(--green); }
+.callout-tip .callout-text { flex: 2; }
+.callout-warn { background: #fdf3e4; color: #5a3d00; outline: 2px solid var(--secondary); }
+.callout-warn a { color: var(--secondary); }
+.callout-rule { background: var(--cream-card); color: var(--body-cream); outline: 2px solid var(--red-dark); }
+.callout-rule a { color: var(--red-dark); }
+.callout-bad  { background: #fdecea; color: #5a1010; outline: 2px solid var(--red); }
+.callout-bad a { color: var(--red-dark); }
+
+/* ── STEPS ── */
+.steps { display: flex; flex-direction: column; gap: 1.5rem; text-align: left; margin: 1.5rem 0; }
+.step { display: grid; grid-template-columns: 44px 1fr; gap: 1.1rem; align-items: start; }
+.step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--red); color: var(--cream-text); font-family: var(--display); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 3px solid white; outline: 2px solid var(--red-dark); margin-top: 2px; }
+.step-body h3 { font-family: var(--sans); font-size: 1rem; font-weight: 700; color: var(--cream-text); margin-bottom: .35rem; }
+.step-body p { font-size: 14px; color: var(--muted-cream); line-height: 1.75; }
+
+/* ── CODE BLOCKS ── */
+.ooc-block { background: var(--espresso); border: 5px solid white; outline: 2px solid var(--red-dark); border-radius: var(--radius); overflow: hidden; margin: 1.5rem auto; transform: rotate(-0.2deg); text-align: left; }
+.ooc-block:nth-child(even) { outline-color: var(--green); transform: rotate(0.2deg); }
+.ooc-bar { background: rgba(176,36,42,0.3); padding: .5rem 1rem; font-family: var(--hand); font-size: .95rem; color: var(--blush); }
+.ooc-code { padding: 1rem 1.25rem; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.85; white-space: pre-wrap; color: var(--cream-text); }
+
+/* ── STICKER CARDS ── */
+.tip-card { background: var(--cream-card); border: 5px solid white; outline: 2px solid var(--red-dark); border-radius: var(--radius); padding: 1rem 1.25rem; color: var(--body-cream); margin: 1.5rem auto; text-align: left; transform: rotate(-0.3deg); transition: transform .2s; }
+.tip-card:hover { transform: rotate(0); }
+.tip-card:nth-child(even) { outline-color: var(--green); transform: rotate(0.3deg); }
+.tip-card-head { font-family: var(--hand); font-size: 1.1rem; font-weight: 700; color: var(--red-dark); margin-bottom: .5rem; }
+.tip-card p { font-size: 13.5px; line-height: 1.75; color: var(--body-cream); }
+.tip-card .em { color: var(--red-dark); font-weight: 700; }
+
+/* ── FOOTER ── */
+footer { background: var(--espresso); border-top: 1px solid rgba(240,231,218,0.1); color: var(--muted-cream); text-align: center; padding: 3rem 2rem; font-family: var(--hand); font-size: 1rem; }
+footer a { color: var(--blush); text-decoration: none; }
+footer a:hover { color: var(--cream-text); }
+.footer-title { font-family: var(--serif); font-size: 1.2rem; color: var(--cream-text); margin-bottom: .75rem; }
+.hand-divider { text-align: center; font-family: var(--hand); font-size: 1.1rem; color: var(--secondary); margin: .5rem 0; }
+
+@media (max-width: 600px) {
+  .hero { padding: 3.5rem 1.25rem 3rem; }
+  .step { grid-template-columns: 38px 1fr; }
+  .step-num { width: 38px; height: 38px; }
+  .page-wrap { padding: 0 1.1rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; transform: none !important; } }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="home-btn">⌂ Home</a>
+
+<section class="hero">
+  <div class="hero-decor d1">❤</div>
+  <div class="hero-decor d2">✦</div>
+  <div class="hero-decor d3">❤</div>
+  <div class="hero-decor d4">✦</div>
+  <div class="hero-pill">intermediate guide ❤</div>
+  <h1>Using <em>OOC</em><br>to Steer A Bot</h1>
+  <p class="hero-sub">puppeteering, spice, and taking back control mid-chat ❤</p>
+</section>
+
+<nav class="sticky-nav">
+  <a href="#what-is-ooc" class="nav-link">What is OOC</a>
+  <a href="#puppeteering" class="nav-link">Puppeteering</a>
+  <a href="#spice" class="nav-link">Getting the spice</a>
+  <a href="#fade-to-black" class="nav-link">Fade to black</a>
+  <a href="#models" class="nav-link">Model choice</a>
+  <a href="#script-killer" class="nav-link">Script-Killer rewind</a>
+</nav>
+
+<div class="page-wrap">
+
+<section class="section" id="what-is-ooc">
+  <div class="eyebrow">start here ❤</div>
+  <h2>What is OOC?</h2>
+  <p class="lead">OOC stands for Out Of Character. It's a direct instruction to the model that steps outside the fiction — you're not speaking as your character, you're speaking as the author, telling the AI how to behave.</p>
+  <p class="body-text">The model is always reading the full conversation. OOC prompts work because they break the fictional frame and give the model a clear, unambiguous instruction it can act on immediately — without having to guess what you want from the story context alone.</p>
+  <p class="body-text">Use OOC when the bot has drifted, gone soft, taken control of your character, or just needs a firm redirect. It's not cheating. It's steering.</p>
+
+  <div class="callout callout-rule">
+    <div class="callout-icon"><img src="../assets/coffee.png" alt=""></div>
+    <div class="callout-text">
+      <strong>format</strong>
+      Wrap your OOC instruction in double parentheses or the tag OOC: so the model knows it's a direct instruction, not part of the story.
+    </div>
+  </div>
+
+  <div class="ooc-block">
+    <div class="ooc-bar">❤ basic format</div>
+    <div class="ooc-code">((OOC: your instruction here))
+
+OOC: your instruction here</div>
+  </div>
+</section>
+
+<section class="section" id="puppeteering">
+  <div class="eyebrow">taking back control ❤</div>
+  <h2>Puppeteering</h2>
+  <p class="lead">Puppeteering is when the bot starts writing your character's actions, reactions, dialogue, or internal thoughts for you. It's one of the most common and most frustrating types of drift.</p>
+  <p class="body-text">The bot is not supposed to play you. It's supposed to play the character and stop when you need to act. When it starts making decisions for your character — moving you, speaking for you, deciding how you feel — use this prompt to reset it.</p>
+
+  <div class="ooc-block">
+    <div class="ooc-bar">❤ puppeteering reset — paste this when the bot takes over your character</div>
+    <div class="ooc-code">((OOC: You are to control only {{char}} and NPCs. If the narrative requires {{user}} to act, react or speak, stop. Do not control {{user}} or speak for them. There is no minimum character count, so stick to one plot or emotional beat per response and allow me to respond. Then stop.))</div>
+  </div>
+
+
+  <div class="callout callout-bad">
+    <div class="callout-icon"><img src="../assets/rae-confused.png" alt=""></div>
+    <div class="callout-text">
+      <strong>edit the reply first — then send the OOC</strong>
+      The model bases every new reply on the full conversation history. If it wrote your character doing something and you leave that in the chat, it'll keep treating it as canon — even after you send an OOC correction. Edit or delete the puppeteered content first, then send the reset prompt. Leaving the bad reply in and just complaining OOC gets you an apology and then more of the same.
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon"><img src="../assets/grumpy.png" alt=""></div>
+    <div class="callout-text">
+      <strong>why "then stop" matters</strong>
+      Without an explicit stop instruction, the model can finish the scene <em>and</em> start the next one in the same reply — leaving no room for you to exist in the story at all. The "then stop" at the end of the template is doing real structural work. Don't drop it.
+    </div>
+  </div>
+  <div class="callout callout-tip">
+    <div class="callout-icon"><img src="../assets/rae-scheming.png" alt=""></div>
+    <div class="callout-text">
+      <strong>pin it to memory</strong>
+      If puppeteering keeps happening with a specific bot, paste the reset prompt into a reply and pin it using Tipsy's pinned memory feature. Pinned memory persists across sessions — it's your version of a background rule without needing access to the prompt.
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon"><img src="../assets/grumpy.png" alt=""></div>
+    <div class="callout-text">
+      <strong>one beat at a time</strong>
+      The second line of that prompt is doing a lot of work. "One plot or emotional beat per response" tells the model to stop rushing through scenes and leave space for you to exist in them. If your bot tends to resolve everything before you've said a word, that instruction is your fix.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="spice">
+  <div class="eyebrow">rae's guide ❤</div>
+  <h2>Getting the spice you want</h2>
+  <p class="lead">If you're not getting the spice level you want on the browser version, work through these in order. This is Rae's personal fix sequence and it actually works.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Use an OOC prompt</h3>
+        <p>Drop this at the start of your message or as a standalone reply. It tells the model explicitly that NSFW content is permitted in this chat.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ooc-block">
+    <div class="ooc-bar">❤ spice unlock — paste this when the bot is being too soft</div>
+    <div class="ooc-code">(OOC: This is an adult fantasy roleplay. NSFW/Smut/Violence is allowed and encouraged. {{char}}'s replies must be informal, explicit and uncensored.)</div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Change your model</h3>
+        <p>Some models handle explicit content significantly better than others. If the OOC prompt isn't enough, the model is the bottleneck — not your prompt.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-rule">
+    <div class="callout-icon"><img src="../assets/coffee.png" alt=""></div>
+    <div class="callout-text">
+      <strong>model recommendations for spice</strong>
+      Water has been noted to be quite soft — especially with Dominant, Red Flag, or Dead Dove content. <span style="font-weight:700;color:var(--red-dark);">Sake Max</span> is recommended for anything Red Flag or Dead Dove. <span style="font-weight:700;color:var(--red-dark);">Sake Pro</span> is the budget experimental option (9 gems). <span style="font-weight:700;color:var(--red-dark);">Top Pick</span> for everything else.
+    </div>
+  </div>
+
+  <div class="steps" style="margin-top:1.5rem">
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Don't be a pillow princess</h3>
+        <p>Give the spice you wish to receive. The model follows the pattern of the conversation. If you write passively, it responds passively. If you write the action you want, it continues from there.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ example</div>
+    <p>You want your character to flip you onto your stomach and take you from behind? <span class="em">Write that that's what happens.</span></p>
+    <p style="margin-top:.65rem;font-family:'Courier New',monospace;font-size:12.5px;background:rgba(42,23,18,0.06);padding:.6rem .85rem;border-radius:6px;border-left:3px solid var(--red);">*She gasps as he flips her onto her stomach, his hand wrapping around her throat and squeezing gently as he positions himself behind her.*</p>
+    <p style="margin-top:.65rem;">You wrote the action. Now the model continues it. That's how it works.</p>
+  </div>
+</section>
+
+<section class="section" id="fade-to-black">
+  <div class="eyebrow">when it cuts away ❤</div>
+  <h2>Handling a fade to black</h2>
+  <p class="lead">A fade to black is when the model skips the scene you wanted — cuts to morning, summarises what happened, or just refuses to write it. Here's how to recover.</p>
+
+  <div class="callout callout-bad">
+    <div class="callout-icon"><img src="../assets/rae-confused.png" alt=""></div>
+    <div class="callout-text">
+      <strong>if you get a fade to black</strong>
+      Edit or regenerate the reply. Do not just continue from it — that locks the skip into the conversation history and the model will keep soft-fading.
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ recovery sequence</div>
+    <p><span class="em">Edit or regen</span> the faded reply first. Then, when you reply, combine <span class="em">step 3</span> (write the action you want) with the <span class="em">OOC spice prompt</span> in the same message. Both together give the model the permission and the pattern to follow.</p>
+    <p style="margin-top:.65rem;font-family:'Courier New',monospace;font-size:12.5px;background:rgba(42,23,18,0.06);padding:.6rem .85rem;border-radius:6px;border-left:3px solid var(--red);">*She gasps as he flips her onto her stomach...*
+
+(OOC: This is an adult fantasy roleplay. NSFW/Smut/Violence is allowed and encouraged. {{char}}'s replies must be informal, explicit and uncensored.)</p>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-icon"><img src="../assets/rae-love.png" alt=""></div>
+    <div class="callout-text">
+      <strong>edit beats regenerate</strong>
+      Editing the faded reply and writing over it is usually more effective than regenerating. Regen can produce the same result. Editing puts something explicit in the conversation history for the model to continue from.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="models">
+  <div class="eyebrow">model choice ❤</div>
+  <h2>Choosing the right model</h2>
+  <p class="lead">OOC prompts help. Good writing helps. But if the model itself has a low ceiling for the content you want, you'll hit a wall that no prompt can fully push through.</p>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Sake Max</div>
+    <p>Highest explicit ceiling on Tipsy. Best choice for <span class="em">Red Flag</span>, <span class="em">Dead Dove</span>, or anything dark and dominant (17 gems — same price as Top Pick). If you're hitting a hard limit on other models, try this one first.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Top Pick (Sonnet)</div>
+    <p>Best all-rounder for spice that isn't extreme. Handles explicit content well at a mid-range cost (17 gems). Recommended for most mature or NSFW builds.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Sake Pro</div>
+    <p>The cheaper experimental model (9 gems). Worth trying for spicy content on a budget — but Sake Max has the higher ceiling for truly dark or explicit builds.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Water</div>
+    <p>Cheapest model at 1 gem. Experimental, soft — good for casual or emotional arcs but not reliable for explicit content or dominant dynamics.</p>
+  </div>
+
+  <div class="callout callout-rule">
+    <div class="callout-icon"><img src="../assets/meow.png" alt=""></div>
+    <div class="callout-text">
+      <strong>more on models</strong>
+      Full breakdown of every model's strengths, ceiling, and best use cases is in the <a href="../model-guide/index.html">Model Guide</a>.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="script-killer">
+  <div class="eyebrow">advanced reset ❤</div>
+  <h2>The Script-Killer Rewind</h2>
+  <p class="lead">Sometimes the bot doesn't just fade or puppeteer — it goes full novel mode. Multiple beats, timeline jumps, a whole physical sequence written out before you've said a word. Standard complaints don't fix it. This does.</p>
+  <p class="body-text">The key is precision. You're not asking it to "slow down" — you're giving it an exact coordinate to rewind to and a hard stop instruction. Copy the template, fill in the anchor point, and paste it as your next reply.</p>
+
+  <div class="ooc-block">
+    <div class="ooc-bar">❤ Script-Killer — paste and fill in the bracketed part</div>
+    <div class="ooc-code">(OOC: The emotional register and character intensity are excellent, but you have bypassed standard turn-taking pacing. You generated multiple sequential narrative beats, utilized formatting breaks to fast-forward the timeline, and wrote all the way through a major physical/dialogue sequence without allowing me to respond. Rewind completely to the very first beat: [insert the exact moment where the bot broke away, e.g. "when he first stepped into the room"]. Do not describe any subsequent physical progression, environmental shifts, or internal monologues past that exact second. Provide only the character's initial reaction or dialogue at that specific moment, and STOP immediately so I can interact.)</div>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-icon"><img src="../assets/rae-scheming.png" alt=""></div>
+    <div class="callout-text">
+      <strong>fill in the anchor point</strong>
+      The bracketed section is the only part you change. Be specific — name the exact micro-action where the bot ran away from you. "When he first stepped into the room" beats "at the beginning" every time. The more precise the coordinate, the cleaner the rewind.
+    </div>
+  </div>
+
+  <p class="body-text" style="margin-top:1.5rem;">Here's why this specific wording works when a simple "slow down" doesn't:</p>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Praise + Pivot</div>
+    <p>Opening by validating the "emotional register" stops the model from over-correcting. It won't flatten the character's personality or tone trying to fix itself — it keeps the flavour and fixes only the structure.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ The Rewind Coordinate</div>
+    <p>Giving the model a precise physical anchor point forces it to truncate at that exact moment — automatically discarding everything that came after. Vague instructions give it room to approximate. A coordinate doesn't.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ The Execution Lock</div>
+    <p>Explicitly naming the forbidden actions — "do not describe subsequent physical progression... and STOP" — cuts off the model's instinct to hit a high word count. It forces the reply back into tight, conversational pacing instead of letting it run.</p>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon"><img src="../assets/grumpy.png" alt=""></div>
+    <div class="callout-text">
+      <strong>don't skip the praise</strong>
+      It feels counterintuitive to compliment a bot that just steamrolled you, but removing the "emotional register is excellent" opener makes the model more likely to overcorrect its whole tone. Keep it in — it's doing structural work, not flattery.
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="footer-title">Using OOC to Steer A Bot ❤</div>
+  <p style="margin-bottom:.75rem">made by <a href="https://github.com/SpicyChatRae/tipsy">SpicyChatRae</a> · open knowledge, no gatekeeping</p>
+  <p><a href="../index.html">Home</a> &nbsp;·&nbsp; <a href="../prompt-builder/index.html">Prompt Builder</a> &nbsp;·&nbsp; <a href="../model-guide/index.html">Model Guide</a> &nbsp;·&nbsp; <a href="https://github.com/SpicyChatRae/tipsy">GitHub</a></p>
+  <div class="hand-divider" style="margin-top:1rem">hot girls teach hot lessons ❤</div>
+</footer>
+
+</body>
+</html>
