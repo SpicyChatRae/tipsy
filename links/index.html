@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0808">
+<title>SpicyChatRae — Links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Caveat:wght@600;700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f4e8df;
+  --muted:#c7b6ad;
+  --wine:#a91f2d;
+  --wine2:#e14455;
+  --panel:rgba(13,10,10,.68);
+  --panel2:rgba(24,16,17,.82);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#080606}
+body{
+  min-height:100vh;color:var(--cream);font-family:'Nunito',system-ui,sans-serif;
+  background:
+    linear-gradient(90deg,rgba(5,4,4,.95) 0%,rgba(8,6,6,.88) 27%,rgba(10,7,7,.60) 50%,rgba(10,7,7,.18) 69%,rgba(10,7,7,.08) 100%),
+    url("rae-youtube-banner-2560x1440.png") center center/cover no-repeat fixed;
+}
+.wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  padding:42px clamp(18px,5vw,72px);
+}
+.panel{
+  width:min(690px,46vw);
+  padding:34px 34px 28px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:28px;
+  background:linear-gradient(180deg,rgba(17,12,12,.64),rgba(10,8,8,.72));
+  box-shadow:0 20px 70px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.logo{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:700;
+  font-size:clamp(48px,6vw,82px);
+  line-height:.88;
+  letter-spacing:-.035em;
+  text-shadow:0 0 28px rgba(202,54,72,.22);
+}
+.tag{
+  margin-top:10px;
+  font-family:'Caveat',cursive;
+  font-size:clamp(25px,2.5vw,34px);
+  color:#e45564;
+}
+.blurb{
+  margin:14px 0 24px;
+  max-width:590px;
+  color:#d7c9c2;
+  font-size:15px;
+  line-height:1.5;
+}
+.stack{display:grid;gap:16px}
+.platform{display:grid;gap:7px}
+.referral{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  min-height:28px;padding:3px 10px;
+  color:#ad9b93;font-size:11px;letter-spacing:.04em;text-align:center;
+}
+.referral b{color:#d6c3bb;font-weight:700}
+.referral .code{
+  padding:2px 7px;border:1px dashed rgba(225,68,85,.38);border-radius:7px;
+  color:#d9aaaF;background:rgba(169,31,45,.07);
+}
+.ref-link{
+  color:#e2b8bd;text-decoration:none;border-bottom:1px solid rgba(225,68,85,.38);
+}
+.ref-link:hover,.ref-link:focus-visible{color:#ffd4d9;border-bottom-color:#ff6678}
+
+.btn{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:17px 19px;
+  border-radius:15px;
+  text-decoration:none;
+  color:var(--cream);
+  background:linear-gradient(180deg,rgba(24,18,18,.78),rgba(14,11,11,.88));
+  border:1px solid rgba(225,68,85,.78);
+  box-shadow:0 0 0 1px rgba(225,68,85,.10) inset,0 8px 25px rgba(0,0,0,.25);
+  transition:.16s ease;
+}
+.btn:hover,.btn:focus-visible{
+  transform:translateY(-2px);
+  border-color:#ff6678;
+  box-shadow:0 0 22px rgba(225,68,85,.20),0 10px 30px rgba(0,0,0,.35);
+}
+.btn strong{
+  font-family:'Cormorant Garamond',serif;
+  font-size:24px;
+  letter-spacing:.12em;
+}
+.btn span{font-size:25px;color:#efcbd0}
+.social-title{
+  display:flex;align-items:center;gap:12px;
+  margin:25px 0 12px;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.22em;
+  color:#a9978f;
+}
+.social-title:before,.social-title:after{
+  content:"";height:1px;flex:1;background:rgba(255,255,255,.12);
+}
+.socials{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+}
+.social{
+  display:flex;align-items:center;justify-content:center;
+  min-height:48px;padding:11px 12px;
+  text-decoration:none;color:#e9ddd7;
+  background:rgba(17,14,14,.66);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:13px;
+  font-weight:700;
+  transition:.16s ease;
+}
+.social:hover,.social:focus-visible{
+  border-color:rgba(225,68,85,.72);
+  background:rgba(31,18,20,.82);
+  transform:translateY(-1px);
+}
+.footer{
+  text-align:center;
+  margin-top:20px;
+  color:#9f8f88;
+  font-size:12px;
+}
+.footer b{color:#cdbab1}
+@media (max-width:900px){
+  body{
+    background:
+      linear-gradient(180deg,rgba(7,5,5,.12) 0%,rgba(7,5,5,.18) 28%,rgba(8,6,6,.82) 58%,#080606 100%),
+      url("rae-youtube-banner-2560x1440.png") 66% top/auto 52vh no-repeat,
+      #080606;
+    background-attachment:scroll;
+  }
+  .wrap{
+    min-height:100vh;
+    align-items:flex-end;
+    padding:38vh 14px 24px;
+  }
+  .panel{
+    width:100%;
+    padding:25px 18px 20px;
+    border-radius:24px;
+    background:linear-gradient(180deg,rgba(12,9,9,.64),rgba(8,6,6,.94));
+  }
+  .logo{font-size:clamp(44px,15vw,68px)}
+  .blurb{font-size:14px}
+  .socials{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+  .wrap{padding-top:36vh}
+  .btn strong{font-size:20px;letter-spacing:.09em}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="panel" aria-label="SpicyChatRae links">
+    <div class="logo">SpicyChatRae</div>
+    <div class="tag">romance, chaos &amp; bad decisions</div>
+    <p class="blurb">18+ AI character creator · original characters, fandom AUs &amp; interactive stories.</p>
+
+    <div class="stack">
+      <div class="platform">
+        <a class="btn" href="https://tipsy.chat/profile/1775189540481259434" target="_blank" rel="noopener noreferrer">
+          <strong>PLAY ON TIPSY</strong><span>›</span>
+        </a>
+        <div class="referral">✨ <b>New here?</b> Use referral code <span class="code">9VAGKX</span></div>
+      </div>
+
+      <div class="platform">
+        <a class="btn" href="https://fizzz.ai/u/?handle=ufyb4fbvilips" target="_blank" rel="noopener noreferrer">
+          <strong>PLAY ON FIZZZ</strong><span>›</span>
+        </a>
+        <div class="referral">✨ <b>New here?</b> <a class="ref-link" href="https://fizzz.ai/mobile/referral/landing/?invite_code=VS4P4W&amp;inviter_uid=2099764589871886336" target="_blank" rel="noopener noreferrer">Claim referral bonus</a> <span class="code">VS4P4W</span></div>
+      </div>
+
+      <div class="platform">
+        <a class="btn" href="https://craveu.ai/open-app/?deep=craveu://user/lIXGYTvU" target="_blank" rel="noopener noreferrer">
+          <strong>PLAY ON CRAVEU</strong><span>›</span>
+        </a>
+        <div class="referral">✨ <b>New here?</b> <a class="ref-link" href="https://craveu.ai/open-app/?deep=craveu://bonus?invite_code=5ZLOAUKK6QF1" target="_blank" rel="noopener noreferrer">Claim referral bonus</a> <span class="code">5ZLOAUKK6QF1</span></div>
+      </div>
+    </div>
+
+    <div class="social-title">Follow</div>
+    <div class="socials">
+      <a class="social" href="https://www.instagram.com/spicychatrae/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a class="social" href="https://www.tiktok.com/@spicychat_rae" target="_blank" rel="noopener noreferrer">TikTok</a>
+      <a class="social" href="https://youtube.com/@spicychatrae" target="_blank" rel="noopener noreferrer">YouTube</a>
+    </div>
+
+    <div class="footer"><b>18+</b> fictional AI characters &amp; interactive stories</div>
+  </section>
+</main>
+</body>
+</html>
