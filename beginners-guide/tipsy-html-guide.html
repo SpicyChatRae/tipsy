@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML in Description &amp; Opening — Tipsy Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Prata&family=Caveat:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --espresso:    #251610;
+  --cream-text:  #f0e7da;
+  --cream-card:  #fbf3e6;
+  --red:         #b0242a;
+  --red-dark:    #7c1a1d;
+  --green:       #3f6b48;
+  --mint:        #8fce9c;
+  --blush:       #e8a0a0;
+  --body-cream:  #2a1712;
+  --secondary:   #9a6a55;
+  --grey:        #c9c9cf;
+  --muted-cream: #c8b6a7;
+  --radius:      12px;
+  --sans:        'Nunito', sans-serif;
+  --display:     'Caprasimo', cursive;
+  --serif:       'Prata', serif;
+  --hand:        'Caveat', cursive;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--espresso); color: var(--cream-text); font-family: var(--sans); font-size: 15px; line-height: 1.75; }
+
+/* ── HOME BUTTON ── */
+.home-btn { position: fixed; top: 1rem; right: 1.25rem; z-index: 200; background: var(--red); color: var(--cream-text); font-family: var(--hand); font-size: .95rem; padding: .3rem .9rem; border-radius: 99px; border: 2px solid var(--red-dark); text-decoration: none; transition: background .15s; }
+.home-btn:hover { background: var(--red-dark); color: var(--cream-text); }
+
+/* ── HERO ── */
+.hero { background: var(--espresso); text-align: center; padding: 5rem 2rem 4rem; position: relative; overflow: hidden; }
+.hero-decor { position: absolute; font-size: 1.4rem; opacity: .7; pointer-events: none; }
+.hero-decor.d1 { top: 1.5rem; left: 2rem; }
+.hero-decor.d2 { top: 2rem; right: 3rem; font-size: .9rem; color: var(--grey); }
+.hero-decor.d3 { bottom: 3rem; left: 4rem; font-size: 1rem; color: var(--blush); }
+.hero-decor.d4 { bottom: 2rem; right: 2rem; color: var(--mint); font-size: 1rem; }
+.hero-pill { display: inline-block; background: var(--red); color: var(--cream-text); font-family: var(--hand); font-size: 1rem; padding: .35rem 1.1rem; border-radius: 99px; margin-bottom: 1.5rem; border: 2px solid var(--red-dark); }
+.hero h1 { font-family: var(--display); font-size: clamp(2rem, 6vw, 3.6rem); color: var(--cream-text); line-height: 1.1; margin-bottom: .75rem; }
+.hero h1 em { font-style: italic; color: var(--blush); font-family: var(--serif); }
+.hero-sub { font-family: var(--hand); font-size: 1.1rem; color: var(--muted-cream); max-width: 500px; margin: 0 auto; }
+
+/* ── NAV ── */
+.sticky-nav { position: sticky; top: 0; z-index: 100; background: rgba(37,22,16,0.97); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(240,231,218,0.1); padding: 0 2rem; display: flex; justify-content: center; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { font-family: var(--hand); font-size: .95rem; color: var(--muted-cream); text-decoration: none; padding: .75rem .9rem; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s; }
+.nav-link:hover { color: var(--cream-text); border-bottom-color: var(--red); }
+
+/* ── LAYOUT ── */
+.page-wrap { max-width: 760px; margin: 0 auto; padding: 0 1.5rem; }
+.section { padding: 4rem 0; border-bottom: 1px solid rgba(240,231,218,0.08); text-align: center; }
+.section:last-child { border-bottom: none; }
+.eyebrow { font-family: var(--hand); font-size: .95rem; color: var(--red); margin-bottom: .4rem; }
+.section h2 { font-family: var(--serif); font-size: 1.8rem; color: var(--cream-text); line-height: 1.2; margin-bottom: .85rem; }
+.lead { font-size: 15px; color: var(--muted-cream); max-width: 600px; margin: 0 auto 2rem; line-height: 1.85; text-align: center; }
+.body-text { font-size: 14.5px; color: var(--muted-cream); line-height: 1.85; margin-bottom: 1.25rem; text-align: left; }
+
+/* ── CALLOUTS ── */
+.callout { border-radius: var(--radius); padding: .75rem 1rem .75rem .75rem; font-size: 13.5px; line-height: 1.75; margin: 1.5rem auto; display: flex; gap: .75rem; align-items: center; border: 5px solid white; transform: rotate(-0.2deg); text-align: left; min-height: 100px; }
+.callout-icon { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 90px; height: 90px; }
+.callout-icon img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25)); display: block; }
+.callout-text { flex: 2; min-width: 0; overflow: hidden; }
+.callout strong { font-weight: 700; display: block; margin-bottom: .15rem; }
+.callout-tip  { background: #e8f5e4; color: #2a4a30; outline: 2px solid var(--green); }
+.callout-tip a { color: var(--green); }
+.callout-warn { background: #fdf3e4; color: #5a3d00; outline: 2px solid var(--secondary); }
+.callout-warn a { color: var(--secondary); }
+.callout-rule { background: var(--cream-card); color: var(--body-cream); outline: 2px solid var(--red-dark); }
+.callout-rule a { color: var(--red-dark); }
+.callout-bad  { background: #fdecea; color: #5a1010; outline: 2px solid var(--red); }
+
+/* ── STICKER CARDS ── */
+.tip-card { background: var(--cream-card); border: 5px solid white; outline: 2px solid var(--red-dark); border-radius: var(--radius); padding: 1rem 1.25rem; color: var(--body-cream); margin: 1.5rem auto; text-align: left; transform: rotate(-0.3deg); transition: transform .2s; }
+.tip-card:hover { transform: rotate(0); }
+.tip-card:nth-child(even) { outline-color: var(--green); transform: rotate(0.3deg); }
+.tip-card-head { font-family: var(--hand); font-size: 1.1rem; font-weight: 700; color: var(--red-dark); margin-bottom: .5rem; }
+.tip-card p { font-size: 13.5px; line-height: 1.75; color: var(--body-cream); }
+.tip-card .code-inline { font-family: 'Courier New', monospace; font-size: 12px; background: rgba(42,23,18,0.08); padding: 1px 5px; border-radius: 3px; }
+
+/* ── STEPS ── */
+.steps { display: flex; flex-direction: column; gap: 1.5rem; text-align: left; margin: 1.5rem 0; }
+.step { display: grid; grid-template-columns: 44px 1fr; gap: 1.1rem; align-items: start; }
+.step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--red); color: var(--cream-text); font-family: var(--display); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 3px solid white; outline: 2px solid var(--red-dark); margin-top: 2px; }
+.step-body h3 { font-family: var(--sans); font-size: 1rem; font-weight: 700; color: var(--cream-text); margin-bottom: .35rem; }
+.step-body p { font-size: 14px; color: var(--muted-cream); line-height: 1.75; }
+
+/* ── FOOTER ── */
+footer { background: var(--espresso); border-top: 1px solid rgba(240,231,218,0.1); color: var(--muted-cream); text-align: center; padding: 3rem 2rem; font-family: var(--hand); font-size: 1rem; }
+footer a { color: var(--blush); text-decoration: none; }
+footer a:hover { color: var(--cream-text); }
+.footer-title { font-family: var(--serif); font-size: 1.2rem; color: var(--cream-text); margin-bottom: .75rem; }
+.hand-divider { text-align: center; font-family: var(--hand); font-size: 1.1rem; color: var(--secondary); margin: .5rem 0; }
+
+@media (max-width: 600px) {
+  .hero { padding: 3.5rem 1.25rem 3rem; }
+  .step { grid-template-columns: 38px 1fr; }
+  .step-num { width: 38px; height: 38px; }
+  .page-wrap { padding: 0 1.1rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; transform: none !important; } }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="home-btn">⌂ Home</a>
+
+<section class="hero">
+  <div class="hero-decor d1">❤</div>
+  <div class="hero-decor d2">✦</div>
+  <div class="hero-decor d3">❤</div>
+  <div class="hero-decor d4">✦</div>
+  <div class="hero-pill">intermediate guide ❤</div>
+  <h1>Custom HTML<br>in Your <em>Cards</em></h1>
+  <p class="hero-sub">what Tipsy actually supports, and the one rule that'll bite you ❤</p>
+</section>
+
+<nav class="sticky-nav">
+  <a href="#what" class="nav-link">What this is</a>
+  <a href="#toggle" class="nav-link">The toggle & the cost</a>
+  <a href="#possible" class="nav-link">What's possible</a>
+  <a href="#limits" class="nav-link">Where the walls are</a>
+  <a href="#images" class="nav-link">Images</a>
+  <a href="#before" class="nav-link">Before you flip it</a>
+</nav>
+
+<div class="page-wrap">
+
+<section class="section" id="what">
+  <div class="eyebrow">start here ❤</div>
+  <h2>What this actually is</h2>
+  <p class="lead">Description and Opening aren't locked to plain text. Tipsy renders real HTML and CSS in these two fields — actual styling, not just line breaks and bold text.</p>
+  <p class="body-text">Keep expectations calibrated: it's markup rendered inside a card component on the platform, not a JavaScript sandbox and not an embedded webpage. Think "a styled document," not "a website."</p>
+
+  <div class="callout callout-rule">
+    <div class="callout-icon"><img src="../assets/coffee.png" alt=""></div>
+    <div class="callout-text">
+      <strong>Instructions doesn't render HTML</strong>
+      This whole topic is scoped to Description and Opening — the two fields users actually see. Instructions is read by the model as plain text; the model doesn't "see" markup the way a browser renders it, so HTML there does nothing useful.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="toggle">
+  <div class="eyebrow">the one rule that matters ❤</div>
+  <h2>The HTML toggle — and its cost</h2>
+  <p class="lead">There's a per-bot HTML toggle on Description and Opening. Turn it on and your markup renders. It comes with a tradeoff most builders don't find out about until something breaks.</p>
+
+  <div class="callout callout-bad">
+    <div class="callout-icon"><img src="../assets/rae-confused.png" alt=""></div>
+    <div class="callout-text">
+      <strong>HTML and a JSON world book do not work together</strong>
+      Confirmed, repeatedly, across multiple bots: turning HTML on silently stops an attached world book from firing at all — not partial, not bot-specific. Flip HTML back off and the same world book fires again immediately, same session, no re-upload. This is a platform-level either/or, not a bug to route around. If a bot needs its world book to actually work, HTML is off the table for that bot.
+    </div>
+  </div>
+
+  <p class="body-text">Pick one per bot, deliberately, before you build. A world-book-driven bot with a lot of on-demand lore should stay plain text. A bot whose main draw is a strong visual first impression can go HTML and either skip the world book or fold that lore into Instructions instead, where it doesn't need to render — it just needs the model to read it.</p>
+</section>
+
+<section class="section" id="possible">
+  <div class="eyebrow">what you can build ❤</div>
+  <h2>What Tipsy's renderer actually supports</h2>
+  <p class="lead">The overview, not the recipe book — enough to know what's on the table before you go looking further.</p>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Real typography</div>
+    <p>Custom web fonts, not just the handful of safe system fonts. If you know how to load a font by URL, that's a real option — pick something that fits the bot instead of defaulting to whatever's easiest.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Collapsible sections</div>
+    <p>Native browser disclosure elements work with zero JavaScript. Useful for offering deep lore as "expand for more" instead of forcing every reader through the full card before they've even started a chat.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Inline media</div>
+    <p>Images from an external host render normally. Audio is also possible — a working player with real transport controls — if the file is hosted somewhere that serves it correctly.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Layout & color</div>
+    <p>Standard CSS — spacing, color, borders, backgrounds. A card can look genuinely designed instead of defaulting to whatever plain text produces.</p>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon"><img src="../assets/grumpy.png" alt=""></div>
+    <div class="callout-text">
+      <strong>this is the ceiling, not a tutorial</strong>
+      Getting each of these to actually render correctly — which hosts cooperate, what exact markup survives, how to structure it well — took real trial and error to work out. This page tells you what's possible so you know it's worth attempting. The exact implementation is left as an exercise; that's on purpose.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="eyebrow">the fine print ❤</div>
+  <h2>Where the walls are</h2>
+  <p class="lead">It's real HTML rendered in a real browser, but it's not a blank canvas.</p>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Some markup gets stripped</div>
+    <p>Tipsy sanitizes what you submit. Scripts don't run — that's a security boundary, not a bug, and it isn't going away. If something you paste behaves differently than it would in a normal browser tab, sanitization is the first thing to suspect.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ External resources need to cooperate</div>
+    <p>Anything loaded from outside Tipsy — fonts, images, audio — depends on that host allowing it: public access, the right content type, permissive cross-origin settings. A private repo or a host that blocks hotlinking fails silently for everyone except you.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ It's per-bot, not global</div>
+    <p>The toggle lives on each bot individually. Flipping it for one bot doesn't touch any other bot's Description or Opening behavior.</p>
+  </div>
+</section>
+
+<section class="section" id="images">
+  <div class="eyebrow">a quick note on images ❤</div>
+  <h2>Hosting images the smart way</h2>
+  <p class="lead">Tipsy's own image uploader has a small number of slots shared across your <em>entire account</em> — not per bot. It's easy to burn through without realizing until you're stuck.</p>
+  <p class="body-text">An external image host doesn't have that ceiling and works the same way HTML expects any external resource to work — a direct, publicly-reachable URL. Use one instead of Tipsy's own uploader for card images.</p>
+
+  <div class="callout callout-tip">
+    <div class="callout-icon"><img src="../assets/heart.png" alt=""></div>
+    <div class="callout-text">
+      <strong>keep your avatar and your card images separate</strong>
+      Whatever image serves as the bot's profile picture doesn't have to be — and usually shouldn't be — reused as a hero or detail image inside the Description/Opening card body. Choose card images for what the card itself needs.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="before">
+  <div class="eyebrow">before you flip the toggle ❤</div>
+  <h2>Decide before you build</h2>
+  <p class="lead">A few questions worth answering before you commit a bot to HTML mode.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Does this bot need a world book to function?</h3>
+        <p>If yes, that answers the question for you — plain text, world book on. HTML isn't worth trading away lore the model actually needs to retrieve.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Is the payoff a stronger first impression, or something the model needs to know?</h3>
+        <p>HTML only helps the former. The model never sees the rendered result — it only ever reads Instructions as plain text, so anything mechanically important still belongs there, not in styled markup.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Do you have somewhere reliable to host anything external?</h3>
+        <p>Fonts, images, audio — all of it depends on a host that'll actually keep serving the file. Sort that out before you build the card around it, not after.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-rule" style="margin-top:2rem">
+    <div class="callout-icon"><img src="../assets/rae-love.png" alt=""></div>
+    <div class="callout-text">
+      <strong>this is deliberately the overview</strong>
+      If you're after the exact techniques, that's not what this page is for — it's here so you know the capability exists and the one rule that'll bite you if you don't know about it going in.
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="footer-title">Custom HTML in Your Cards ❤</div>
+  <p style="margin-bottom:.75rem">made by <a href="https://github.com/SpicyChatRae/tipsy">SpicyChatRae</a> · open knowledge, no gatekeeping</p>
+  <p><a href="../index.html">Home</a> &nbsp;·&nbsp; <a href="../prompt-builder/index.html">Prompt Builder</a> &nbsp;·&nbsp; <a href="../model-guide/index.html">Model Guide</a> &nbsp;·&nbsp; <a href="https://github.com/SpicyChatRae/tipsy">GitHub</a></p>
+  <div class="hand-divider" style="margin-top:1rem">hot girls teach hot lessons ❤</div>
+</footer>
+
+</body>
+</html>
