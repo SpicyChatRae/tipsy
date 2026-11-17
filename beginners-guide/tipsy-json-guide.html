@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>World Books & JSON Files — Tipsy Guide</title>
+<title>World Books & Lorebooks — Rae's Library</title>
 <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Prata&family=Caveat:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -130,17 +130,18 @@ footer a:hover { color: var(--cream-text); }
   <div class="hero-decor d3">❤</div>
   <div class="hero-decor d4">✦</div>
   <div class="hero-pill">beginners guide ❤</div>
-  <h1>World Books<br>&amp; <em>JSON Files</em></h1>
+  <h1>World Books<br>&amp; <em>Lorebooks</em></h1>
   <p class="hero-sub">what they are, how they work, and how to write one ❤</p>
 </section>
 
 <nav class="sticky-nav">
   <a href="#what" class="nav-link">What is a world book</a>
-  <a href="#structure" class="nav-link">The structure</a>
-  <a href="#fields" class="nav-link">The three fields</a>
   <a href="#writing" class="nav-link">Writing entries</a>
+  <a href="#platforms" class="nav-link">Platform notes</a>
+  <a href="#structure" class="nav-link">Tipsy file format</a>
+  <a href="#fields" class="nav-link">The three fields</a>
   <a href="#example" class="nav-link">Full example</a>
-  <a href="#tips" class="nav-link">Tips</a>
+  <a href="#tips" class="nav-link">Common mistakes</a>
 </nav>
 
 <div class="page-wrap">
@@ -148,23 +149,120 @@ footer a:hover { color: var(--cream-text); }
 <section class="section" id="what">
   <div class="eyebrow">start here ❤</div>
   <h2>What is a world book?</h2>
-  <p class="lead">A world book is a file of extra lore that Tipsy injects into the conversation — but only when it's needed. Instead of cramming every piece of world-building into the Background field, you keep it in a separate file and let trigger words pull it in on demand.</p>
+  <p class="lead">A world book (also called a lorebook) is a set of extra lore that the platform injects into the conversation — but only when it's needed. Instead of cramming every piece of world-building into the main prompt, you keep it in separate entries and let trigger words pull it in on demand.</p>
   <p class="body-text">Think of it like a reference library sitting behind the chat. As long as nobody mentions dragons, the dragon lore isn't taking up space. The moment someone writes "dragon" in a message, that entry gets injected and the bot knows exactly what to do with it.</p>
-  <p class="body-text">The file format is JSON — a plain text format with a specific structure. You don't need to know how to code to write one. You just need to understand the three fields every entry uses.</p>
+  <p class="body-text">Every platform that supports them uses the same idea: each entry has trigger keywords and some content. What differs is the format and the limits — see the platform notes below, and the Tipsy file format if you're writing a JSON file. You don't need to know how to code to write one.</p>
 
   <div class="callout callout-rule">
     <div class="callout-icon"><img src="../assets/coffee.png" alt=""></div>
     <div class="callout-text">
       <strong>why bother with a world book?</strong>
-      The Background field has a token limit. A detailed world with factions, locations, lore, and NPCs will blow past it fast. A world book keeps your Background lean and only adds detail when the conversation actually needs it.
+      The main prompt has a size limit. A detailed world with factions, locations, lore, and NPCs will blow past it fast. A world book keeps your prompt lean and only adds detail when the conversation actually needs it.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="writing">
+  <div class="eyebrow">writing good entries ❤</div>
+  <h2>How to write entries that work</h2>
+  <p class="lead">The structure is easy. The craft is in the content. Here's what separates world book entries that actually help the bot from ones that just take up space.</p>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ End on a hook, not a full stop</div>
+    <p>Dry facts give the bot nothing to do. An unresolved tension, an open secret, or an ironic detail gives it something to play with. <em>"The council is unified in public and fractured in private — the question is which fracture will split first"</em> is more useful than a list of council members' names.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Cross-reference other entries by name</div>
+    <p>If your "Iron Order" entry mentions the "Splinter Sect" in passing, and your "Splinter Sect" entry mentions the "Iron Order," then triggering either one nudges the bot toward a consistent picture of both — even if only one fired. Entries that know about each other behave like a real world.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Cover how people actually talk</div>
+    <p>Your keys should include both the formal name and the casual shorthand. If your faction is called "The Brotherhood of the Eternal Flame," someone in chat is going to type "the Brotherhood" or just "the flame guys." Cover both or the entry won't fire when it should.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Keep content to one paragraph</div>
+    <p>60–150 words. Every entry that fires is eating into the token budget for the actual conversation. A wall of lore that fires on a common word can quietly throttle the quality of everything else. Dense and specific beats long and comprehensive.</p>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-icon"><img src="../assets/rae-scheming.png" alt=""></div>
+    <div class="callout-text">
+      <strong>test your triggers</strong>
+      After uploading your world book, have a conversation that deliberately uses your key words and check whether the bot's responses shift. If an entry isn't firing, the key probably doesn't match how people are actually writing — add more variants.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="platforms">
+  <div class="eyebrow">same idea, different limits ❤</div>
+  <h2>Platform notes</h2>
+  <p class="lead">Whatever the platform, the writing advice above holds. These are the practical differences: where the world book lives, how much it can hold, and what it can't do.</p>
+
+  <div class="field-stack">
+
+    <div class="field-card">
+      <div class="field-card-header">
+        <span class="field-pill pill-keys">Tipsy</span>
+        <span class="field-label">A separate JSON file</span>
+      </div>
+      <div class="field-card-body">
+        Upload a JSON file of entries, each with <strong>keys</strong>, <strong>content</strong> and <strong>enabled</strong> — the format is explained below. There's no hard limit on content, but every entry that fires uses up conversation space.
+        <p style="margin-top:.5rem;"><strong>Heads up:</strong> a bot can't use HTML Description/Opening cards and a world book together. If HTML is on, the world book silently stops firing; turn it off and it works again.</p>
+      </div>
+    </div>
+
+    <div class="field-card">
+      <div class="field-card-header">
+        <span class="field-pill pill-content">Fizzz</span>
+        <span class="field-label">Three big entries</span>
+      </div>
+      <div class="field-card-body">
+        Up to <strong>3 entries of 10,000 characters</strong> each. The importer reads only an entry's content, so keywords and the "Always active" switch have to be set by hand in the editor afterwards.
+        <p style="margin-top:.5rem;">With so few slots, use them for big blocks — rules, trackers, factions — rather than dozens of small facts. The <a href="../fizzz-builder/" style="color:var(--red-dark);font-weight:700;">Fizzz builder</a> fills the first slot with a RULE entry for you.</p>
+      </div>
+    </div>
+
+    <div class="field-card">
+      <div class="field-card-header">
+        <span class="field-pill pill-enabled">CraveU</span>
+        <span class="field-label">No world-book field</span>
+      </div>
+      <div class="field-card-body">
+        CraveU has nowhere to put a lorebook. Fold the essentials into the <strong>Scenario</strong> box (about 19,500 characters) or leave the detail out.
+        <p style="margin-top:.5rem;">Flattening throws away the keyword gating: lore that was meant to surface only when earned is now always in context. If a bot depends on that pacing, it may be better left on a platform with world books.</p>
+      </div>
+    </div>
+
+    <div class="field-card">
+      <div class="field-card-header">
+        <span class="field-pill pill-keys">More</span>
+        <span class="field-label">Smaller lorebooks</span>
+      </div>
+      <div class="field-card-body">
+        <strong>CycleAI:</strong> a lorebook is created separately and attached to a character. Up to 10 entries, each with a 30-character title, up to 5 keywords (20 characters each) and 1,000 characters of hidden content — about 150 words, which fits the advice above.
+        <p style="margin-top:.5rem;"><strong>Laffi:</strong> worldbooks are their own create type, with keyword-only entries capped at 2,000 characters. They can't hold always-on rules, so put those in the character settings instead.</p>
+        <p style="margin-top:.5rem;"><strong>No world book at all?</strong> Treat your main prompt as one: keep entries short and put the lore that matters most first.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon"><img src="../assets/grumpy.png" alt=""></div>
+    <div class="callout-text">
+      <strong>limits change</strong>
+      These were checked in November 2026 and platforms adjust them without warning. Trust the counter in the editor if it disagrees with this page.
     </div>
   </div>
 </section>
 
 <section class="section" id="structure">
-  <div class="eyebrow">the format ❤</div>
-  <h2>The structure</h2>
-  <p class="lead">The whole file is one JSON object containing one array called <code style="font-family:'Courier New',monospace;font-size:13px;background:rgba(255,255,255,0.08);padding:1px 6px;border-radius:3px;">entries</code>. Each item in that array is one lorebook entry with exactly three fields.</p>
+  <div class="eyebrow">the Tipsy file format ❤</div>
+  <h2>The Tipsy file structure</h2>
+  <p class="lead">On Tipsy, the whole file is one JSON object containing one array called <code style="font-family:'Courier New',monospace;font-size:13px;background:rgba(255,255,255,0.08);padding:1px 6px;border-radius:3px;">entries</code>. Each item in that array is one lorebook entry with exactly three fields.</p>
 
   <div class="code-block">
     <div class="code-bar">❤ the full file shape</div>
@@ -200,7 +298,7 @@ footer a:hover { color: var(--cream-text); }
 <section class="section" id="fields">
   <div class="eyebrow">the three fields ❤</div>
   <h2>Keys, content, enabled</h2>
-  <p class="lead">Every entry has exactly these three fields. No more, no less.</p>
+  <p class="lead">Every Tipsy entry has exactly these three fields. No more, no less.</p>
 
   <div class="field-stack">
 
@@ -239,40 +337,6 @@ footer a:hover { color: var(--cream-text); }
       </div>
     </div>
 
-  </div>
-</section>
-
-<section class="section" id="writing">
-  <div class="eyebrow">writing good entries ❤</div>
-  <h2>How to write entries that work</h2>
-  <p class="lead">The structure is easy. The craft is in the content. Here's what separates world book entries that actually help the bot from ones that just take up space.</p>
-
-  <div class="tip-card">
-    <div class="tip-card-head">❤ End on a hook, not a full stop</div>
-    <p>Dry facts give the bot nothing to do. An unresolved tension, an open secret, or an ironic detail gives it something to play with. <em>"The council is unified in public and fractured in private — the question is which fracture will split first"</em> is more useful than a list of council members' names.</p>
-  </div>
-
-  <div class="tip-card">
-    <div class="tip-card-head">❤ Cross-reference other entries by name</div>
-    <p>If your "Iron Order" entry mentions the "Splinter Sect" in passing, and your "Splinter Sect" entry mentions the "Iron Order," then triggering either one nudges the bot toward a consistent picture of both — even if only one fired. Entries that know about each other behave like a real world.</p>
-  </div>
-
-  <div class="tip-card">
-    <div class="tip-card-head">❤ Cover how people actually talk</div>
-    <p>Your keys should include both the formal name and the casual shorthand. If your faction is called "The Brotherhood of the Eternal Flame," someone in chat is going to type "the Brotherhood" or just "the flame guys." Cover both or the entry won't fire when it should.</p>
-  </div>
-
-  <div class="tip-card">
-    <div class="tip-card-head">❤ Keep content to one paragraph</div>
-    <p>60–150 words. Every entry that fires is eating into the token budget for the actual conversation. A wall of lore that fires on a common word can quietly throttle the quality of everything else. Dense and specific beats long and comprehensive.</p>
-  </div>
-
-  <div class="callout callout-tip">
-    <div class="callout-icon"><img src="../assets/rae-scheming.png" alt=""></div>
-    <div class="callout-text">
-      <strong>test your triggers</strong>
-      After uploading your world book, have a conversation that deliberately uses your key words and check whether the bot's responses shift. If an entry isn't firing, the key probably doesn't match how people are actually writing — add more variants.
-    </div>
   </div>
 </section>
 
@@ -353,7 +417,7 @@ footer a:hover { color: var(--cream-text); }
     <div class="callout-icon"><img src="../assets/rae-love.png" alt=""></div>
     <div class="callout-text">
       <strong>validate your JSON before uploading</strong>
-      Paste your file into a free JSON validator (jsonlint.com is good) before uploading to Tipsy. It'll show you exactly where any syntax errors are. Saves a lot of guessing.
+      Paste your file into a free JSON validator (jsonlint.com is good) before uploading it. It'll show you exactly where any syntax errors are. Saves a lot of guessing.
     </div>
   </div>
 </section>
@@ -361,7 +425,7 @@ footer a:hover { color: var(--cream-text); }
 </div>
 
 <footer>
-  <div class="footer-title">World Books &amp; JSON Files ❤</div>
+  <div class="footer-title">World Books &amp; Lorebooks ❤</div>
   <p style="margin-bottom:.75rem">made by <a href="https://github.com/SpicyChatRae/tipsy">SpicyChatRae</a> · open knowledge, no gatekeeping</p>
   <p><a href="../library/index.html">Home</a> &nbsp;·&nbsp; <a href="../prompt-builder/index.html">Prompt Builder</a> &nbsp;·&nbsp; <a href="../model-guide/index.html">Model Guide</a> &nbsp;·&nbsp; <a href="https://github.com/SpicyChatRae/tipsy">GitHub</a></p>
   <div class="hand-divider" style="margin-top:1rem">hot girls teach hot lessons ❤</div>
