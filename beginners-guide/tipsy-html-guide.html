@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HTML in Description &amp; Opening — Tipsy Guide</title>
+<title>Custom HTML in Your Cards — Rae's Library</title>
 <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Prata&family=Caveat:wght@400;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -115,7 +115,7 @@ footer a:hover { color: var(--cream-text); }
   <div class="hero-decor d4">✦</div>
   <div class="hero-pill">intermediate guide ❤</div>
   <h1>Custom HTML<br>in Your <em>Cards</em></h1>
-  <p class="hero-sub">what Tipsy actually supports, and the one rule that'll bite you ❤</p>
+  <p class="hero-sub">what Tipsy actually supports, how other platforms differ, and the one rule that'll bite you ❤</p>
 </section>
 
 <nav class="sticky-nav">
@@ -124,6 +124,7 @@ footer a:hover { color: var(--cream-text); }
   <a href="#possible" class="nav-link">What's possible</a>
   <a href="#limits" class="nav-link">Where the walls are</a>
   <a href="#images" class="nav-link">Images</a>
+  <a href="#others" class="nav-link">Other platforms</a>
   <a href="#before" class="nav-link">Before you flip it</a>
 </nav>
 
@@ -227,6 +228,27 @@ footer a:hover { color: var(--cream-text); }
       <strong>keep your avatar and your card images separate</strong>
       Whatever image serves as the bot's profile picture doesn't have to be — and usually shouldn't be — reused as a hero or detail image inside the Description/Opening card body. Choose card images for what the card itself needs.
     </div>
+  </div>
+</section>
+
+<section class="section" id="others">
+  <div class="eyebrow">beyond Tipsy ❤</div>
+  <h2>Other platforms</h2>
+  <p class="lead">Everything above is how Tipsy behaves. Other platforms handle HTML differently, so don't assume a card carries over.</p>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ CraveU</div>
+    <p>HTML renders only in the Introduction card. Keep to <span class="code-inline">&lt;div&gt;</span> containers, inline styles and externally hosted images, and expect <span class="code-inline">&lt;p&gt;</span>, <span class="code-inline">&lt;span&gt;</span>, links, tables, scripts and class or id attributes to be stripped. The greeting is plain text only, and it's worth checking the card at phone width.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Fizzz</div>
+    <p>Keep the bio plain text. As on Tipsy, HTML and world-book entries conflict, so a card that uses a world book shouldn't have markup in its public bio.</p>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-card-head">❤ Everywhere else</div>
+    <p>If a platform's editor has no HTML toggle or import option, assume plain text — and test with something harmless before you build a whole card around markup that may print as literal tags.</p>
   </div>
 </section>
 
